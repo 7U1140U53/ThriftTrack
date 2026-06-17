@@ -1,239 +1,443 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>ThriftTrack - Access Gateway</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="config.js"></script>
-  </head>
-  <body
-    class="bg-slate-50 text-slate-800 font-sans min-h-screen flex items-center justify-center p-4"
-  >
-    <div
-      class="bg-white w-full max-w-md rounded-2xl p-8 shadow-xl border border-slate-100 space-y-6"
-    >
-      <div class="text-center space-y-2">
-        <div
-          class="w-12 h-12 bg-indigo-600 rounded-xl mx-auto flex items-center justify-center text-white font-bold text-2xl shadow-md shadow-indigo-600/20"
-        >
-          T
-        </div>
-        <h2 class="text-xl font-bold text-slate-900 tracking-tight">
-          Welcome to ThriftTrack
-        </h2>
-        <p class="text-xs text-slate-400">
-          Enter your credentials to manage your store catalog and streams.
-        </p>
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ThriftTrack - Secure Entry Gateway</title>
+  <!-- Tailwind CSS v4 Engine CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Supabase Core Engine CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="config.js"></script>
+
+  <style>
+    /* Custom traveling light beam keyframes for border animations */
+    @keyframes beam-horizontal {
+      0% {
+        left: -50%;
+        opacity: 0.3;
+        filter: blur(1px);
+      }
+
+      50% {
+        opacity: 0.7;
+        filter: blur(2.5px);
+      }
+
+      100% {
+        left: 100%;
+        opacity: 0.3;
+        filter: blur(1px);
+      }
+    }
+
+    @keyframes beam-vertical {
+      0% {
+        top: -50%;
+        opacity: 0.3;
+        filter: blur(1px);
+      }
+
+      50% {
+        opacity: 0.7;
+        filter: blur(2.5px);
+      }
+
+      100% {
+        top: 100%;
+        opacity: 0.3;
+        filter: blur(1px);
+      }
+    }
+
+    @keyframes ambient-glow {
+
+      0%,
+      100% {
+        opacity: 0.15;
+        transform: translate(-50%, 0) scale(0.98);
+      }
+
+      50% {
+        opacity: 0.3;
+        transform: translate(-50%, 0) scale(1.02);
+      }
+    }
+
+    @keyframes bottom-glow {
+
+      0%,
+      100% {
+        opacity: 0.3;
+        transform: translate(-50%, 0) scale(1);
+      }
+
+      50% {
+        opacity: 0.5;
+        transform: translate(-50%, 0) scale(1.1);
+      }
+    }
+
+    .animate-beam-h {
+      animation: beam-horizontal 2.5s ease-in-out infinite;
+    }
+
+    .animate-beam-v {
+      animation: beam-vertical 2.5s ease-in-out infinite;
+    }
+
+    .animate-ambient {
+      animation: ambient-glow 8s ease-in-out infinite;
+    }
+
+    .animate-bottom {
+      animation: bottom-glow 6s ease-in-out infinite;
+    }
+  </style>
+</head>
+
+<body
+  class="bg-black text-white font-sans min-h-screen w-screen relative overflow-hidden flex items-center justify-center p-4 selection:bg-white selection:text-black">
+
+  <!-- Deep Purple Ambient Gradient Layers -->
+  <div class="absolute inset-0 bg-gradient-to-b from-purple-500/20 via-purple-700/10 to-black z-0"></div>
+
+  <!-- Subtle Noise Overlay Texture -->
+  <div class="absolute inset-0 opacity-[0.03] mix-blend-soft-light z-0 pointer-events-none"
+    style="background-size: 200px 200px; background-image: url(&quot;data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E&quot;);">
+  </div>
+
+  <!-- Dynamic Neon Atmosphere Glow Spots -->
+  <div
+    class="absolute top-0 left-1/2 w-[120vh] h-[60vh] rounded-b-[50%] bg-purple-400/10 blur-[80px] -translate-x-1/2 pointer-events-none">
+  </div>
+  <div
+    class="absolute top-0 left-1/2 w-[100vh] h-[60vh] rounded-b-full bg-purple-300/10 blur-[60px] animate-ambient pointer-events-none">
+  </div>
+  <div
+    class="absolute bottom-0 left-1/2 w-[90vh] h-[90vh] rounded-t-full bg-purple-400/10 blur-[60px] animate-bottom pointer-events-none">
+  </div>
+  <div
+    class="absolute left-1/4 top-1/4 w-96 h-96 bg-white/5 rounded-full blur-[100px] animate-pulse opacity-30 pointer-events-none">
+  </div>
+  <div
+    class="absolute right-1/4 bottom-1/4 w-96 h-96 bg-white/5 rounded-full blur-[100px] animate-pulse opacity-30 pointer-events-none"
+    style="animation-delay: 1000s;"></div>
+
+  <!-- Interactive Card Perspective Frame -->
+  <div class="w-full max-w-sm relative z-10" style="perspective: 1500px;">
+
+    <!-- Interactive 3D Target Element -->
+    <div id="tilt-card" class="relative group transition-all duration-300 ease-out">
+
+      <!-- Hover Glow Frame -->
+      <div
+        class="absolute -inset-[1px] rounded-2xl opacity-20 group-hover:opacity-40 transition-opacity duration-700 bg-white/10 blur-md">
       </div>
 
-      <div
-        id="auth-alert"
-        class="hidden text-xs font-semibold p-3 rounded-lg text-center"
-      ></div>
+      <!-- Traveling Light Beams (Laser Borders) -->
+      <div class="absolute -inset-[1px] rounded-2xl overflow-hidden pointer-events-none">
+        <div
+          class="absolute top-0 left-0 h-[2px] w-[50%] bg-gradient-to-r from-transparent via-white to-transparent opacity-70 animate-beam-h">
+        </div>
+        <div
+          class="absolute top-0 right-0 h-[50%] w-[2px] bg-gradient-to-b from-transparent via-white to-transparent opacity-70 animate-beam-v"
+          style="animation-delay: 0.6s;"></div>
+        <div
+          class="absolute bottom-0 right-0 h-[2px] w-[50%] bg-gradient-to-r from-transparent via-white to-transparent opacity-70 animate-beam-h"
+          style="animation-delay: 1.2s; animation-direction: reverse;"></div>
+        <div
+          class="absolute bottom-0 left-0 h-[50%] w-[2px] bg-gradient-to-b from-transparent via-white to-transparent opacity-70 animate-beam-v"
+          style="animation-delay: 1.8s; animation-direction: reverse;"></div>
+      </div>
 
-      <form
-        id="login-form"
-        class="space-y-4"
-        onsubmit="handleAuthSubmit(event)"
-      >
-        <div>
-          <label
-            class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1"
-            >Workspace Email Address</label
-          >
-          <input
-            type="email"
-            id="auth-email"
-            required
-            placeholder="admin@thrifttrack.com"
-            class="w-full border border-slate-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-indigo-500 transition placeholder-slate-300"
-          />
+      <!-- Premium Glassmorphic Card Surface -->
+      <div
+        class="relative bg-black/50 backdrop-blur-xl rounded-2xl p-6 border border-white/[0.05] shadow-2xl overflow-hidden">
+        <!-- Geometric Card Inner Background Pattern -->
+        <div class="absolute inset-0 opacity-[0.02] pointer-events-none"
+          style="background-size: 30px 30px; background-image: linear-gradient(135deg, white 0.5px, transparent 0.5px), linear-gradient(45deg, white 0.5px, transparent 0.5px);">
         </div>
 
-        <div>
-          <label
-            class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1"
-            >Secure Password</label
-          >
-          <div class="relative">
-            <input
-              type="password"
-              id="auth-password"
-              required
-              placeholder="••••••••"
-              class="w-full border border-slate-200 rounded-xl pl-4 pr-12 py-3 text-sm focus:outline-none focus:border-indigo-500 transition placeholder-slate-300"
-            />
-            <button
-              type="button"
-              onclick="togglePasswordReveal()"
-              class="absolute right-3 top-1/2 -translate-y-1/2 text-indigo-600 hover:text-indigo-800 text-xs font-bold select-none px-2 py-1 transition z-10"
-            >
-              <span id="reveal-text">Show</span>
+        <!-- Application Brand Header -->
+        <div class="text-center space-y-1 mb-5 relative z-10">
+          <div
+            class="mx-auto w-10 h-10 rounded-full border border-white/10 flex items-center justify-center relative overflow-hidden bg-white/5">
+            <span
+              class="text-lg font-black bg-clip-text text-transparent bg-gradient-to-b from-white to-white/60 tracking-tighter">T</span>
+            <div class="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent opacity-50"></div>
+          </div>
+          <h1
+            class="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-b from-white to-white/80 tracking-tight pt-1">
+            Welcome Back
+          </h1>
+          <p class="text-white/40 text-[11px]">
+            Sign in to secure your ThriftTrack terminal.
+          </p>
+        </div>
+
+        <!-- Live Status Alert Box Container -->
+        <div id="auth-alert"
+          class="hidden text-[11px] font-semibold p-3 rounded-lg text-center border mb-4 relative z-10 transition-all duration-300">
+        </div>
+
+        <!-- Core Authentication Form Wrapper -->
+        <form id="login-form" class="space-y-4 relative z-10" onsubmit="handleAuthSubmit(event)">
+          <div class="space-y-3">
+
+            <!-- Email Input Component Struct -->
+            <div class="relative group/input">
+              <div
+                class="absolute -inset-[0.5px] bg-gradient-to-r from-white/10 via-white/5 to-white/10 rounded-lg opacity-0 group-hover/input:opacity-100 transition-all duration-300">
+              </div>
+              <div class="relative flex items-center overflow-hidden rounded-lg">
+                <!-- Mail Icon SVG -->
+                <svg
+                  class="absolute left-3 w-4 h-4 text-white/40 group-focus-within/input:text-white transition-colors duration-300"
+                  xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                  stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round"
+                    d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 002-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                </svg>
+                <input type="email" id="auth-email" required placeholder="Email address"
+                  class="w-full bg-white/5 border border-transparent focus:border-white/20 text-white placeholder:text-white/20 h-10 transition-all duration-300 pl-10 pr-3 focus:bg-white/10 outline-none text-sm" />
+              </div>
+            </div>
+
+            <!-- Password Input Component Struct -->
+            <div class="relative group/input">
+              <div
+                class="absolute -inset-[0.5px] bg-gradient-to-r from-white/10 via-white/5 to-white/10 rounded-lg opacity-0 group-hover/input:opacity-100 transition-all duration-300">
+              </div>
+              <div class="relative flex items-center overflow-hidden rounded-lg">
+                <!-- Lock Icon SVG -->
+                <svg
+                  class="absolute left-3 w-4 h-4 text-white/40 group-focus-within/input:text-white transition-colors duration-300"
+                  xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                  stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round"
+                    d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                </svg>
+                <input type="password" id="auth-password" required placeholder="Password"
+                  class="w-full bg-white/5 border border-transparent focus:border-white/20 text-white placeholder:text-white/20 h-10 transition-all duration-300 pl-10 pr-10 focus:bg-white/10 outline-none text-sm" />
+                <!-- Visibility Trigger Action Link -->
+                <div onclick="togglePasswordReveal()" class="absolute right-3 cursor-pointer select-none p-1 group/eye">
+                  <!-- Eye Active SVG -->
+                  <svg id="eye-show"
+                    class="w-4 h-4 text-white/40 hover:text-white transition-colors duration-300 hidden"
+                    xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                    stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                      d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                  </svg>
+                  <!-- Eye Hidden SVG -->
+                  <svg id="eye-hide" class="w-4 h-4 text-white/40 hover:text-white transition-colors duration-300"
+                    xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                    stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                      d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l18 18" />
+                  </svg>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Dashboard Logic Controls Frame -->
+          <div class="flex items-center justify-between pt-1 text-xs text-white/60">
+            <div class="flex items-center space-x-2">
+              <div class="relative flex items-center">
+                <input id="remember-me" type="checkbox"
+                  class="appearance-none h-4 w-4 rounded border border-white/20 bg-white/5 checked:bg-white checked:border-white focus:outline-none transition-all duration-200 cursor-pointer" />
+                <svg
+                  class="absolute inset-0 m-auto w-2.5 h-2.5 text-black pointer-events-none hidden peer-checked:block"
+                  xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                  stroke-width="4">
+                  <polyline points="20 6 9 17 4 12"></polyline>
+                </svg>
+              </div>
+              <label id="checkbox-label" for="remember-me"
+                class="hover:text-white/80 transition-colors duration-200 cursor-pointer select-none">Remember
+                me</label>
+            </div>
+            <a href="#" class="hover:text-white transition-colors duration-200">Forgot password?</a>
+          </div>
+
+          <!-- Primary Actions Button Framework Grid -->
+          <div class="space-y-2 pt-2">
+            <button type="submit" id="btn-login"
+              class="w-full relative group/button overflow-hidden bg-white text-black text-sm font-semibold h-10 rounded-lg transition-all duration-300 active:scale-[0.98] cursor-pointer flex items-center justify-center gap-1">
+              <span id="login-text" class="flex items-center justify-center gap-1">
+                Sign In
+                <svg class="w-3 h-3 group-hover/button:translate-x-1 transition-transform duration-300"
+                  xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                  stroke-width="2.5">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                </svg>
+              </span>
+              <div id="login-spinner"
+                class="w-4 h-4 border-2 border-black/70 border-t-transparent rounded-full animate-spin hidden"></div>
+            </button>
+
+            <div class="relative my-3 flex items-center">
+              <div class="flex-grow border-t border-white/5"></div>
+              <span class="mx-3 text-[10px] uppercase tracking-widest text-white/30 font-semibold">or</span>
+              <div class="flex-grow border-t border-white/5"></div>
+            </div>
+
+            <!-- Secondary Profile Pipeline Builder Trigger -->
+            <button type="button" onclick="handleRegister()" id="btn-register"
+              class="w-full bg-white/5 hover:bg-white/10 text-white/80 hover:text-white font-medium text-xs h-10 rounded-lg border border-white/10 hover:border-white/20 transition-all duration-300 active:scale-[0.98] cursor-pointer">
+              Create System Profile
             </button>
           </div>
-        </div>
-
-        <div class="grid grid-cols-2 gap-3 pt-2">
-          <button
-            type="submit"
-            id="btn-login"
-            class="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-sm py-3 rounded-xl shadow-md shadow-indigo-600/10 transition"
-          >
-            Sign In
-          </button>
-          <button
-            type="button"
-            onclick="handleRegister()"
-            id="btn-register"
-            class="bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-sm py-3 rounded-xl transition"
-          >
-            Create Account
-          </button>
-        </div>
-      </form>
+        </form>
+      </div>
     </div>
+  </div>
 
-    <script>
-      const SUPABASE_URL = window.ENV_SUPABASE_URL || '';
-      const SUPABASE_ANON_KEY = window.ENV_SUPABASE_ANON_KEY || '';
+  <!-- Active Behavioral Script Layer -->
+  <script>
+    // Single declaration source config mapping
+    const SUPABASE_URL = window.ENV_SUPABASE_URL || '';
+    const SUPABASE_ANON_KEY = window.ENV_SUPABASE_ANON_KEY || '';
+    let supabaseClient = null;
 
-      let supabaseClient = null;
+    // Real-time Native Fluid Hardware-Accelerated 3D Tilt Script
+    const card = document.getElementById('tilt-card');
+    card.addEventListener('mousemove', (e) => {
+      const rect = card.getBoundingClientRect();
+      const x = e.clientX - rect.left - rect.width / 2;
+      const y = e.clientY - rect.top - rect.height / 2;
 
-      // Run safe engine initialization sequence
-      document.addEventListener('DOMContentLoaded', async () => {
-        try {
-          if (
-            window.supabase &&
-            typeof window.supabase.createClient === 'function'
-          ) {
-            supabaseClient = window.supabase.createClient(
-              SUPABASE_URL,
-              SUPABASE_ANON_KEY
-            );
-          } else {
-            showAlert(
-              '⚠️ CDN Error: Unable to access the Supabase library wrapper. Check your internet connection.',
-              'error'
-            );
-            return;
-          }
+      // Maps position offsets cleanly inside target constraints (-10deg to 10deg max range)
+      const rotateX = -(y / (rect.height / 2)) * 10;
+      const rotateY = (x / (rect.width / 2)) * 10;
 
-          // Auto-forward instantly if a persistent session is alive
-          const {
-            data: { session },
-          } = await supabaseClient.auth.getSession();
-          if (session) {
-            window.location.href = 'index.html';
-          }
-        } catch (err) {
-          showAlert('Initialization crash: ' + err.message, 'error');
-        }
-      });
+      card.style.transform = `perspective(1500px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.01, 1.01, 1.01)`;
+    });
 
-      // PASSWORD REVEAL TOGGLE
-      function togglePasswordReveal() {
-        const passwordInput = document.getElementById('auth-password');
-        const revealText = document.getElementById('reveal-text');
+    card.addEventListener('mouseleave', () => {
+      card.style.transform = `perspective(1500px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`;
+    });
 
-        if (passwordInput.type === 'password') {
-          passwordInput.type = 'text';
-          revealText.textContent = 'Hide';
+    // Synchronize Checked Checkbox UI States
+    const checkbox = document.getElementById('remember-me');
+    checkbox.addEventListener('change', () => {
+      const checkmark = checkbox.nextElementSibling;
+      if (checkbox.checked) { checkbox.classList.add('bg-white'); }
+      else { checkbox.classList.remove('bg-white'); }
+    });
+
+    // Core System Setup Context Lifecycles
+    document.addEventListener('DOMContentLoaded', async () => {
+      try {
+        if (window.supabase && typeof window.supabase.createClient === 'function') {
+          supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
         } else {
-          passwordInput.type = 'password';
-          revealText.textContent = 'Show';
-        }
-      }
-
-      // Process Workspace Login Identity
-      async function handleAuthSubmit(event) {
-        event.preventDefault();
-        if (!supabaseClient) {
-          showAlert('Authentication client is offline.', 'error');
+          showAlert('⚠️ Core Engine Wrapper offline. CDN resolution failure.', 'error');
           return;
         }
 
-        const email = document.getElementById('auth-email').value;
-        const password = document.getElementById('auth-password').value;
-        showAlert('Authenticating workspace session...', 'info');
-
-        try {
-          const { data, error } = await supabaseClient.auth.signInWithPassword({
-            email,
-            password,
-          });
-          if (error) {
-            showAlert(error.message, 'error');
-          } else {
-            showAlert('Access Granted! Syncing data streams...', 'success');
-            setTimeout(() => {
-              window.location.href = 'index.html';
-            }, 1000);
-          }
-        } catch (err) {
-          showAlert(err.message, 'error');
-        }
+        const { data: { session } } = await supabaseClient.auth.getSession();
+        if (session) { window.location.href = 'index.html'; }
+      } catch (err) {
+        showAlert('Initialization crash: ' + err.message, 'error');
       }
+    });
 
-      // Process New Account Setup
-      async function handleRegister() {
-        if (!supabaseClient) {
-          showAlert('Authentication client is offline.', 'error');
-          return;
-        }
+    function togglePasswordReveal() {
+      const passwordInput = document.getElementById('auth-password');
+      const showIcon = document.getElementById('eye-show');
+      const hideIcon = document.getElementById('eye-hide');
 
-        const email = document.getElementById('auth-email').value;
-        const password = document.getElementById('auth-password').value;
-
-        if (!email || !password) {
-          showAlert(
-            'Please fill in both fields to create an account.',
-            'error'
-          );
-          return;
-        }
-
-        showAlert('Registering new workspace profile...', 'info');
-
-        try {
-          const { data, error } = await supabaseClient.auth.signUp({
-            email,
-            password,
-          });
-          if (error) {
-            showAlert(error.message, 'error');
-          } else {
-            showAlert(
-              'Registration complete! Workspace initialized.',
-              'success'
-            );
-            setTimeout(() => {
-              window.location.href = 'index.html';
-            }, 1500);
-          }
-        } catch (err) {
-          showAlert(err.message, 'error');
-        }
+      if (passwordInput.type === 'password') {
+        passwordInput.type = 'text';
+        showIcon.classList.remove('hidden');
+        hideIcon.classList.add('hidden');
+      } else {
+        passwordInput.type = 'password';
+        showIcon.classList.add('hidden');
+        hideIcon.classList.remove('hidden');
       }
+    }
 
-      // Feedback Alert Banner Helper
-      function showAlert(message, type) {
-        const alertBox = document.getElementById('auth-alert');
-        alertBox.className =
-          'text-xs font-semibold p-3 rounded-lg text-center block ';
+    async function handleAuthSubmit(event) {
+      event.preventDefault();
+      if (!supabaseClient) { return; }
 
-        if (type === 'error') {
-          alertBox.className += 'bg-red-50 text-red-600 border border-red-100';
-        } else if (type === 'success') {
-          alertBox.className +=
-            'bg-emerald-50 text-emerald-600 border border-emerald-100';
+      const email = document.getElementById('auth-email').value;
+      const password = document.getElementById('auth-password').value;
+      setLoadingState(true);
+
+      try {
+        const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
+        if (error) {
+          showAlert(error.message, 'error');
+          setLoadingState(false);
         } else {
-          alertBox.className +=
-            'bg-indigo-50 text-indigo-600 border border-indigo-100';
+          showAlert('Identity Authorized. Accessing workspace streams...', 'success');
+          setTimeout(() => { window.location.href = 'index.html'; }, 1000);
         }
-        alertBox.textContent = message;
+      } catch (err) {
+        showAlert(err.message, 'error');
+        setLoadingState(false);
       }
-    </script>
-  </body>
+    }
+
+    async function handleRegister() {
+      if (!supabaseClient) { return; }
+
+      const email = document.getElementById('auth-email').value;
+      const password = document.getElementById('auth-password').value;
+
+      if (!email || !password) {
+        showAlert('Input parameters completely empty.', 'error');
+        return;
+      }
+
+      showAlert('Registering secure profile configuration...', 'info');
+
+      try {
+        const { data, error } = await supabaseClient.auth.signUp({ email, password });
+        if (error) {
+          showAlert(error.message, 'error');
+        } else {
+          showAlert('System profile deployed! Database synced.', 'success');
+          setTimeout(() => { window.location.href = 'index.html'; }, 1200);
+        }
+      } catch (err) {
+        showAlert(err.message, 'error');
+      }
+    }
+
+    function setLoadingState(isLoading) {
+      const text = document.getElementById('login-text');
+      const spinner = document.getElementById('login-spinner');
+      if (isLoading) {
+        text.classList.add('hidden');
+        spinner.classList.remove('hidden');
+      } else {
+        text.classList.remove('hidden');
+        spinner.classList.add('hidden');
+      }
+    }
+
+    function showAlert(message, type) {
+      const alertBox = document.getElementById('auth-alert');
+      alertBox.className = 'text-[11px] font-semibold p-3 rounded-lg text-center block border ';
+
+      if (type === 'error') {
+        alertBox.className += 'bg-rose-950/20 text-rose-400 border-rose-900/40';
+      } else if (type === 'success') {
+        alertBox.className += 'bg-emerald-950/20 text-emerald-400 border-emerald-900/40';
+      } else {
+        alertBox.className += 'bg-white/5 text-white/80 border-white/10';
+      }
+      alertBox.textContent = message;
+    }
+  </script>
+</body>
+
 </html>

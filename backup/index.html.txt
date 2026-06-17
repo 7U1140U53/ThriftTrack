@@ -1,0 +1,1037 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ThriftTrack Admin Workspace</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="config.js"></script>
+  </head>
+  <body class="bg-slate-50 text-slate-800 font-sans min-h-screen pb-24 md:pb-6">
+    <!-- Sticky Top Header Navigation Frame -->
+    <div
+      class="bg-white border-b border-slate-100 px-4 py-4 sticky top-0 z-40 shadow-sm"
+    >
+      <div
+        class="max-w-5xl mx-auto flex flex-col gap-y-3 sm:flex-row sm:items-center sm:justify-between"
+      >
+        <!-- Left Side: Brand Identity & Active Profile State Badge -->
+        <div class="flex items-center gap-3">
+          <div
+            class="bg-indigo-600 text-white font-black px-3 py-1.5 rounded-xl text-base shadow-sm"
+          >
+            T
+          </div>
+          <div class="flex flex-col sm:flex-row sm:items-center gap-1.5">
+            <span class="font-black text-slate-900 tracking-tight text-lg"
+              >ThriftTrack</span
+            >
+            <div class="flex gap-2">
+              <span
+                id="role-badge"
+                class="bg-amber-50 text-amber-700 text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-md border border-amber-200 flex items-center gap-1"
+              >
+                <span>Checking Access Footprint...</span>
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Desktop Mode View Controls & Actions Menu -->
+        <div
+          class="flex items-center justify-between sm:justify-end gap-2 w-full sm:w-auto border-t sm:border-t-0 pt-3 sm:pt-0"
+        >
+          <div
+            class="hidden md:flex items-center gap-1 bg-slate-100 p-1 rounded-xl"
+          >
+            <button
+              onclick="switchTab('dashboard')"
+              id="tab-btn-dashboard"
+              class="tab-btn bg-white text-slate-900 text-xs font-bold px-3 py-2 rounded-lg shadow-sm transition-all"
+            >
+              Dashboard
+            </button>
+            <button
+              onclick="switchTab('add-drop')"
+              id="tab-btn-add-drop"
+              class="tab-btn text-slate-500 hover:text-slate-900 text-xs font-semibold px-3 py-2 rounded-lg transition-all"
+            >
+              Add Drop
+            </button>
+            <button
+              onclick="switchTab('inventory')"
+              id="tab-btn-inventory"
+              class="tab-btn text-slate-500 hover:text-slate-900 text-xs font-semibold px-3 py-2 rounded-lg transition-all"
+            >
+              Inventory
+            </button>
+            <button
+              onclick="switchTab('settings')"
+              id="tab-btn-settings"
+              class="tab-btn text-slate-500 hover:text-slate-900 text-xs font-semibold px-3 py-2 rounded-lg transition-all"
+            >
+              Payout Routes
+            </button>
+          </div>
+
+          <div class="flex items-center justify-between w-full md:w-auto gap-2">
+            <a
+              href="buyer.html"
+              target="_blank"
+              class="bg-white hover:bg-slate-50 border border-slate-200 text-slate-700 px-3 py-2 rounded-xl text-xs font-semibold transition-all flex items-center gap-1"
+            >
+              <span>View Storefront</span> 🔗
+            </a>
+            <button
+              onclick="simulateRoleToggle()"
+              class="bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold px-3 py-2 rounded-xl transition-all"
+            >
+              🔑 Swap Context Role
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Central Layout Workspace Container -->
+    <main class="max-w-5xl mx-auto px-4 py-6">
+      <!-- WORKSPACE TAB 1: MASTER METRICS & ACTION LEDGER FEED -->
+      <section id="tab-content-dashboard" class="tab-content space-y-6">
+        <div class="grid grid-cols-3 gap-3">
+          <div
+            class="bg-white p-4 rounded-2xl border border-slate-100 shadow-sm"
+          >
+            <p
+              class="text-[10px] uppercase tracking-wider font-bold text-slate-400"
+            >
+              Active Items
+            </p>
+            <p
+              id="metric-active"
+              class="text-xl font-black text-slate-900 mt-1"
+            >
+              0
+            </p>
+          </div>
+          <div
+            class="bg-white p-4 rounded-2xl border border-slate-100 shadow-sm"
+          >
+            <p
+              class="text-[10px] uppercase tracking-wider font-bold text-slate-400"
+            >
+              Awaiting Pay
+            </p>
+            <p
+              id="metric-pending"
+              class="text-xl font-black text-amber-600 mt-1"
+            >
+              0
+            </p>
+          </div>
+          <div
+            class="bg-white p-4 rounded-2xl border border-slate-100 shadow-sm"
+          >
+            <p
+              class="text-[10px] uppercase tracking-wider font-bold text-slate-400"
+            >
+              Gross Sales
+            </p>
+            <p
+              id="metric-sales"
+              class="text-xl font-black text-emerald-600 mt-1"
+            >
+              ₦0
+            </p>
+          </div>
+        </div>
+
+        <div
+          class="bg-slate-900 text-white p-5 rounded-2xl shadow-md space-y-4"
+        >
+          <div>
+            <h3 class="font-bold text-base">5-Second DM Quick Lock</h3>
+            <p class="text-xs text-slate-400 mt-0.5">
+              Sold an item on WhatsApp Status or Instagram DM? Manually claim it
+              out of public circulation here.
+            </p>
+          </div>
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            <div class="sm:col-span-1">
+              <label
+                class="block text-[10px] uppercase tracking-widest text-slate-400 font-bold mb-1"
+                >Select Catalog Stock Item</label
+              >
+              <select
+                id="quick-lock-item"
+                class="w-full bg-slate-800 border border-slate-700 text-white rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-indigo-500"
+              >
+                <option value="">-- Choose active item --</option>
+              </select>
+            </div>
+            <div>
+              <label
+                class="block text-[10px] uppercase tracking-widest text-slate-400 font-bold mb-1"
+                >Buyer Handle / Profile</label
+              >
+              <input
+                id="quick-lock-handle"
+                type="text"
+                placeholder="@customer_id"
+                class="w-full bg-slate-800 border border-slate-700 text-white rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-indigo-500"
+              />
+            </div>
+            <div>
+              <label
+                class="block text-[10px] uppercase tracking-widest text-slate-400 font-bold mb-1"
+                >Sale Channel Origin</label
+              >
+              <select
+                id="quick-lock-channel"
+                class="w-full bg-slate-800 border border-slate-700 text-white rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-indigo-500"
+              >
+                <option value="Instagram DM">Instagram DM</option>
+                <option value="WhatsApp Status">WhatsApp Status</option>
+                <option value="In-Person Sale">In-Person Sale</option>
+              </select>
+            </div>
+          </div>
+          <button
+            onclick="executeManualQuickLock()"
+            class="w-full bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold uppercase tracking-wider py-3 rounded-xl transition-all shadow-sm"
+          >
+            Mark Item Sold & Clear Public Floor
+          </button>
+        </div>
+
+        <div
+          class="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden"
+        >
+          <div class="px-5 py-4 border-b border-slate-100 bg-slate-50/50">
+            <h3 class="font-bold text-sm text-slate-900">
+              Central Action Ledger Feed
+            </h3>
+          </div>
+          <div
+            id="ledger-feed-container"
+            class="divide-y divide-slate-100 text-xs"
+          >
+            <p class="p-5 text-slate-400 text-center">
+              Loading real-time storefront stream data...
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- WORKSPACE TAB 2: CREATE NEW THRIFT DROP WORKSPACE -->
+      <section
+        id="tab-content-add-drop"
+        class="tab-content hidden max-w-md mx-auto space-y-4"
+      >
+        <div
+          class="bg-white p-6 rounded-2xl border border-slate-100 shadow-md space-y-5"
+        >
+          <div>
+            <h3 class="font-black text-slate-900 text-lg">
+              Create New Thrift Drop
+            </h3>
+            <p class="text-xs text-slate-400 mt-0.5">
+              Instantly push a unique handpicked item live onto your public
+              storefront customer floor.
+            </p>
+          </div>
+          <div class="space-y-4">
+            <div>
+              <label
+                class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1"
+                >Item Title / Name</label
+              >
+              <input
+                type="text"
+                id="drop-title-input"
+                oninput="clearAICopywriterOutput()"
+                placeholder="e.g., Vintage Graphic Tee"
+                class="w-full border border-slate-200 rounded-xl px-3 py-2.5 text-xs font-medium focus:outline-none focus:border-indigo-500"
+              />
+            </div>
+            <div>
+              <label
+                class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1"
+                >Price (₦)</label
+              >
+              <input
+                type="number"
+                id="drop-price-input"
+                oninput="clearAICopywriterOutput()"
+                placeholder="e.g., 15000"
+                class="w-full border border-slate-200 rounded-xl px-3 py-2.5 text-xs font-medium focus:outline-none focus:border-indigo-500"
+              />
+            </div>
+          </div>
+
+          <div class="flex gap-2">
+            <button
+              onclick="generateAICopywriterCaption()"
+              class="w-1/2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold py-3 rounded-xl transition-all border border-slate-200 flex items-center justify-center gap-1.5"
+            >
+              <span>✨ AI Copywriter</span>
+            </button>
+            <button
+              onclick="executeCreateThriftDrop()"
+              class="w-1/2 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold uppercase tracking-wider py-3 rounded-xl transition-all shadow-sm"
+            >
+              Publish Floor
+            </button>
+          </div>
+        </div>
+
+        <!-- AI Copywriter Panel Context Output -->
+        <div
+          id="ai-copywriter-box"
+          class="hidden bg-gradient-to-br from-indigo-900 to-slate-900 text-white p-5 rounded-2xl border border-slate-800 shadow-lg space-y-3"
+        >
+          <div class="flex items-center justify-between">
+            <span
+              class="text-[10px] bg-indigo-500/30 text-indigo-300 font-bold tracking-widest uppercase px-2 py-0.5 rounded-md border border-indigo-500/20"
+              >Generated Instagram Caption</span
+            >
+            <button
+              onclick="copyToClipboard('ai-copywriter-text', 'Caption copied to clipboard!')"
+              class="text-slate-400 hover:text-white text-xs font-medium underline flex items-center gap-1"
+            >
+              Copy 📋
+            </button>
+          </div>
+          <p
+            id="ai-copywriter-text"
+            class="text-xs font-mono leading-relaxed bg-slate-950/40 p-3 rounded-xl border border-slate-800 whitespace-pre-line"
+          ></p>
+        </div>
+      </section>
+
+      <!-- WORKSPACE TAB 3: MASTER STOCK INVENTORY LOGS -->
+      <section id="tab-content-inventory" class="tab-content hidden">
+        <div
+          class="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden"
+        >
+          <div
+            class="px-5 py-4 border-b border-slate-100 bg-slate-50/50 flex justify-between items-center"
+          >
+            <h3 class="font-bold text-sm text-slate-900">
+              Total Collection Registry
+            </h3>
+            <span
+              id="inventory-count-tag"
+              class="bg-slate-100 text-slate-600 px-2 py-0.5 rounded text-[10px] font-bold"
+              >0 Records</span
+            >
+          </div>
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-xs border-collapse">
+              <thead>
+                <tr
+                  class="bg-slate-50 text-slate-400 font-bold uppercase tracking-wider border-b border-slate-100 text-[10px]"
+                >
+                  <th class="p-4">Item Identity Name</th>
+                  <th class="p-4">Listed Price</th>
+                  <th class="p-4">Pipeline Status</th>
+                  <th class="p-4 text-right">Administrative Actions</th>
+                </tr>
+              </thead>
+              <tbody
+                id="inventory-table-body"
+                class="divide-y divide-slate-100"
+              >
+                <tr>
+                  <td colspan="4" class="p-5 text-slate-400 text-center">
+                    Syncing stock tables...
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- WORKSPACE TAB 4: PRIVILEGED BANK ROUTE COORD PANEL -->
+      <section id="tab-content-settings" class="tab-content hidden space-y-6">
+        <div
+          class="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm space-y-4"
+        >
+          <div>
+            <h3
+              class="font-black text-slate-900 text-base flex items-center gap-2"
+            >
+              <span>🏦</span> Manual Direct Bank Transfer Coordinates
+            </h3>
+            <p class="text-xs text-slate-400 mt-0.5">
+              These precise settlement routes map dynamically inside checkout
+              window countdown fields.
+            </p>
+          </div>
+          <div
+            id="payout-lock-warning"
+            class="hidden bg-amber-50 border border-amber-200 text-amber-900 rounded-xl p-3 flex items-start gap-2.5 text-xs"
+          >
+            <span class="text-base mt-0.5">🔒</span>
+            <div>
+              <p class="font-bold uppercase tracking-wide text-[10px]">
+                Security Lockdown Rule Triggered
+              </p>
+              <p class="text-slate-600 mt-0.5">
+                You are signed in with an <strong>Assistant</strong> clearance
+                profile context footprint. Financial coordinates are
+                structurally locked down.
+              </p>
+            </div>
+          </div>
+          <div class="space-y-3.5 pt-2">
+            <div>
+              <label
+                class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1"
+                >Settlement Financial Institution</label
+              >
+              <input
+                type="text"
+                id="bank-name-field"
+                value="ThriftTrack Demo Bank"
+                class="w-full border border-slate-200 rounded-xl px-3 py-2.5 text-xs font-medium focus:outline-none focus:border-indigo-500"
+              />
+            </div>
+            <div>
+              <label
+                class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1"
+                >Account Transit Number</label
+              >
+              <input
+                type="text"
+                id="bank-account-field"
+                value="1234567890"
+                class="w-full border border-slate-200 rounded-xl px-3 py-2.5 text-xs font-mono tracking-widest focus:outline-none focus:border-indigo-500"
+              />
+            </div>
+            <div>
+              <label
+                class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1"
+                >Beneficiary Account Name</label
+              >
+              <input
+                type="text"
+                id="bank-holder-field"
+                value="ThriftTrack Workspace Ltd"
+                class="w-full border border-slate-200 rounded-xl px-3 py-2.5 text-xs font-medium focus:outline-none focus:border-indigo-500"
+              />
+            </div>
+          </div>
+          <div class="pt-2" id="save-button-wrapper">
+            <button
+              onclick="savePayoutCoordinates()"
+              class="bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs px-4 py-2.5 rounded-xl transition-all shadow-sm"
+            >
+              Save Account Blueprint Settings
+            </button>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Mobile Navigation Bar Tab Controller -->
+    <div
+      class="fixed bottom-0 left-0 right-0 bg-white border-t border-slate-200 px-2 py-2 flex items-center justify-around md:hidden z-40 shadow-[0_-2px_10px_rgba(0,0,0,0.03)]"
+    >
+      <button
+        onclick="switchTab('dashboard')"
+        id="mobile-tab-dashboard"
+        class="flex flex-col items-center gap-1 text-indigo-600 font-bold text-[10px] transition-all"
+      >
+        <span class="text-base">📊</span> <span>Dashboard</span>
+      </button>
+      <button
+        onclick="switchTab('add-drop')"
+        id="mobile-tab-add-drop"
+        class="flex flex-col items-center gap-1 text-slate-400 font-medium text-[10px] transition-all"
+      >
+        <span class="text-base">✨</span> <span>Add Drop</span>
+      </button>
+      <button
+        onclick="switchTab('inventory')"
+        id="mobile-tab-inventory"
+        class="flex flex-col items-center gap-1 text-slate-400 font-medium text-[10px] transition-all"
+      >
+        <span class="text-base">📦</span> <span>Inventory</span>
+      </button>
+      <button
+        onclick="switchTab('settings')"
+        id="mobile-tab-settings"
+        class="flex flex-col items-center gap-1 text-slate-400 font-medium text-[10px] transition-all"
+      >
+        <span class="text-base">⚙️</span> <span>Payouts</span>
+      </button>
+    </div>
+
+    <!-- Hidden Temporary Textarea Element Helper for Seamless DM Clip Copy Operations -->
+    <textarea
+      id="clipboard-fallback"
+      class="absolute left-[-9999px] top-0"
+      readonly
+    ></textarea>
+
+    <script>
+      const CONFIG_URL = window.ENV_SUPABASE_URL || '';
+      const CONFIG_KEY = window.ENV_SUPABASE_ANON_KEY || '';
+
+      let adminSupabase = null;
+      let appRoleState = 'assistant';
+      let editingItemId = null;
+
+      document.addEventListener('DOMContentLoaded', () => {
+        if (
+          window.supabase &&
+          typeof window.supabase.createClient === 'function'
+        ) {
+          adminSupabase = window.supabase.createClient(CONFIG_URL, CONFIG_KEY);
+        }
+
+        if (localStorage.getItem('thrift_demo_role')) {
+          appRoleState = localStorage.getItem('thrift_demo_role');
+        } else {
+          localStorage.setItem('thrift_demo_role', appRoleState);
+        }
+
+        evaluateRoleLockoutPatterns();
+        loadWorkspacePipeline();
+        initializeRealtimePipeline();
+      });
+
+      function initializeRealtimePipeline() {
+        if (!adminSupabase) return;
+        adminSupabase
+          .channel('schema-db-changes')
+          .on(
+            'postgres_changes',
+            { event: '*', schema: 'public', table: 'items' },
+            (payload) => {
+              loadWorkspacePipeline();
+            }
+          )
+          .subscribe();
+      }
+
+      function evaluateRoleLockoutPatterns() {
+        const badge = document.getElementById('role-badge');
+        const warningBox = document.getElementById('payout-lock-warning');
+        const saveWrapper = document.getElementById('save-button-wrapper');
+        const inputs = [
+          document.getElementById('bank-name-field'),
+          document.getElementById('bank-account-field'),
+          document.getElementById('bank-holder-field'),
+        ];
+
+        if (appRoleState === 'owner') {
+          badge.className =
+            'bg-emerald-50 text-emerald-700 text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-md border border-emerald-200 flex items-center gap-1';
+          badge.innerHTML = '<span>👑 Owner Mode</span>';
+          if (warningBox) warningBox.classList.add('hidden');
+          if (saveWrapper) saveWrapper.classList.remove('hidden');
+          inputs.forEach(
+            (i) =>
+              (i && i.removeAttribute('disabled')) ||
+              i?.classList.remove(
+                'bg-slate-50',
+                'text-slate-400',
+                'cursor-not-allowed'
+              )
+          );
+        } else {
+          badge.className =
+            'bg-amber-50 text-amber-700 text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-md border border-amber-200 flex items-center gap-1';
+          badge.innerHTML = '<span>🛡️ Assistant Profile</span>';
+          if (warningBox) warningBox.classList.remove('hidden');
+          if (saveWrapper) saveWrapper.classList.add('hidden');
+          inputs.forEach(
+            (i) =>
+              (i && i.setAttribute('disabled', true)) ||
+              i?.classList.add(
+                'bg-slate-50',
+                'text-slate-400',
+                'cursor-not-allowed'
+              )
+          );
+        }
+      }
+
+      function simulateRoleToggle() {
+        appRoleState = appRoleState === 'owner' ? 'assistant' : 'owner';
+        localStorage.setItem('thrift_demo_role', appRoleState);
+        evaluateRoleLockoutPatterns();
+      }
+
+      function switchTab(targetTabId) {
+        document
+          .querySelectorAll('.tab-content')
+          .forEach((el) => el.classList.add('hidden'));
+        document
+          .getElementById(`tab-content-${targetTabId}`)
+          .classList.remove('hidden');
+
+        document.querySelectorAll('.tab-btn').forEach((btn) => {
+          btn.classList.remove(
+            'bg-white',
+            'text-slate-900',
+            'shadow-sm',
+            'font-bold'
+          );
+          btn.classList.add('text-slate-500', 'font-semibold');
+        });
+        const activeBtn = document.getElementById(`tab-btn-${targetTabId}`);
+        if (activeBtn)
+          activeBtn.classList.add(
+            'bg-white',
+            'text-slate-900',
+            'shadow-sm',
+            'font-bold'
+          );
+
+        const mobileTabIds = ['dashboard', 'add-drop', 'inventory', 'settings'];
+        mobileTabIds.forEach((id) => {
+          const mBtn = document.getElementById(`mobile-tab-${id}`);
+          if (mBtn) {
+            if (id === targetTabId) {
+              mBtn.className =
+                'flex flex-col items-center gap-1 text-indigo-600 font-bold text-[10px] transition-all';
+            } else {
+              mBtn.className =
+                'flex flex-col items-center gap-1 text-slate-400 font-medium text-[10px] transition-all';
+            }
+          }
+        });
+      }
+
+      /* AI IMPLEMENTATION ENGINE BLOCK 1: COPYWRITER GENERATOR */
+      function generateAICopywriterCaption() {
+        const title = document.getElementById('drop-title-input').value.trim();
+        const price = document.getElementById('drop-price-input').value.trim();
+
+        if (!title || !price) {
+          alert(
+            'Please type a Title and Price first so the AI can build your marketing copy!'
+          );
+          return;
+        }
+
+        const expressions = [
+          'Vintage gems only ✨',
+          'Steal of the week 🔥',
+          'Clean look, premium weight 💎',
+          'Hard to find, impossible to forget 🪐',
+        ];
+        const hooks = [
+          'Snooze you lose on this one.',
+          'First to pay gets the drop.',
+          'No restocks, when it is gone it is truly gone.',
+        ];
+        const selectedExpression =
+          expressions[Math.floor(Math.random() * expressions.length)];
+        const selectedHook = hooks[Math.floor(Math.random() * hooks.length)];
+
+        const aiCaptionText = `⚡️ FRESH THRIFT DROP DETECTED ⚡️
+
+🛒 Item: ${title}
+💰 Price: ₦${Number(price).toLocaleString()}
+
+${selectedExpression} Cond 10/10. Ready to anchor your daily rotation. 
+
+📌 HOW TO CLAIM:
+Click the link in our bio to grab it instantly on the shop floor before the timer locks out! ${selectedHook}
+
+#ThriftTrack #VintageFinds #StreetwearNigeria #SustainableFashion`;
+
+        document.getElementById('ai-copywriter-text').innerText = aiCaptionText;
+        document.getElementById('ai-copywriter-box').classList.remove('hidden');
+      }
+
+      function clearAICopywriterOutput() {
+        document.getElementById('ai-copywriter-box').classList.add('hidden');
+      }
+
+      /* AI IMPLEMENTATION ENGINE BLOCK 2: DISPATCH MESSAGE CONTEXT MAKER */
+      function copyAIDispatchTextToClipboard(title, handle) {
+        const cleanHandle = handle.startsWith('@') ? handle : `@${handle}`;
+
+        const dispatchBlueprints = [
+          `Hey ${cleanHandle}! Quick update from the ThriftTrack hangar 🚀 Your payment for the "${title}" has been verified successfully. We are currently wrapping it up securely and it will be dispatched today. Get your fit ready! 📦✨`,
+          `Hi ${cleanHandle}! Payment received safely for your "${title}" 🛍️. It is officially marked out of the store inventory. The courier team is printing your delivery airway bill right now. Thank you for choosing sustainable fashion! 🌎🔥`,
+          `Confirmed, ${cleanHandle}! 💵 Your order for the "${title}" is validated. Processing packaging metrics immediately so it drops on your doorstep ASAP. Keep an eye out for our dispatch rider!`,
+        ];
+
+        const randomMessage =
+          dispatchBlueprints[
+            Math.floor(Math.random() * dispatchBlueprints.length)
+          ];
+
+        const fallbackArea = document.getElementById('clipboard-fallback');
+        fallbackArea.value = randomMessage;
+        fallbackArea.select();
+        fallbackArea.setSelectionRange(0, 99999);
+
+        navigator.clipboard
+          .writeText(randomMessage)
+          .then(() => {
+            alert(
+              `AI Dispatch Text Copied For ${cleanHandle}!\n\nYou can now go directly to Instagram/WhatsApp and paste it to the customer.`
+            );
+          })
+          .catch(() => {
+            document.execCommand('copy');
+            alert(`AI Dispatch Text Copied For ${cleanHandle}!`);
+          });
+      }
+
+      function copyToClipboard(elementId, successAlertText) {
+        const text = document.getElementById(elementId).innerText;
+        navigator.clipboard.writeText(text).then(() => {
+          alert(successAlertText);
+        });
+      }
+
+      async function executeCreateThriftDrop() {
+        const titleInput = document.getElementById('drop-title-input');
+        const priceInput = document.getElementById('drop-price-input');
+        const title = titleInput.value.trim();
+        const price = Number(priceInput.value.trim());
+
+        if (!title || !price) {
+          alert(
+            'Please fill in both the Drop Item Title and the Listed Price value.'
+          );
+          return;
+        }
+
+        if (adminSupabase) {
+          const { error } = await adminSupabase
+            .from('items')
+            .insert([
+              {
+                title: title,
+                price: price,
+                status: 'available',
+                is_paid: false,
+              },
+            ]);
+
+          if (error) {
+            alert(`Drop upload failure: ${error.message}`);
+          } else {
+            alert(`Success! "${title}" has been added to the stock room.`);
+            titleInput.value = '';
+            priceInput.value = '';
+            clearAICopywriterOutput();
+            switchTab('dashboard');
+            loadWorkspacePipeline();
+          }
+        }
+      }
+
+      async function loadWorkspacePipeline() {
+        if (!adminSupabase) return;
+        try {
+          const { data: allItems, error } = await adminSupabase
+            .from('items')
+            .select('*')
+            .order('created_at', { ascending: false });
+          if (error) throw error;
+
+          const availableItems = allItems.filter(
+            (i) => i.status === 'available' || !i.status
+          );
+          const pendingItems = allItems.filter(
+            (i) => i.status === 'sold' && !i.is_paid
+          );
+          const settledItems = allItems.filter((i) => i.is_paid === true);
+          const dailyRevenue = settledItems.reduce(
+            (acc, current) => acc + Number(current.price || 0),
+            0
+          );
+
+          document.getElementById('metric-active').innerText =
+            availableItems.length;
+          document.getElementById('metric-pending').innerText =
+            pendingItems.length;
+          document.getElementById(
+            'metric-sales'
+          ).innerText = `₦${dailyRevenue.toLocaleString()}`;
+          document.getElementById(
+            'inventory-count-tag'
+          ).innerText = `${allItems.length} Records`;
+
+          const selectMenu = document.getElementById('quick-lock-item');
+          selectMenu.innerHTML =
+            '<option value="">-- Choose active item --</option>';
+          availableItems.forEach((item) => {
+            selectMenu.innerHTML += `<option value="${item.id}">${
+              item.title
+            } - ₦${Number(item.price).toLocaleString()}</option>`;
+          });
+
+          const feedContainer = document.getElementById(
+            'ledger-feed-container'
+          );
+          if (allItems.length === 0) {
+            feedContainer.innerHTML = `<p class="p-5 text-slate-400 text-center">No transaction records present.</p>`;
+          } else {
+            feedContainer.innerHTML = '';
+            allItems.forEach((item) => {
+              let badgeClass = 'bg-slate-100 text-slate-700';
+              let statusLabel = 'Available Floor';
+
+              if (item.status === 'sold' && !item.is_paid) {
+                badgeClass = 'bg-amber-100 text-amber-800 animate-pulse';
+                statusLabel = 'Awaiting Payout Verification';
+              } else if (item.is_paid) {
+                badgeClass = 'bg-emerald-100 text-emerald-800';
+                statusLabel = 'Settled & Dispatched';
+              }
+
+              feedContainer.innerHTML += `
+                <div class="p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-2 hover:bg-slate-50 transition">
+                  <div>
+                    <div class="flex items-center gap-2 flex-wrap">
+                      <span class="font-bold text-slate-900 text-sm">${
+                        item.title
+                      }</span>
+                      <span class="px-2 py-0.5 rounded text-[10px] font-bold ${badgeClass}">${statusLabel}</span>
+                    </div>
+                    <p class="text-slate-400 text-[11px] mt-0.5">
+                      ${
+                        item.buyer_handle
+                          ? `Customer: <strong>${item.buyer_handle}</strong>`
+                          : 'Unclaimed Public Stock Card'
+                      } 
+                      ${item.channel ? ` • via ${item.channel}` : ''}
+                    </p>
+                  </div>
+                  <div class="flex items-center gap-3 justify-between sm:justify-end border-t sm:border-t-0 pt-2 sm:pt-0">
+                    <span class="font-bold text-slate-900 text-sm mr-2">₦${Number(
+                      item.price
+                    ).toLocaleString()}</span>
+                    
+                    <div class="flex items-center gap-2">
+                      ${
+                        item.is_paid && item.buyer_handle
+                          ? `
+                        <button onclick="copyAIDispatchTextToClipboard('${item.title.replace(
+                          /'/g,
+                          "\\'"
+                        )}', '${item.buyer_handle.replace(
+                              /'/g,
+                              "\\'"
+                            )}')" class="bg-slate-900 hover:bg-slate-800 text-white text-[11px] font-bold px-2.5 py-1.5 rounded-lg transition shadow-sm flex items-center gap-1">
+                          <span>💬 DM Dispatch Text</span>
+                        </button>
+                      `
+                          : ''
+                      }
+
+                      ${
+                        item.status === 'sold' && !item.is_paid
+                          ? `
+                        <button onclick="approveLedgerPayout('${item.id}')" class="bg-emerald-600 hover:bg-emerald-700 text-white text-[11px] font-bold px-2.5 py-1.5 rounded-lg transition shadow-sm">
+                          Confirm Funds Receipt
+                        </button>
+                      `
+                          : ''
+                      }
+                    </div>
+                  </div>
+                </div>`;
+            });
+          }
+
+          // Render Master Inventory Registry Data Matrix Table
+          const tableBody = document.getElementById('inventory-table-body');
+          if (allItems.length === 0) {
+            tableBody.innerHTML = `<tr><td colspan="4" class="p-5 text-slate-400 text-center">No active stock logs registered.</td></tr>`;
+          } else {
+            tableBody.innerHTML = '';
+            allItems.forEach((item) => {
+              const isEditing = item.id === editingItemId;
+
+              if (isEditing) {
+                tableBody.innerHTML += `
+                  <tr class="bg-indigo-50/50 border-y border-indigo-100">
+                    <td class="p-3">
+                      <input type="text" id="inline-edit-title-${item.id}" value="${item.title}" class="w-full text-xs font-bold text-slate-900 bg-white border border-slate-200 rounded-lg px-2.5 py-1.5 focus:outline-none focus:border-indigo-500" />
+                    </td>
+                    <td class="p-3">
+                      <input type="number" id="inline-edit-price-${item.id}" value="${item.price}" class="w-28 text-xs font-mono font-bold text-slate-900 bg-white border border-slate-200 rounded-lg px-2.5 py-1.5 focus:outline-none focus:border-indigo-500" />
+                    </td>
+                    <td class="p-3">
+                      <span class="text-[10px] uppercase font-bold text-slate-400 tracking-wider">Editing Mode</span>
+                    </td>
+                    <td class="p-3 text-right space-x-2 whitespace-nowrap">
+                      <button onclick="executeSaveInlineEdit('${item.id}')" class="bg-emerald-600 hover:bg-emerald-700 text-white text-[11px] font-bold px-3 py-1.5 rounded-lg shadow-sm transition">
+                        Save
+                      </button>
+                      <button onclick="toggleInlineEditMode(null)" class="bg-slate-200 hover:bg-slate-300 text-slate-700 text-[11px] font-semibold px-3 py-1.5 rounded-lg transition">
+                        Cancel
+                      </button>
+                    </td>
+                  </tr>`;
+              } else {
+                tableBody.innerHTML += `
+                  <tr class="hover:bg-slate-50/80 transition border-b border-slate-100">
+                    <td class="p-4 font-bold text-slate-900">${item.title}</td>
+                    <td class="p-4 font-mono font-semibold">₦${Number(
+                      item.price
+                    ).toLocaleString()}</td>
+                    <td class="p-4">
+                      <span class="px-2 py-0.5 rounded text-[10px] font-black uppercase tracking-wider ${
+                        item.is_paid
+                          ? 'bg-emerald-50 text-emerald-700'
+                          : item.status === 'sold'
+                          ? 'bg-amber-50 text-amber-700'
+                          : 'bg-slate-100 text-slate-600'
+                      }">
+                        ${
+                          item.is_paid
+                            ? 'Settled'
+                            : item.status === 'sold'
+                            ? 'Awaiting Pay'
+                            : 'On Floor'
+                        }
+                      </span>
+                    </td>
+                    <td class="p-4 text-right space-x-3 whitespace-nowrap">
+                      <button onclick="toggleInlineEditMode('${
+                        item.id
+                      }')" class="text-indigo-600 hover:text-indigo-800 font-bold hover:underline transition">
+                        Edit Details
+                      </button>
+                      <button onclick="deleteInventoryItem('${
+                        item.id
+                      }')" class="text-rose-500 hover:text-rose-700 font-bold hover:underline transition">
+                        Delete Record
+                      </button>
+                    </td>
+                  </tr>`;
+              }
+            });
+          }
+        } catch (err) {
+          console.error('Pipeline query compilation error:', err);
+        }
+      }
+
+      function toggleInlineEditMode(itemId) {
+        editingItemId = itemId;
+        loadWorkspacePipeline();
+      }
+
+      async function executeSaveInlineEdit(itemId) {
+        if (!adminSupabase) return;
+
+        const updatedTitle = document
+          .getElementById(`inline-edit-title-${itemId}`)
+          .value.trim();
+        const updatedPrice = Number(
+          document.getElementById(`inline-edit-price-${itemId}`).value.trim()
+        );
+
+        if (!updatedTitle || !updatedPrice) {
+          alert(
+            'Item identity names and listed price points cannot be saved empty.'
+          );
+          return;
+        }
+
+        const { error } = await adminSupabase
+          .from('items')
+          .update({ title: updatedTitle, price: updatedPrice })
+          .eq('id', itemId);
+
+        if (error) {
+          alert(`Failed to save adjustments: ${error.message}`);
+        } else {
+          editingItemId = null;
+          loadWorkspacePipeline();
+        }
+      }
+
+      async function executeManualQuickLock() {
+        const itemId = document.getElementById('quick-lock-item').value;
+        const buyerHandle = document
+          .getElementById('quick-lock-handle')
+          .value.trim();
+        const originChannel =
+          document.getElementById('quick-lock-channel').value;
+
+        if (!itemId || !buyerHandle) {
+          alert(
+            'Please select a catalog item and assign a buyer profile identifier handle.'
+          );
+          return;
+        }
+
+        if (adminSupabase) {
+          const { error } = await adminSupabase
+            .from('items')
+            .update({
+              status: 'sold',
+              buyer_handle: buyerHandle,
+              channel: originChannel,
+              is_paid: false,
+            })
+            .eq('id', itemId);
+
+          if (!error) {
+            document.getElementById('quick-lock-handle').value = '';
+            loadWorkspacePipeline();
+          }
+        }
+      }
+
+      async function approveLedgerPayout(itemId) {
+        if (adminSupabase) {
+          const { error } = await adminSupabase
+            .from('items')
+            .update({ is_paid: true })
+            .eq('id', itemId);
+          if (!error) {
+            alert(
+              'Payment ledger verified! Balance moved into gross revenue metrics.'
+            );
+            loadWorkspacePipeline();
+          }
+        }
+      }
+
+      async function deleteInventoryItem(itemId) {
+        if (
+          !confirm(
+            'Are you certain you want to strike this item record out of persistent catalog tables permanently?'
+          )
+        )
+          return;
+        if (adminSupabase) {
+          const { error } = await adminSupabase
+            .from('items')
+            .delete()
+            .eq('id', itemId);
+          if (!error) loadWorkspacePipeline();
+        }
+      }
+
+      function savePayoutCoordinates() {
+        if (appRoleState !== 'owner') {
+          alert(
+            'Access Violation: Assistant context keys lack writing authorization flags over configurations.'
+          );
+          return;
+        }
+        alert(
+          'Success! Coordinates pushed cleanly into checkout window models.'
+        );
+      }
+    </script>
+  </body>
+</html>
