@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ThriftTrack — AI Command Operations</title>
+  <title>ThriftTrack — Workspace Dashboard</title>
   
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%237C3AED'/%3E%3Cstop offset='100%25' stop-color='%2310B981'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='100' height='100' rx='30' fill='%23141417' stroke='%2327272A' stroke-width='4'/%3E%3Ctext x='51' y='64' dominant-baseline='middle' text-anchor='middle' font-family='system-ui, -apple-system, sans-serif' font-weight='900' font-size='58' fill='url(%23g)' tracking-tighter='-2'%3ET%3C/text%3E%3C/svg%3E">
   
@@ -56,7 +56,7 @@
         </div>
         <div>
           <h1 class="text-base md:text-lg font-semibold tracking-tight">ThriftTrack</h1>
-          <p class="text-[11px] text-zinc-500">Autonomous Operations Deck</p>
+          <p class="text-[11px] text-zinc-500">Store Management Suite</p>
         </div>
       </div>
 
@@ -65,19 +65,19 @@
         class="flex items-center gap-1 bg-bg-card border border-border-subtle p-1 rounded-xl w-full lg:w-auto overflow-x-auto scrollbar-none">
         <button onclick="switchTab('dashboard')" id="tab-btn-dashboard"
           class="tab-btn bg-bg-base text-zinc-100 text-xs font-bold px-3 py-2 rounded-lg transition-all border border-border-subtle whitespace-nowrap">
-          Command Arena
+          Overview
         </button>
         <button onclick="switchTab('add-drop')" id="tab-btn-add-drop"
           class="tab-btn text-zinc-400 hover:text-zinc-200 text-xs font-semibold px-3 py-2 rounded-lg transition-all whitespace-nowrap">
-          Publish Drop
+          New Drop
         </button>
         <button onclick="switchTab('inventory')" id="tab-btn-inventory"
           class="tab-btn text-zinc-400 hover:text-zinc-200 text-xs font-semibold px-3 py-2 rounded-lg transition-all whitespace-nowrap">
-          Master Stockroom
+          Inventory
         </button>
         <button onclick="switchTab('settings')" id="tab-btn-settings"
           class="tab-btn text-zinc-400 hover:text-zinc-200 text-xs font-semibold px-3 py-2 rounded-lg transition-all whitespace-nowrap">
-          Payout Cache
+          Payout Settings
         </button>
         <button onclick="logout()"
           class="text-rose-500 hover:text-rose-400 text-xs font-semibold px-3 py-2 rounded-lg transition-all whitespace-nowrap">
@@ -93,7 +93,7 @@
           <span id="pulse-dot" class="relative inline-flex rounded-full h-2 w-2 bg-brand-neon"></span>
         </span>
         <span class="text-[11px] md:text-xs font-medium tracking-wide text-zinc-400">
-          AI Copilot: <span id="copilot-status-text" class="text-zinc-200 transition-all font-bold">Standby</span>
+          AI Assistant: <span id="copilot-status-text" class="text-zinc-200 transition-all font-bold">Ready</span>
         </span>
       </div>
     </header>
@@ -104,15 +104,15 @@
       <!-- Financial Metrics: Responsive Grid -->
       <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
         <div class="bg-bg-card border border-border-subtle p-4 md:p-5 rounded-2xl shadow-xl">
-          <p class="text-[10px] uppercase tracking-widest font-bold text-zinc-500">Live Showroom Floor</p>
+          <p class="text-[10px] uppercase tracking-widest font-bold text-zinc-500">Active Listings</p>
           <p id="metric-active" class="text-2xl md:text-3xl font-black text-zinc-100 mt-1 tracking-tight">0</p>
         </div>
         <div class="bg-bg-card border border-border-subtle p-4 md:p-5 rounded-2xl shadow-xl">
-          <p class="text-[10px] uppercase tracking-widest font-bold text-zinc-500">Awaiting Settlement</p>
+          <p class="text-[10px] uppercase tracking-widest font-bold text-zinc-500">Pending Verification</p>
           <p id="metric-pending" class="text-2xl md:text-3xl font-black text-amber-500 mt-1 tracking-tight">0</p>
         </div>
         <div class="bg-bg-card border border-border-subtle p-4 md:p-5 rounded-2xl shadow-xl">
-          <p class="text-[10px] uppercase tracking-widest font-bold text-zinc-500">Gross Vault Volume</p>
+          <p class="text-[10px] uppercase tracking-widest font-bold text-zinc-500">Total Revenue</p>
           <p id="metric-sales" class="text-2xl md:text-3xl font-black text-brand-neon mt-1 tracking-tight">₦0</p>
         </div>
       </div>
@@ -129,32 +129,30 @@
             <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
               <div>
                 <h3 class="font-bold text-sm md:text-base text-zinc-100 flex items-center gap-2">
-                  <span>🤖</span> Conversational Ingestion Arena
+                  <span>✨</span> Smart Order Ingestion
                 </h3>
-                <p class="text-[11px] md:text-xs text-zinc-400 mt-0.5">Drop unformatted message text blocks from
-                  social
-                  threads here.</p>
+                <p class="text-[11px] md:text-xs text-zinc-400 mt-0.5">Paste raw messages or DM threads here to automatically update inventory status and parse customer details.</p>
               </div>
               <div class="flex flex-wrap gap-2">
                 <button onclick="simulateInboundStream()"
                   class="bg-brand-violet/10 hover:bg-brand-violet/20 border border-brand-violet/30 text-brand-violet text-[11px] font-bold px-2.5 py-1.5 rounded-xl transition-all cursor-pointer">
-                  ⚡ Inject Demo
+                  ⚡ Load Sample
                 </button>
                 <button onclick="simulateStorefrontPurchase()"
                   class="bg-brand-neon/10 hover:bg-brand-neon/20 border border-brand-neon/30 text-brand-neon text-[11px] font-bold px-2.5 py-1.5 rounded-xl transition-all cursor-pointer">
-                  🛒 Storefront Buy
+                  🛒 Simulate Purchase
                 </button>
               </div>
             </div>
 
             <div class="space-y-4">
               <textarea id="ai-command-input" rows="4"
-                placeholder="Example: 'Yo operator drop an update on that retro jacket, my IG handle is @bayo_sales, dispatch to my Abuja address right now...'"
+                placeholder="Example: &quot;Hey, I want to lock the vintage leather jacket. My handle is @bayo_sales, delivering to Abuja right now...&quot;"
                 class="w-full bg-bg-base border border-border-subtle rounded-xl p-3 md:p-4 text-xs font-medium text-zinc-200 placeholder-zinc-600 focus:outline-none focus:border-brand-violet transition-all resize-none shadow-inner leading-relaxed"></textarea>
 
               <button onclick="executeAIIngestion()"
                 class="w-full bg-brand-violet hover:bg-brand-violet/90 text-white text-xs font-bold uppercase tracking-wider py-3.5 md:py-4 rounded-xl transition-all shadow-md flex items-center justify-center gap-2 tracking-widest cursor-pointer">
-                <span>Execute Agent Extraction Engine</span>
+                <span>Process Order with AI</span>
               </button>
             </div>
           </div>
@@ -166,12 +164,12 @@
             class="bg-bg-card border border-border-subtle rounded-2xl shadow-xl overflow-hidden flex flex-col max-h-[480px]">
             <div
               class="px-5 py-4 border-b border-border-subtle bg-zinc-900/40 flex justify-between items-center shrink-0">
-              <h3 class="font-bold text-xs md:text-sm text-zinc-200">Transaction Registry</h3>
+              <h3 class="font-bold text-xs md:text-sm text-zinc-200">Recent Activity Log</h3>
               <span
                 class="text-[9px] bg-brand-neon/10 border border-brand-neon/20 text-brand-neon px-2 py-0.5 rounded-md font-mono animate-pulse">Live</span>
             </div>
             <div id="ledger-feed-container" class="divide-y divide-border-subtle text-xs overflow-y-auto grow">
-              <p class="p-8 text-zinc-500 text-center font-medium">Syncing telemetry data matrices...</p>
+              <p class="p-8 text-zinc-500 text-center font-medium">Syncing real-time updates...</p>
             </div>
           </div>
         </div>
@@ -183,21 +181,18 @@
     <section id="tab-content-add-drop" class="tab-content hidden max-w-lg mx-auto space-y-6">
       <div class="bg-bg-card p-5 md:p-6 rounded-2xl border border-border-subtle shadow-2xl space-y-5">
         <div>
-          <h3 class="font-bold text-zinc-100 text-base md:text-lg">Deploy New Showroom Asset</h3>
-          <p class="text-[11px] text-zinc-500 mt-0.5">Push fresh items instantly live onto the public floor records.
-          </p>
+          <h3 class="font-bold text-zinc-100 text-base md:text-lg">Add Product to Catalog</h3>
+          <p class="text-[11px] text-zinc-500 mt-0.5">List new vintage pieces instantly live on your public buyer storefront.</p>
         </div>
         <div class="space-y-4">
           <div>
-            <label class="block text-[10px] font-bold text-zinc-400 uppercase tracking-widest mb-1.5">Item
-              Title</label>
+            <label class="block text-[10px] font-bold text-zinc-400 uppercase tracking-widest mb-1.5">Product Title</label>
             <input type="text" id="drop-title-input" oninput="clearAICopywriter()"
               placeholder="e.g., Rare Carhartt Vintage Jacket"
               class="w-full bg-bg-base border border-border-subtle text-zinc-100 rounded-xl px-4 py-3 text-xs font-medium focus:outline-none focus:border-brand-violet transition-all" />
           </div>
           <div>
-            <label class="block text-[10px] font-bold text-zinc-400 uppercase tracking-widest mb-1.5">Floor Value
-              (₦)</label>
+            <label class="block text-[10px] font-bold text-zinc-400 uppercase tracking-widest mb-1.5">Retail Price (₦)</label>
             <input type="number" id="drop-price-input" oninput="clearAICopywriter()" placeholder="e.g., 35000"
               class="w-full bg-bg-base border border-border-subtle text-zinc-100 rounded-xl px-4 py-3 text-xs font-mono focus:outline-none focus:border-brand-violet transition-all" />
           </div>
@@ -206,11 +201,11 @@
         <div class="flex gap-3 pt-2">
           <button onclick="generateAICopywriterCaption()"
             class="w-1/2 bg-bg-base hover:bg-zinc-900 border border-border-subtle text-zinc-300 text-xs font-bold py-3 rounded-xl transition-all flex items-center justify-center gap-1.5 cursor-pointer">
-            <span>✨ AI Writer</span>
+            <span>✨ Generate Caption</span>
           </button>
           <button onclick="executeCreateThriftDrop()"
             class="w-1/2 bg-brand-violet hover:bg-brand-violet/90 text-white text-xs font-bold uppercase tracking-wider py-3 rounded-xl transition-all shadow-md cursor-pointer">
-            Publish Asset
+            Publish Product
           </button>
         </div>
       </div>
@@ -219,8 +214,7 @@
         class="hidden bg-gradient-to-b from-zinc-900 to-bg-base p-4 md:p-5 rounded-2xl border border-border-subtle shadow-xl space-y-3">
         <div class="flex items-center justify-between">
           <span
-            class="text-[9px] bg-brand-violet/20 text-brand-violet font-bold tracking-widest uppercase px-2 py-0.5 rounded-md border border-brand-violet/30">Copy
-            Optimization Active</span>
+            class="text-[9px] bg-brand-violet/20 text-brand-violet font-bold tracking-widest uppercase px-2 py-0.5 rounded-md border border-brand-violet/30">AI-Generated Marketing Caption</span>
           <button onclick="copyToClipboard('ai-copywriter-text', 'Marketing caption copied!')"
             class="text-brand-violet hover:text-white text-xs font-semibold underline transition-all">Copy 📋</button>
         </div>
@@ -234,10 +228,9 @@
     <section id="tab-content-inventory" class="tab-content hidden">
       <div class="bg-bg-card rounded-2xl border border-border-subtle shadow-xl overflow-hidden">
         <div class="px-5 py-4 border-b border-border-subtle bg-zinc-900/40 flex justify-between items-center">
-          <h3 class="font-bold text-xs md:text-sm text-zinc-200">Catalog Master Ledger</h3>
+          <h3 class="font-bold text-xs md:text-sm text-zinc-200">Product Inventory</h3>
           <span id="inventory-count-tag"
-            class="bg-bg-base border border-border-subtle text-zinc-400 px-2.5 py-1 rounded-md font-mono text-[10px]">0
-            Records</span>
+            class="bg-bg-base border border-border-subtle text-zinc-400 px-2.5 py-1 rounded-md font-mono text-[10px]">0 Products</span>
         </div>
 
         <!-- Desktop Spreadsheet Layout: Hidden completely on Mobile Viewports -->
@@ -246,15 +239,15 @@
             <thead>
               <tr
                 class="bg-zinc-900/20 text-zinc-500 font-bold uppercase tracking-wider border-b border-border-subtle text-[10px]">
-                <th class="p-4">Item Core Definition</th>
-                <th class="p-4">Listed Unit Value</th>
-                <th class="p-4">Pipeline State</th>
-                <th class="p-4 text-right">Data Administration</th>
+                <th class="p-4">Product Details</th>
+                <th class="p-4">Price</th>
+                <th class="p-4">Status</th>
+                <th class="p-4 text-right">Actions</th>
               </tr>
             </thead>
             <tbody id="inventory-table-body" class="divide-y divide-border-subtle font-medium text-zinc-300">
               <tr>
-                <td colspan="4" class="p-8 text-zinc-500 text-center font-medium">Syncing persistent records...</td>
+                <td colspan="4" class="p-8 text-zinc-500 text-center font-medium">Loading inventory catalog...</td>
               </tr>
             </tbody>
           </table>
@@ -273,33 +266,30 @@
       <div class="bg-bg-card p-5 md:p-6 rounded-2xl border border-border-subtle shadow-2xl space-y-5">
         <div>
           <h3 class="font-bold text-zinc-100 text-sm md:text-base flex items-center gap-2">
-            <span>🏦</span> Settlement Coordinates
+            <span>🏦</span> Payout Settings
           </h3>
-          <p class="text-[11px] text-zinc-500 mt-0.5">Populates the dynamic automated transaction response copies.</p>
+          <p class="text-[11px] text-zinc-500 mt-0.5">Enter your banking details. This will be displayed on the checkout modal for customer manual transfers.</p>
         </div>
         <div class="space-y-4">
           <div>
-            <label class="block text-[10px] font-bold text-zinc-400 uppercase tracking-widest mb-1.5">Financial
-              Institution</label>
+            <label class="block text-[10px] font-bold text-zinc-400 uppercase tracking-widest mb-1.5">Bank Name</label>
             <input type="text" id="bank-name-field" value="Access Bank"
               class="w-full bg-bg-base border border-border-subtle text-zinc-100 rounded-xl px-4 py-3 text-xs font-medium focus:outline-none focus:border-brand-violet transition-all" />
           </div>
           <div>
-            <label class="block text-[10px] font-bold text-zinc-400 uppercase tracking-widest mb-1.5">Routing Account
-              Number</label>
+            <label class="block text-[10px] font-bold text-zinc-400 uppercase tracking-widest mb-1.5">Account Number</label>
             <input type="text" id="bank-account-field" value="0012345678"
               class="w-full bg-bg-base border border-border-subtle text-zinc-100 rounded-xl px-4 py-3 text-xs font-mono tracking-widest focus:outline-none focus:border-brand-violet transition-all" />
           </div>
           <div>
-            <label class="block text-[10px] font-bold text-zinc-400 uppercase tracking-widest mb-1.5">Beneficiary
-              Name</label>
+            <label class="block text-[10px] font-bold text-zinc-400 uppercase tracking-widest mb-1.5">Account Holder Name</label>
             <input type="text" id="bank-holder-field" value="Thrift Vault Hub"
               class="w-full bg-bg-base border border-border-subtle text-zinc-100 rounded-xl px-4 py-3 text-xs font-medium focus:outline-none focus:border-brand-violet transition-all" />
           </div>
         </div>
         <button onclick="savePayoutCoordinates()"
           class="w-full bg-zinc-800 hover:bg-zinc-700 border border-border-subtle text-zinc-200 font-bold text-xs py-3.5 rounded-xl transition-all cursor-pointer">
-          Commit Parameters to System Cache
+          Save Payout Details
         </button>
       </div>
     </section>
@@ -317,8 +307,8 @@
           <div class="flex items-center gap-2">
             <span class="text-xl">✨</span>
             <div>
-              <h4 class="font-bold text-xs md:text-sm text-zinc-100">AI Intent Resolved</h4>
-              <p class="text-[9px] text-zinc-500 uppercase font-mono">Conversion Complete</p>
+              <h4 class="font-bold text-xs md:text-sm text-zinc-100">AI Analysis</h4>
+              <p class="text-[9px] text-zinc-500 uppercase font-mono">Order Parsed Successfully</p>
             </div>
           </div>
           <button onclick="closeConfirmationTray()"
@@ -326,31 +316,30 @@
         </div>
 
         <div class="bg-bg-base/60 border border-border-subtle p-4 rounded-xl space-y-3 text-xs">
-          <div class="flex justify-between"><span class="text-zinc-500">Matched Item:</span><span id="tray-item-name"
+          <div class="flex justify-between"><span class="text-zinc-500">Product Match:</span><span id="tray-item-name"
               class="font-bold text-zinc-200">-</span></div>
-          <div class="flex justify-between"><span class="text-zinc-500">Acquisition Value:</span><span
+          <div class="flex justify-between"><span class="text-zinc-500">Price:</span><span
               id="tray-item-price" class="font-mono font-bold text-brand-neon">-</span></div>
-          <div class="flex justify-between"><span class="text-zinc-500">Customer Identity:</span><span
+          <div class="flex justify-between"><span class="text-zinc-500">Customer Handle:</span><span
               id="tray-customer-handle" class="font-bold text-brand-violet">-</span></div>
-          <div class="flex justify-between"><span class="text-zinc-500">Channel Route:</span><span
+          <div class="flex justify-between"><span class="text-zinc-500">Order Source:</span><span
               id="tray-routing-channel"
               class="uppercase font-mono text-[9px] px-2 py-0.5 bg-zinc-800 rounded border border-border-subtle text-zinc-300">-</span>
           </div>
         </div>
 
         <div class="space-y-2">
-          <label class="block text-[10px] font-bold text-zinc-400 uppercase tracking-widest">Constructed Response
-            Blueprint</label>
+          <label class="block text-[10px] font-bold text-zinc-400 uppercase tracking-widest">Generated Customer Message</label>
           <div id="tray-dispatch-text"
             class="bg-bg-base border border-border-subtle p-3 md:p-4 rounded-xl text-xs font-mono leading-relaxed text-zinc-300 whitespace-pre-wrap select-all max-h-[180px] overflow-y-auto">
-            Generating matrix blueprints...
+            Drafting customer response...
           </div>
         </div>
       </div>
 
       <button onclick="copyTrayTextToClipboard()"
         class="w-full bg-brand-violet hover:bg-brand-violet/90 text-white font-bold text-xs uppercase tracking-widest py-3.5 md:py-4 rounded-xl shadow-lg transition-all flex items-center justify-center gap-2 cursor-pointer mt-6">
-        <span>Copy Dispatch & Deploy</span> 📋
+        <span>Copy Message & Close</span> 📋
       </button>
 
     </div>
@@ -435,7 +424,7 @@
 
     async function simulateStorefrontPurchase() {
       if (!adminSupabase) {
-        alert("Supabase system matrix link is currently offline.");
+        alert("Connection offline. Please check your configuration.");
         return;
       }
       try {
@@ -444,7 +433,7 @@
 
         const floorAssets = records ? records.filter(i => i.status === 'available' || !i.status) : [];
         if (floorAssets.length === 0) {
-          alert("Simulation Aborted: No items available. Create an asset under 'Publish Drop' first!");
+          alert("Simulation Cancelled: No products available. Please list a product under 'New Drop' first.");
           return;
         }
 
@@ -464,7 +453,7 @@
           .eq('id', targetAsset.id);
 
         if (checkoutError) throw checkoutError;
-        alert(`Success! Simulated storefront checkout for: "${targetAsset.item_name}"`);
+        alert(`Success! Simulated order for: "${targetAsset.item_name}"`);
         loadWorkspacePipeline();
       } catch (err) {
         alert(`Simulation error: ${err.message}`);
@@ -475,7 +464,7 @@
       const inputField = document.getElementById('ai-command-input');
       const streamText = inputField.value.trim();
       if (!streamText) {
-        alert("Input or generate demo stream scenarios first.");
+        alert("Please enter or generate a message first.");
         return;
       }
 
@@ -483,7 +472,7 @@
       const pingNode = document.getElementById('pulse-ping');
       const dotNode = document.getElementById('pulse-dot');
 
-      statusLabel.innerText = "Extracting Intent Matrix...";
+      statusLabel.innerText = "Analyzing message details...";
       statusLabel.className = "text-brand-violet font-black animate-pulse text-xs";
       pingNode.className = "animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-violet opacity-75";
       dotNode.className = "relative inline-flex rounded-full h-2 w-2 bg-brand-violet";
@@ -492,7 +481,7 @@
         if (!adminSupabase) throw new Error("Supabase connection unresolved.");
 
         const matchHandle = streamText.match(/@\w+/);
-        const customerHandle = matchHandle ? matchHandle[0] : "@unresolved_operator";
+        const customerHandle = matchHandle ? matchHandle[0] : "@unknown_buyer";
 
         let channelRoute = "storefront";
         if (streamText.toLowerCase().includes("whatsapp")) channelRoute = "whatsapp";
@@ -510,7 +499,7 @@
         }
 
         if (!resolvedAsset) {
-          alert("Analysis Complete: No active catalog matches could be systematically extracted.");
+          alert("Analysis Complete: Could not find a matching product title in your active inventory.");
           return;
         }
 
@@ -532,9 +521,9 @@
         openConfirmationTray(resolvedAsset.item_name, resolvedAsset.price, customerHandle, channelRoute);
 
       } catch (err) {
-        alert(`Ingestion fault: ${err.message}`);
+        alert(`Error processing order: ${err.message}`);
       } finally {
-        statusLabel.innerText = "Standby";
+        statusLabel.innerText = "Ready";
         statusLabel.className = "text-zinc-200 font-bold text-xs";
         pingNode.className = "animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-neon opacity-75";
         dotNode.className = "relative inline-flex rounded-full h-2 w-2 bg-brand-neon";
@@ -551,15 +540,15 @@
         accStr = parsed.acc || accStr;
       }
 
-      const copyStr = `Hey ${handle}! Just checking in on your reservation hold for the "${itemName}" 🪐.\n\nOur automated 24-hour hold window is nearing its expiration limit, and we have other buyers waiting in line. If you've sent the funds to ${bankStr} (${accStr}), please reply with your receipt screenshot so we can lock it down for delivery! 📦✨`;
+      const copyStr = `Hey ${handle}! Just following up on your order for "${itemName}" ✨.\n\nOur 24-hour hold window is expiring soon, and we have other shoppers waiting. If you've already transferred the funds to ${bankStr} (${accStr}), please reply with a screenshot of your receipt so we can get your package ready! 📦`;
 
       navigator.clipboard.writeText(copyStr).then(() => {
-        alert(`Professional nudge follow-up copy generated in clipboard for ${handle}!`);
+        alert(`Follow-up message copied for ${handle}!`);
       });
     }
 
     async function releaseHoldToFloor(itemId, itemName) {
-      if (!confirm(`Are you sure you want to release "${itemName}" back to the active showroom floor?`)) return;
+      if (!confirm(`Are you sure you want to release "${itemName}" back to your active storefront?`)) return;
       if (adminSupabase) {
         const { error } = await adminSupabase
           .from('items')
@@ -590,7 +579,7 @@
         holderStr = parsed.holder || holderStr;
       }
 
-      const messageTemplate = `Hey ${handle}! ThriftTrack AI Assistant here 🪐.\n\nWe have successfully reserved the "${itemName}" for you via our ${channel} operations line.\n\n💵 Amount: ₦${Number(price).toLocaleString()}\n🏦 Bank: ${bankStr}\n🔢 Account: ${accStr}\n👤 Name: ${holderStr}\n\nPlease reply with your payment screenshot once completed so we can print your delivery tracking label right away! 📦✨`;
+      const messageTemplate = `Hey ${handle}! Thanks for shopping with us ✨.\n\nWe've reserved the "${itemName}" for you via ${channel}.\n\n💵 Total: ₦${Number(price).toLocaleString()}\n🏦 Bank: ${bankStr}\n🔢 Account: ${accStr}\n👤 Name: ${holderStr}\n\nPlease reply with a screenshot of your payment receipt once completed so we can secure your order! 📦`;
 
       document.getElementById('tray-dispatch-text').innerText = messageTemplate;
 
@@ -612,7 +601,7 @@
     function copyTrayTextToClipboard() {
       const payloadText = document.getElementById('tray-dispatch-text').innerText;
       navigator.clipboard.writeText(payloadText).then(() => {
-        alert("AI dispatch text successfully copied.");
+        alert("Customer message copied to clipboard!");
         closeConfirmationTray();
       });
     }
@@ -621,14 +610,14 @@
       const title = document.getElementById('drop-title-input').value.trim();
       const price = document.getElementById('drop-price-input').value.trim();
       if (!title || !price) {
-        alert("Input both title and pricing parameters first.");
+        alert("Please fill in both the product title and price first.");
         return;
       }
 
       const vectors = ["Vintage relics only ✨", "Steal of the rotation season 🔥", "Thick weight weave, pristine condition profile 💎"];
       const selectedVector = vectors[Math.floor(Math.random() * vectors.length)];
 
-      const copyStr = `⚡️ THRIFTTRACK SPEED DROP LIVE ⚡️\n\n📌 Item Identity: ${title}\n💰 Floor Value: ₦${Number(price).toLocaleString()}\n\n${selectedVector} Grade 10/10 condition.\n\n📦 HOW TO CLAIM:\nMessage us instantly or trace our bio anchor link to claim before inventory locks trigger! Fast finger wins.`;
+      const copyStr = `⚡️ NEW ARRIVAL LIVE ⚡️\n\n📌 Product: ${title}\n💰 Price: ₦${Number(price).toLocaleString()}\n\n${selectedVector} Pristine condition.\n\n📦 HOW TO BUY:\nSend us a DM immediately or click the link in our bio to checkout before it's gone!`;
 
       document.getElementById('ai-copywriter-text').innerText = copyStr;
       document.getElementById('ai-copywriter-box').classList.remove('hidden');
@@ -650,7 +639,7 @@
       const value = Number(pInput.value.trim());
 
       if (!name || !value) {
-        alert("Missing fields. Verify form parameters.");
+        alert("Please fill out all required fields.");
         return;
       }
 
@@ -660,7 +649,7 @@
           .insert([{ item_name: name, price: value, status: 'available', is_paid: false, ingestion_channel: 'storefront' }]);
 
         if (error) {
-          alert(`Database deployment anomaly: ${error.message}`);
+          alert(`Error listing product: ${error.message}`);
         } else {
           tInput.value = '';
           pInput.value = '';
@@ -685,23 +674,23 @@
         document.getElementById('metric-active').innerText = floorItems.length;
         document.getElementById('metric-pending').innerText = pendingItems.length;
         document.getElementById('metric-sales').innerText = `₦${accruedVolume.toLocaleString()}`;
-        document.getElementById('inventory-count-tag').innerText = `${records.length} Records Documented`;
+        document.getElementById('inventory-count-tag').innerText = `${records.length} Products`;
 
         // Render Registry Cards with Time-Sensitive Soft Lock Color Modifiers
         const feedFeed = document.getElementById('ledger-feed-container');
         if (records.length === 0) {
-          feedFeed.innerHTML = `<p class="p-8 text-zinc-600 text-center font-medium">No live transaction matrices detected.</p>`;
+          feedFeed.innerHTML = `<p class="p-8 text-zinc-600 text-center font-medium">No recent activity found.</p>`;
         } else {
           feedFeed.innerHTML = '';
           records.forEach(item => {
             let indicatorClass = "bg-zinc-900 border-zinc-800 text-zinc-500";
-            let progressText = "Showroom Floor";
+            let progressText = "Active Listing";
             let timelineAlertStyles = "";
             let actionButtonsHTML = "";
 
             if (item.status === 'sold' && !item.is_paid) {
               indicatorClass = "bg-amber-500/10 border-amber-500/20 text-amber-400";
-              progressText = "Awaiting Payout";
+              progressText = "Awaiting Payment";
 
               // UPGRADE: Calculate age of transaction lock
               if (item.locked_at) {
@@ -714,18 +703,18 @@
                   indicatorClass = "bg-rose-500/20 border-rose-500/40 text-rose-400";
                   actionButtonsHTML = `
                     <div class="grid grid-cols-2 gap-2 mt-2">
-                      <button onclick="approveLedgerPayout('${item.id}')" class="bg-brand-neon hover:bg-brand-neon/90 text-zinc-950 text-[10px] font-black uppercase tracking-wider py-1.5 rounded-md cursor-pointer">Confirm Pay</button>
-                      <button onclick="releaseHoldToFloor('${item.id}', '${item.item_name.replace(/'/g, "\\'")}')" class="bg-rose-600 hover:bg-rose-700 text-white text-[10px] font-bold uppercase tracking-wider py-1.5 rounded-md cursor-pointer">Release to Floor</button>
+                      <button onclick="approveLedgerPayout('${item.id}')" class="bg-brand-neon hover:bg-brand-neon/90 text-zinc-950 text-[10px] font-black uppercase tracking-wider py-1.5 rounded-md cursor-pointer">Confirm Payment</button>
+                      <button onclick="releaseHoldToFloor('${item.id}', '${item.item_name.replace(/'/g, "\\'")}')" class="bg-rose-600 hover:bg-rose-700 text-white text-[10px] font-bold uppercase tracking-wider py-1.5 rounded-md cursor-pointer">Release to Store</button>
                     </div>
                   `;
                 } else if (hoursPassed >= 18) {
                   // Amber Nudge State
                   timelineAlertStyles = "border-l-4 border-amber-500 bg-amber-950/10";
-                  progressText = "STALE RESERVE";
+                  progressText = "HOLDING OVER 18h";
                   actionButtonsHTML = `
                     <div class="grid grid-cols-2 gap-2 mt-2">
-                      <button onclick="approveLedgerPayout('${item.id}')" class="bg-brand-neon hover:bg-brand-neon/90 text-zinc-950 text-[10px] font-black uppercase tracking-wider py-1.5 rounded-md cursor-pointer">Confirm Pay</button>
-                      <button onclick="nudgeBuyerTemplate('${item.instagram_handle}', '${item.item_name.replace(/'/g, "\\'")}')" class="bg-amber-500 hover:bg-amber-600 text-zinc-950 text-[10px] font-bold uppercase tracking-wider py-1.5 rounded-md cursor-pointer">Nudge Buyer ⏳</button>
+                      <button onclick="approveLedgerPayout('${item.id}')" class="bg-brand-neon hover:bg-brand-neon/90 text-zinc-950 text-[10px] font-black uppercase tracking-wider py-1.5 rounded-md cursor-pointer">Confirm Payment</button>
+                      <button onclick="nudgeBuyerTemplate('${item.instagram_handle}', '${item.item_name.replace(/'/g, "\\'")}')" class="bg-amber-500 hover:bg-amber-600 text-zinc-950 text-[10px] font-bold uppercase tracking-wider py-1.5 rounded-md cursor-pointer">Nudge Shopper ⏳</button>
                     </div>
                   `;
                 } else {
@@ -737,7 +726,7 @@
               }
             } else if (item.is_paid) {
               indicatorClass = "bg-brand-neon/10 border-brand-neon/20 text-brand-neon";
-              progressText = "Settled Vault";
+              progressText = "Paid & Completed";
             }
 
             feedFeed.innerHTML += `
@@ -761,9 +750,9 @@
         const mobileCardsContainer = document.getElementById('inventory-mobile-cards-container');
 
         if (records.length === 0) {
-          const fallbackHTML = `<tr><td class="p-8 text-zinc-600 text-center font-medium">No records matching system definitions found.</td></tr>`;
+          const fallbackHTML = `<tr><td class="p-8 text-zinc-600 text-center font-medium">No matching products found in your catalog.</td></tr>`;
           tableBody.innerHTML = fallbackHTML;
-          mobileCardsContainer.innerHTML = `<p class="p-8 text-zinc-600 text-center font-medium">No records found.</p>`;
+          mobileCardsContainer.innerHTML = `<p class="p-8 text-zinc-600 text-center font-medium">No products found.</p>`;
         } else {
           tableBody.innerHTML = '';
           mobileCardsContainer.innerHTML = '';
@@ -773,7 +762,7 @@
             const statusBadgeHTML = `
               <span class="px-2 py-0.5 text-[9px] font-bold border rounded-md uppercase tracking-wider ${item.is_paid ? 'bg-brand-neon/10 border-brand-neon/20 text-brand-neon' :
                 item.status === 'sold' ? 'bg-amber-500/10 border-amber-500/20 text-amber-400' : 'bg-zinc-800 border-zinc-700 text-zinc-500'
-              }">${item.is_paid ? 'Settled' : item.status === 'sold' ? 'Pending' : 'On Floor'}</span>
+              }">${item.is_paid ? 'Paid' : item.status === 'sold' ? 'Pending' : 'Active'}</span>
             `;
 
             // Render Desktop Spreadsheet Array
@@ -782,10 +771,10 @@
                 <tr class="bg-zinc-900/40 border-y border-border-subtle">
                   <td class="p-3"><input type="text" id="inline-title-${item.id}" value="${item.item_name}" class="text-xs font-bold text-zinc-100 bg-bg-base border border-border-subtle rounded-lg px-2 py-1.5 focus:outline-none w-full" /></td>
                   <td class="p-3"><input type="number" id="inline-price-${item.id}" value="${item.price}" class="text-xs font-mono font-bold text-zinc-100 bg-bg-base border border-border-subtle rounded-lg px-2 py-1.5 focus:outline-none w-28" /></td>
-                  <td class="p-3 text-zinc-500 text-[10px] uppercase font-mono tracking-wider">Mutation Pending</td>
+                  <td class="p-3 text-zinc-500 text-[10px] uppercase font-mono tracking-wider">Saving...</td>
                   <td class="p-3 text-right space-x-2 whitespace-nowrap">
-                    <button onclick="executeSaveInlineEdit('${item.id}')" class="bg-brand-neon text-zinc-950 font-black text-[11px] px-3 py-1.5 rounded-md cursor-pointer">Commit</button>
-                    <button onclick="toggleInlineEdit(null)" class="bg-zinc-800 text-zinc-300 font-semibold text-[11px] px-3 py-1.5 rounded-md border border-border-subtle cursor-pointer">Abort</button>
+                    <button onclick="executeSaveInlineEdit('${item.id}')" class="bg-brand-neon text-zinc-950 font-black text-[11px] px-3 py-1.5 rounded-md cursor-pointer">Save</button>
+                    <button onclick="toggleInlineEdit(null)" class="bg-zinc-800 text-zinc-300 font-semibold text-[11px] px-3 py-1.5 rounded-md border border-border-subtle cursor-pointer">Cancel</button>
                   </td>
                 </tr>`;
             } else {
@@ -796,7 +785,7 @@
                   <td class="p-4">${statusBadgeHTML}</td>
                   <td class="p-4 text-right space-x-3 whitespace-nowrap">
                     <button onclick="toggleInlineEdit('${item.id}')" class="text-brand-violet hover:text-white font-bold cursor-pointer">Edit</button>
-                    <button onclick="deleteInventoryItem('${item.id}')" class="text-rose-500 hover:text-rose-400 font-bold cursor-pointer">Purge</button>
+                    <button onclick="deleteInventoryItem('${item.id}')" class="text-rose-500 hover:text-rose-400 font-bold cursor-pointer">Delete</button>
                   </td>
                 </tr>`;
             }
@@ -808,8 +797,8 @@
                   <input type="text" id="inline-mobile-title-${item.id}" value="${item.item_name}" class="text-xs font-bold text-zinc-100 bg-bg-base border border-border-subtle rounded-lg px-3 py-2 w-full focus:outline-none" />
                   <input type="number" id="inline-mobile-price-${item.id}" value="${item.price}" class="text-xs font-mono font-bold text-zinc-100 bg-bg-base border border-border-subtle rounded-lg px-3 py-2 w-full focus:outline-none" />
                   <div class="flex gap-2">
-                    <button onclick="executeSaveInlineEdit('${item.id}', true)" class="w-1/2 bg-brand-neon text-zinc-950 font-black text-center py-2 rounded-lg cursor-pointer">Commit Changes</button>
-                    <button onclick="toggleInlineEdit(null)" class="w-1/2 bg-zinc-800 text-zinc-300 font-semibold text-center py-2 rounded-lg border border-border-subtle cursor-pointer">Abort</button>
+                    <button onclick="executeSaveInlineEdit('${item.id}', true)" class="w-1/2 bg-brand-neon text-zinc-950 font-black text-center py-2 rounded-lg cursor-pointer">Save Changes</button>
+                    <button onclick="toggleInlineEdit(null)" class="w-1/2 bg-zinc-800 text-zinc-300 font-semibold text-center py-2 rounded-lg border border-border-subtle cursor-pointer">Cancel</button>
                   </div>
                 </div>`;
             } else {
@@ -823,8 +812,8 @@
                     ${statusBadgeHTML}
                   </div>
                   <div class="flex justify-end gap-4 text-xs font-bold pt-1">
-                    <button onclick="toggleInlineEdit('${item.id}')" class="text-brand-violet cursor-pointer">Modify Item Details</button>
-                    <button onclick="deleteInventoryItem('${item.id}')" class="text-rose-500 cursor-pointer">Purge Record</button>
+                    <button onclick="toggleInlineEdit('${item.id}')" class="text-brand-violet cursor-pointer">Edit Product</button>
+                    <button onclick="deleteInventoryItem('${item.id}')" class="text-rose-500 cursor-pointer">Delete Product</button>
                   </div>
                 </div>`;
             }
@@ -848,7 +837,7 @@
       const updatedPrice = Number(document.getElementById(`inline-${suffix}price-${itemId}`).value.trim());
 
       if (!updatedTitle || !updatedPrice) {
-        alert("Fields cannot be saved blank.");
+        alert("Product name and price cannot be blank.");
         return;
       }
 
@@ -858,7 +847,7 @@
         .eq('id', itemId);
 
       if (error) {
-        alert(`Error saving modifications: ${error.message}`);
+        alert(`Error updating product: ${error.message}`);
       } else {
         editingItemId = null;
         loadWorkspacePipeline();
@@ -873,7 +862,7 @@
     }
 
     async function deleteInventoryItem(itemId) {
-      if (!confirm("Permanently purge this item from cloud database storage?")) return;
+      if (!confirm("Are you sure you want to delete this item? This action cannot be undone.")) return;
       if (adminSupabase) {
         const { error } = await adminSupabase.from('items').delete().eq('id', itemId);
         if (!error) loadWorkspacePipeline();
@@ -886,7 +875,7 @@
       const holder = document.getElementById('bank-holder-field').value.trim();
 
       localStorage.setItem('thrifttrack_payout_coords', JSON.stringify({ bank, acc, holder }));
-      alert("Payout parameters synchronized into system cache logs.");
+      alert("Payout details updated successfully.");
     }
 
     function loadPayoutCoordinates() {

@@ -8,7 +8,7 @@
   <link rel="icon" type="image/svg+xml"
     href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%237C3AED'/%3E%3Cstop offset='100%25' stop-color='%2310B981'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='100' height='100' rx='30' fill='%23141417' stroke='%2327272A' stroke-width='4'/%3E%3Ctext x='51' y='64' dominant-baseline='middle' text-anchor='middle' font-family='system-ui, -apple-system, sans-serif' font-weight='900' font-size='58' fill='url(%23g)' tracking-tighter='-2'%3ET%3C/text%3E%3C/svg%3E">
 
-  <title>ThriftTrack - Secure Entry Gateway</title>
+  <title>ThriftTrack — Admin Sign In</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="config.js"></script>
@@ -168,7 +168,7 @@
             Welcome Back
           </h1>
           <p class="text-white/40 text-[11px]">
-            Sign in to secure your ThriftTrack terminal.
+            Sign in to manage your drops, inventory, and orders.
           </p>
         </div>
 
@@ -272,7 +272,7 @@
 
             <button type="button" onclick="handleRegister()" id="btn-register"
               class="w-full bg-white/5 hover:bg-white/10 text-white/80 hover:text-white font-medium text-xs h-10 rounded-lg border border-white/10 hover:border-white/20 transition-all duration-300 active:scale-[0.98] cursor-pointer">
-              Create System Profile
+              Create Admin Account
             </button>
           </div>
         </form>
@@ -318,14 +318,14 @@
         if (window.supabase && typeof window.supabase.createClient === 'function') {
           supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
         } else {
-          showAlert('⚠️ Core Engine Wrapper offline. CDN resolution failure.', 'error');
+          showAlert('⚠️ Connection offline. Unable to reach backend services.', 'error');
           return;
         }
 
         const { data: { session } } = await supabaseClient.auth.getSession();
         if (session) { window.location.href = 'index.html'; }
       } catch (err) {
-        showAlert('Initialization crash: ' + err.message, 'error');
+        showAlert('Initialization failure: ' + err.message, 'error');
       }
     });
 
@@ -359,7 +359,7 @@
           showAlert(error.message, 'error');
           setLoadingState(false);
         } else {
-          showAlert('Identity Authorized. Accessing workspace streams...', 'success');
+          showAlert('Workspace authenticated! Opening dashboard...', 'success');
           setTimeout(() => { window.location.href = 'index.html'; }, 1000);
         }
       } catch (err) {
@@ -375,18 +375,18 @@
       const password = document.getElementById('auth-password').value;
 
       if (!email || !password) {
-        showAlert('Input parameters completely empty.', 'error');
+        showAlert('Please provide an email address and password.', 'error');
         return;
       }
 
-      showAlert('Registering secure profile configuration...', 'info');
+      showAlert('Verifying account credentials...', 'info');
 
       try {
         const { data, error } = await supabaseClient.auth.signUp({ email, password });
         if (error) {
           showAlert(error.message, 'error');
         } else {
-          showAlert('System profile deployed! Database synced.', 'success');
+          showAlert('Workspace authenticated! Opening dashboard...', 'success');
           setTimeout(() => { window.location.href = 'index.html'; }, 1200);
         }
       } catch (err) {
