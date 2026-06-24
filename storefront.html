@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Storefront Catalog</title>
+  <title>Storefront</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="config.js"></script>
@@ -13,19 +13,17 @@
 <body class="bg-slate-50 text-slate-800 font-sans min-h-screen py-8">
   <div class="max-w-md mx-auto px-4">
     <div class="text-center bg-white border border-slate-100 py-6 px-4 rounded-2xl shadow-sm mb-6">
-      <h1 class="font-black text-xl tracking-tight text-slate-900 uppercase">
-        @RETROVIBE.NG
+      <h1 id="shop-title-text" class="font-black text-xl tracking-tight text-slate-900 uppercase">
+        Opening Store...
       </h1>
-      <p class="text-xs text-slate-400 mt-1 font-medium">
+      <p id="shop-subtitle-text" class="text-xs text-slate-400 mt-1 font-medium">
         Curated Vintage Drop • Shipping Nationwide NG
       </p>
     </div>
 
     <div id="catalog-showroom-container" class="space-y-6">
       <div class="bg-white p-8 rounded-2xl border border-slate-100 text-center shadow-sm">
-        <p class="text-sm text-slate-400">
-          Loading lookbook streams dynamically...
-        </p>
+        <p class="text-sm text-slate-400">Opening the lookbook...</p>
       </div>
     </div>
   </div>
@@ -35,17 +33,12 @@
     class="hidden fixed inset-0 bg-slate-950/60 backdrop-blur-sm flex items-center justify-center p-4 z-50">
     <div
       class="bg-white w-full max-w-md rounded-2xl p-6 shadow-2xl border border-slate-100 space-y-5 relative overflow-hidden">
-      <!-- Top Countdown Banner -->
       <div class="bg-amber-50 border border-amber-200 rounded-xl p-3 flex items-center justify-between">
         <div class="flex items-center gap-2">
           <span class="text-lg">⏱️</span>
           <div>
-            <p class="text-xs font-bold text-amber-900 uppercase tracking-wide">
-              Holding Item For You
-            </p>
-            <p class="text-[11px] text-amber-700">
-              This item is hidden from the shop floor for now.
-            </p>
+            <p class="text-xs font-bold text-amber-900 uppercase tracking-wide">Holding Item For You</p>
+            <p class="text-[11px] text-amber-700">This item is hidden from the shop floor for now.</p>
           </div>
         </div>
         <div id="checkout-timer"
@@ -54,42 +47,31 @@
         </div>
       </div>
 
-      <!-- Item Details Summary -->
       <div class="border-b border-slate-100 pb-3">
-        <h3 id="checkout-item-title" class="font-bold text-slate-900 text-lg">
-          Mini skirt
-        </h3>
-        <p id="checkout-item-price" class="text-indigo-600 font-bold text-base mt-0.5">
-          ₦12,000
-        </p>
+        <h3 id="checkout-item-title" class="font-bold text-slate-900 text-lg">-</h3>
+        <p id="checkout-item-price" class="text-indigo-600 font-bold text-base mt-0.5">₦0</p>
       </div>
 
-      <!-- Native Manual Bank Transfer Details -->
       <div class="space-y-2.5">
-        <p class="text-xs font-bold text-slate-400 uppercase tracking-wider">
-          Payment Instructions
-        </p>
+        <p class="text-xs font-bold text-slate-400 uppercase tracking-wider">Payment Details</p>
         <div class="bg-slate-50 rounded-xl p-4 border border-slate-100 space-y-2">
           <div class="flex justify-between items-center text-sm">
             <span class="text-slate-500">Bank Name</span>
-            <span class="font-semibold text-slate-800">ThriftTrack Demo Bank</span>
+            <span id="modal-bank-name" class="font-semibold text-slate-800">-</span>
           </div>
           <div class="flex justify-between items-center text-sm">
             <span class="text-slate-500">Account Number</span>
-            <span class="font-mono font-bold text-slate-900 tracking-wider">1234567890</span>
+            <span id="modal-account-num" class="font-mono font-bold text-slate-900 tracking-wider">-</span>
           </div>
           <div class="flex justify-between items-center text-sm">
             <span class="text-slate-500">Account Name</span>
-            <span class="font-semibold text-slate-800">ThriftTrack Workspace Ltd</span>
+            <span id="modal-account-name" class="font-semibold text-slate-800">-</span>
           </div>
         </div>
-        <p class="text-[11px] text-slate-400 italic text-center">
-          Please make the direct transfer before the timer runs out to secure
-          your order.
-        </p>
+        <p class="text-[11px] text-slate-400 italic text-center">Please make the transfer before the timer runs out to
+          secure your order.</p>
       </div>
 
-      <!-- Input for Buyer Identity Verification -->
       <div>
         <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Your Instagram / WhatsApp
           Handle</label>
@@ -97,7 +79,6 @@
           class="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-indigo-500" />
       </div>
 
-      <!-- Action Buttons -->
       <div class="space-y-2 pt-2">
         <button onclick="confirmPaymentSent()"
           class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-sm py-3 rounded-xl transition shadow-md shadow-indigo-600/10">
@@ -105,7 +86,7 @@
         </button>
         <button onclick="cancelReservation()"
           class="w-full bg-slate-50 hover:bg-slate-100 text-slate-500 font-medium text-xs py-2 rounded-lg transition">
-          Cancel & Release Item Back to Shop
+          Cancel & Release Item
         </button>
       </div>
     </div>
@@ -118,29 +99,49 @@
     let thriftTrackSupabase = null;
     let countdownInterval = null;
     let activeCheckoutItemId = null;
+    let vendorId = null;
 
-    document.addEventListener('DOMContentLoaded', () => {
-      if (
-        window.supabase &&
-        typeof window.supabase.createClient === 'function'
-      ) {
-        thriftTrackSupabase = window.supabase.createClient(
-          CONFIG_URL,
-          CONFIG_KEY
-        );
+    let profileCache = {
+      bank_name: "Demo Bank",
+      account_number: "0000000000",
+      account_name: "Demo Store Workspace"
+    };
+
+    document.addEventListener('DOMContentLoaded', async () => {
+      if (window.supabase && typeof window.supabase.createClient === 'function') {
+        thriftTrackSupabase = window.supabase.createClient(CONFIG_URL, CONFIG_KEY, {
+          db: { schema: 'thrifttrack' }
+        });
       }
+
+      const urlParams = new URLSearchParams(window.location.search);
+      vendorId = urlParams.get('vendor');
+
+      await resolveStorefrontProfile();
       renderBuyerCatalog();
     });
 
-    // Self-Healing Routine: Automatically release expired holds
+    async function resolveStorefrontProfile() {
+      if (!thriftTrackSupabase || !vendorId) {
+        document.getElementById('shop-title-text').innerText = "DEMO STORE";
+        return;
+      }
+      try {
+        const { data, error } = await thriftTrackSupabase.from('profiles').select('*').eq('id', vendorId).maybeSingle();
+        if (data && !error) {
+          profileCache = data;
+          document.getElementById('shop-title-text').innerText = `@${(data.instagram_handle || 'STORE').toUpperCase()}`;
+          document.getElementById('shop-subtitle-text').innerText = `${data.store_name || 'Premium Curated Vintage'} • Shipping Nationwide NG`;
+        }
+      } catch (err) {
+        console.error("Profile resolution pass bypassed.");
+      }
+    }
+
     async function cleanExpiredStaleReservations() {
       if (!thriftTrackSupabase) return;
       try {
-        // Calculate exact threshold context (15 minutes ago)
-        const fifteenMinutesAgo = new Date(
-          Date.now() - 15 * 60 * 1000
-        ).toISOString();
-
+        const fifteenMinutesAgo = new Date(Date.now() - 15 * 60 * 1000).toISOString();
         await thriftTrackSupabase
           .from('items')
           .update({ status: 'available', locked_at: null, ingestion_channel: null })
@@ -153,34 +154,29 @@
 
     async function renderBuyerCatalog() {
       let items = [];
-
       if (thriftTrackSupabase) {
         try {
-          // Run self-healing cleanup routine before building user view
           await cleanExpiredStaleReservations();
 
-          const { data, error } = await thriftTrackSupabase
-            .from('items')
-            .select('*')
-            .eq('status', 'available')
-            .order('created_at', { ascending: false });
+          let query = thriftTrackSupabase.from('items').select('*').eq('status', 'available');
+          if (vendorId) {
+            query = query.eq('user_id', vendorId);
+          }
 
+          const { data, error } = await query.order('created_at', { ascending: false });
           if (!error && data) items = data;
         } catch (e) {
-          console.warn(
-            'Displaying fallback architectural lookbook visualization layers.'
-          );
+          console.warn('Fallback layout rendered.');
         }
       }
 
       const container = document.getElementById('catalog-showroom-container');
-
       if (items.length === 0) {
         container.innerHTML = `
           <div class="bg-white p-12 rounded-2xl border border-slate-100 text-center shadow-sm space-y-2">
             <span class="text-3xl">✨</span>
             <p class="font-bold text-slate-900 text-sm">Next Drop Loading Soon</p>
-            <p class="text-xs text-slate-400 max-w-xs mx-auto">Turn on post notifications on our Instagram channel so you don't miss out on the next cycle collection drop.</p>
+            <p class="text-xs text-slate-400 max-w-xs mx-auto">Turn on post notifications so you don't miss out on the next cycle drop.</p>
           </div>
         `;
         return;
@@ -191,27 +187,19 @@
         container.innerHTML += `
           <div class="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden group">
             <div class="aspect-square bg-indigo-50/50 flex flex-col items-center justify-center p-6 border-b border-slate-100/60 relative">
-              <span class="text-xs font-bold uppercase tracking-widest text-indigo-400 bg-white shadow-sm border border-slate-100 px-3 py-1 rounded-full absolute top-4 left-4">Premium Selection</span>
+              <span class="text-xs font-bold uppercase tracking-widest text-indigo-400 bg-white shadow-sm border border-slate-100 px-3 py-1 rounded-full absolute top-4 left-4">Selection</span>
               <span class="text-4xl text-indigo-400">👕</span>
-              <p class="text-xs text-slate-400 font-medium mt-3 uppercase tracking-wider">Unisex Collection</p>
             </div>
-            
             <div class="p-5 space-y-4">
               <div class="flex items-start justify-between gap-4">
                 <div>
-                  <h3 class="font-bold text-slate-900 text-base leading-tight">${item.item_name
-          }</h3>
-                  <p class="text-xs text-slate-400 mt-1">10/10 Pristine vintage condition. Authenticated and processed.</p>
+                  <h3 class="font-bold text-slate-900 text-base leading-tight">${item.item_name}</h3>
+                  <p class="text-xs text-slate-400 mt-1">10/10 Pristine vintage condition.</p>
                 </div>
-                <p class="text-base font-black text-indigo-600 whitespace-nowrap">₦${Number(
-            item.price
-          ).toLocaleString()}</p>
+                <p class="text-base font-black text-indigo-600 whitespace-nowrap">₦${Number(item.price).toLocaleString()}</p>
               </div>
-
-              <button onclick="handleClaimItem('${item.id
-          }', '${item.item_name.replace(/'/g, "\\'")}', ${item.price
-          })" class="w-full bg-slate-900 hover:bg-indigo-600 text-white text-xs font-bold tracking-wide uppercase py-3.5 rounded-xl transition-all duration-200 shadow-sm">
-                Claim & Lock Item Instant
+              <button onclick="handleClaimItem('${item.id}', '${item.item_name.replace(/'/g, "\\'")}', ${item.price})" class="w-full bg-slate-900 hover:bg-indigo-600 text-white text-xs font-bold tracking-wide uppercase py-3.5 rounded-xl transition-all duration-200 shadow-sm">
+                Claim Item
               </button>
             </div>
           </div>
@@ -219,172 +207,100 @@
       });
     }
 
-    // 1. Core State Trigger: Lock item and show live checkout view
     async function handleClaimItem(itemId, itemTitle, itemPrice) {
-      if (!thriftTrackSupabase) {
-        alert(
-          'Database interface down. Unable to lock transaction sequence.'
-        );
-        return;
-      }
+      if (!thriftTrackSupabase) return;
 
-      // Verify that the item is still available right now
-      const { data: currentRecord, error: checkError } =
-        await thriftTrackSupabase
-          .from('items')
-          .select('status')
-          .eq('id', itemId)
-          .single();
+      const { data: currentRecord, error: checkError } = await thriftTrackSupabase
+        .from('items')
+        .select('status')
+        .eq('id', itemId)
+        .single();
 
-      if (
-        checkError ||
-        (currentRecord &&
-          currentRecord.status !== 'available' &&
-          currentRecord.status !== null)
-      ) {
-        alert(
-          'Too late! Another customer claimed this item while you were looking.'
-        );
+      if (checkError || (currentRecord && currentRecord.status !== 'available' && currentRecord.status !== null)) {
+        alert('Item claimed by another buyer.');
         renderBuyerCatalog();
         return;
       }
 
       const timestampNow = new Date().toISOString();
-
-      // Atomically transition status to pending
       const { error: lockError } = await thriftTrackSupabase
         .from('items')
-        .update({
-          status: 'pending',
-          locked_at: timestampNow,
-          ingestion_channel: 'storefront',
-        })
+        .update({ status: 'pending', locked_at: timestampNow, ingestion_channel: 'storefront' })
         .eq('id', itemId);
 
       if (lockError) {
-        alert('Could not complete checkout initialization. Please retry.');
+        alert('Could not start checkout.');
         return;
       }
 
-      // Map variables to Modal fields
       activeCheckoutItemId = itemId;
       document.getElementById('checkout-item-title').innerText = itemTitle;
-      document.getElementById('checkout-item-price').innerText = `₦${Number(
-        itemPrice
-      ).toLocaleString()}`;
+      document.getElementById('checkout-item-price').innerText = `₦${Number(itemPrice).toLocaleString()}`;
       document.getElementById('buyer-verification-handle').value = '';
 
-      // Launch modal UI window and fire tracking timer
+      document.getElementById('modal-bank-name').innerText = profileCache.bank_name || 'Unconfigured';
+      document.getElementById('modal-account-num').innerText = profileCache.account_number || '-';
+      document.getElementById('modal-account-name').innerText = profileCache.account_name || '-';
+
       document.getElementById('checkout-modal').classList.remove('hidden');
       startCheckoutTimer(timestampNow);
-
-      // Wipe card from background layout instantly
       renderBuyerCatalog();
     }
 
-    // 2. Continuous Loop Countdown Driver
     function startCheckoutTimer(startTimeISO) {
       if (countdownInterval) clearInterval(countdownInterval);
-
-      const countdownDuration = 15 * 60; // 15 Minutes
-      const expiryTimeMs =
-        new Date(startTimeISO).getTime() + countdownDuration * 1000;
+      const expiryTimeMs = new Date(startTimeISO).getTime() + 15 * 60 * 1000;
 
       countdownInterval = setInterval(() => {
-        const currentMs = new Date().getTime();
-        const dynamicDistance = expiryTimeMs - currentMs;
-
+        const dynamicDistance = expiryTimeMs - new Date().getTime();
         if (dynamicDistance <= 0) {
           clearInterval(countdownInterval);
           handleTimerExpiration();
           return;
         }
-
-        const runningMinutes = Math.floor(
-          (dynamicDistance % (1000 * 60 * 60)) / (1000 * 60)
-        );
-        const runningSeconds = Math.floor(
-          (dynamicDistance % (1000 * 60)) / 1000
-        );
-
-        const renderMinutes = String(runningMinutes).padStart(2, '0');
-        const renderSeconds = String(runningSeconds).padStart(2, '0');
-
-        document.getElementById(
-          'checkout-timer'
-        ).innerText = `${renderMinutes}:${renderSeconds}`;
+        const runningMinutes = Math.floor((dynamicDistance % (1000 * 60 * 60)) / (1000 * 60));
+        const runningSeconds = Math.floor((dynamicDistance % (1000 * 60)) / 1000);
+        document.getElementById('checkout-timer').innerText = `${String(runningMinutes).padStart(2, '0')}:${String(runningSeconds).padStart(2, '0')}`;
       }, 1000);
     }
 
-    // 3. Execution on complete timer termination
     async function handleTimerExpiration() {
-      alert(
-        'The 15-minute reservation window has closed. This item is moving back to the public catalog.'
-      );
-      await releaseActiveItem(false);
+      alert('The reservation window has closed.');
+      await releaseActiveItem();
     }
 
-    // 4. Execution if the user manually drops out of the modal frame
     async function cancelReservation() {
-      if (
-        confirm(
-          'Cancel reservation? The item will immediately be returned to the store display and you might lose it.'
-        )
-      ) {
-        await releaseActiveItem(true);
+      if (confirm('Release item back to the store?')) {
+        await releaseActiveItem();
       }
     }
 
-    // Shareable database interface helper to unlock inventory blocks back to public availability
-    async function releaseActiveItem(shouldAlert) {
+    async function releaseActiveItem() {
       if (countdownInterval) clearInterval(countdownInterval);
-
       if (activeCheckoutItemId && thriftTrackSupabase) {
-        await thriftTrackSupabase
-          .from('items')
-          .update({
-            status: 'available',
-            locked_at: null,
-            ingestion_channel: null,
-          })
-          .eq('id', activeCheckoutItemId);
+        await thriftTrackSupabase.from('items').update({ status: 'available', locked_at: null, ingestion_channel: null }).eq('id', activeCheckoutItemId);
       }
-
       activeCheckoutItemId = null;
       document.getElementById('checkout-modal').classList.add('hidden');
       renderBuyerCatalog();
     }
 
-    // 5. Final Confirmation: Transition state structure to locked ledger row
     async function confirmPaymentSent() {
-      const structuralHandle = document
-        .getElementById('buyer-verification-handle')
-        .value.trim();
-
+      const structuralHandle = document.getElementById('buyer-verification-handle').value.trim();
       if (!structuralHandle) {
-        alert(
-          'Please input your Instagram or WhatsApp handle so the vendor can confirm your transaction.'
-        );
+        alert('Please enter your handle to continue.');
         return;
       }
 
       if (countdownInterval) clearInterval(countdownInterval);
-
       if (activeCheckoutItemId && thriftTrackSupabase) {
-        // Handshake complete: Lock status down to sold, but mark verification false for Admin action
         await thriftTrackSupabase
           .from('items')
-          .update({
-            status: 'sold',
-            instagram_handle: structuralHandle,
-            is_paid: false,
-          })
+          .update({ status: 'sold', instagram_handle: structuralHandle, is_paid: false })
           .eq('id', activeCheckoutItemId);
       }
 
-      alert(
-        'Order submitted successfully! The admin workspace ledger has been alerted to verify your transfer.'
-      );
+      alert('Order submitted successfully.');
       activeCheckoutItemId = null;
       document.getElementById('checkout-modal').classList.add('hidden');
       renderBuyerCatalog();

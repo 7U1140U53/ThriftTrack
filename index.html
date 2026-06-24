@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ThriftTrack — Workspace Dashboard</title>
+  <title>ThriftTrack — Dashboard</title>
   
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%237C3AED'/%3E%3Cstop offset='100%25' stop-color='%2310B981'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='100' height='100' rx='30' fill='%23141417' stroke='%2327272A' stroke-width='4'/%3E%3Ctext x='51' y='64' dominant-baseline='middle' text-anchor='middle' font-family='system-ui, -apple-system, sans-serif' font-weight='900' font-size='58' fill='url(%23g)' tracking-tighter='-2'%3ET%3C/text%3E%3C/svg%3E">
   
@@ -34,37 +34,29 @@
 <body class="bg-bg-base text-zinc-100 min-h-screen antialiased font-sans pb-12">
 
   <div class="fixed inset-0 -z-10 overflow-hidden pointer-events-none bg-bg-base select-none">
-
     <div class="absolute inset-0 opacity-[0.07]"
       style="background-image: linear-gradient(to right, #52525b 1px, transparent 1px), linear-gradient(to bottom, #52525b 1px, transparent 1px); background-size: 40px 40px;">
     </div>
-
     <div class="absolute -top-[25%] -left-[15%] w-[65vw] h-[65vw] rounded-full bg-[#7c3aed]/8 blur-[140px]"></div>
-
     <div class="absolute -bottom-[20%] -right-[15%] w-[55vw] h-[55vw] rounded-full bg-[#10b981]/5 blur-[160px]"></div>
-
   </div>
+
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 md:py-8">
 
-    <!-- Header Panel: Stacks elegantly on mobile devices -->
-    <header
-      class="flex flex-col lg:flex-row lg:items-center justify-between border-b border-border-subtle pb-6 mb-6 md:mb-10 gap-4">
+    <header class="flex flex-col lg:flex-row lg:items-center justify-between border-b border-border-subtle pb-6 mb-6 md:mb-10 gap-4">
       <div class="flex items-center gap-3">
-        <div
-          class="h-9 w-9 bg-brand-violet rounded-lg flex items-center justify-center font-black text-xl tracking-tighter text-white shadow-lg shadow-brand-violet/20 shrink-0">
+        <div class="h-9 w-9 bg-brand-violet rounded-lg flex items-center justify-center font-black text-xl tracking-tighter text-white shadow-lg shadow-brand-violet/20 shrink-0">
           T
         </div>
         <div>
           <h1 class="text-base md:text-lg font-semibold tracking-tight">ThriftTrack</h1>
-          <p class="text-[11px] text-zinc-500">Store Management Suite</p>
+          <p class="text-[11px] text-zinc-500">Store Dashboard</p>
         </div>
       </div>
 
-      <!-- Scrollable custom touch tab bar for smaller mobile viewports -->
-      <nav
-        class="flex items-center gap-1 bg-bg-card border border-border-subtle p-1 rounded-xl w-full lg:w-auto overflow-x-auto scrollbar-none">
+      <nav class="flex items-center gap-1 bg-bg-card border border-border-subtle p-1 rounded-xl w-full lg:w-auto overflow-x-auto scrollbar-none">
         <button onclick="switchTab('dashboard')" id="tab-btn-dashboard"
-          class="tab-btn bg-bg-base text-zinc-100 text-xs font-bold px-3 py-2 rounded-lg transition-all border border-border-subtle whitespace-nowrap">
+          class="tab-btn bg-bg-card text-zinc-100 text-xs font-bold px-3 py-2 rounded-lg transition-all border border-border-subtle whitespace-nowrap">
           Overview
         </button>
         <button onclick="switchTab('add-drop')" id="tab-btn-add-drop"
@@ -85,23 +77,19 @@
         </button>
       </nav>
 
-      <div
-        class="flex items-center gap-2.5 bg-bg-card border border-border-subtle px-4 py-2 rounded-full shadow-inner self-start lg:self-auto">
+      <div class="flex items-center gap-2.5 bg-bg-card border border-border-subtle px-4 py-2 rounded-full shadow-inner self-start lg:self-auto">
         <span class="relative flex h-2 w-2">
-          <span id="pulse-ping"
-            class="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-neon opacity-75"></span>
+          <span id="pulse-ping" class="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-neon opacity-75"></span>
           <span id="pulse-dot" class="relative inline-flex rounded-full h-2 w-2 bg-brand-neon"></span>
         </span>
         <span class="text-[11px] md:text-xs font-medium tracking-wide text-zinc-400">
-          AI Assistant: <span id="copilot-status-text" class="text-zinc-200 transition-all font-bold">Ready</span>
+          Assistant: <span id="copilot-status-text" class="text-zinc-200 transition-all font-bold">Ready</span>
         </span>
       </div>
     </header>
 
     <!-- TAB 1: DASHBOARD MAIN CORE -->
     <section id="tab-content-dashboard" class="tab-content space-y-6 md:space-y-8">
-
-      <!-- Financial Metrics: Responsive Grid -->
       <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
         <div class="bg-bg-card border border-border-subtle p-4 md:p-5 rounded-2xl shadow-xl">
           <p class="text-[10px] uppercase tracking-widest font-bold text-zinc-500">Active Listings</p>
@@ -117,30 +105,26 @@
         </div>
       </div>
 
-      <!-- Core Workspaces -->
       <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 md:grid-cols-1 lg:gap-8">
-
-        <!-- Left Column: Ingestion Engine UI -->
         <div class="lg:col-span-2 space-y-6">
-          <div
-            class="bg-bg-card border border-border-subtle rounded-2xl p-4 md:p-6 shadow-2xl relative overflow-hidden">
+          <div class="bg-bg-card border border-border-subtle rounded-2xl p-4 md:p-6 shadow-2xl relative overflow-hidden">
             <div class="absolute top-0 left-0 w-1.5 h-full bg-brand-violet"></div>
 
             <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
               <div>
                 <h3 class="font-bold text-sm md:text-base text-zinc-100 flex items-center gap-2">
-                  <span>✨</span> Smart Order Ingestion
+                  <span>✨</span> Order Assistant
                 </h3>
-                <p class="text-[11px] md:text-xs text-zinc-400 mt-0.5">Paste raw messages or DM threads here to automatically update inventory status and parse customer details.</p>
+                <p class="text-[11px] md:text-xs text-zinc-400 mt-0.5">Paste raw chat messages or DM threads here to instantly update your inventory and prepare customer details.</p>
               </div>
               <div class="flex flex-wrap gap-2">
                 <button onclick="simulateInboundStream()"
                   class="bg-brand-violet/10 hover:bg-brand-violet/20 border border-brand-violet/30 text-brand-violet text-[11px] font-bold px-2.5 py-1.5 rounded-xl transition-all cursor-pointer">
                   ⚡ Load Sample
                 </button>
-                <button onclick="simulateStorefrontPurchase()"
+                <button onclick="launchStorefrontPreview()"
                   class="bg-brand-neon/10 hover:bg-brand-neon/20 border border-brand-neon/30 text-brand-neon text-[11px] font-bold px-2.5 py-1.5 rounded-xl transition-all cursor-pointer">
-                  🛒 Simulate Purchase
+                  🛒 Open Storefront Preview
                 </button>
               </div>
             </div>
@@ -152,28 +136,23 @@
 
               <button onclick="executeAIIngestion()"
                 class="w-full bg-brand-violet hover:bg-brand-violet/90 text-white text-xs font-bold uppercase tracking-wider py-3.5 md:py-4 rounded-xl transition-all shadow-md flex items-center justify-center gap-2 tracking-widest cursor-pointer">
-                <span>Process Order with AI</span>
+                <span>Process Message</span>
               </button>
             </div>
           </div>
         </div>
 
-        <!-- Right Column: Live Tracking Ledger -->
         <div>
-          <div
-            class="bg-bg-card border border-border-subtle rounded-2xl shadow-xl overflow-hidden flex flex-col max-h-[480px]">
-            <div
-              class="px-5 py-4 border-b border-border-subtle bg-zinc-900/40 flex justify-between items-center shrink-0">
-              <h3 class="font-bold text-xs md:text-sm text-zinc-200">Recent Activity Log</h3>
-              <span
-                class="text-[9px] bg-brand-neon/10 border border-brand-neon/20 text-brand-neon px-2 py-0.5 rounded-md font-mono animate-pulse">Live</span>
+          <div class="bg-bg-card border border-border-subtle rounded-2xl shadow-xl overflow-hidden flex flex-col max-h-[480px]">
+            <div class="px-5 py-4 border-b border-border-subtle bg-zinc-900/40 flex justify-between items-center shrink-0">
+              <h3 class="font-bold text-xs md:text-sm text-zinc-200">Recent Activity</h3>
+              <span class="text-[9px] bg-brand-neon/10 border border-brand-neon/20 text-brand-neon px-2 py-0.5 rounded-md font-mono animate-pulse">Live</span>
             </div>
             <div id="ledger-feed-container" class="divide-y divide-border-subtle text-xs overflow-y-auto grow">
-              <p class="p-8 text-zinc-500 text-center font-medium">Syncing real-time updates...</p>
+              <p class="p-8 text-zinc-500 text-center font-medium">Syncing updates...</p>
             </div>
           </div>
         </div>
-
       </div>
     </section>
 
@@ -187,8 +166,7 @@
         <div class="space-y-4">
           <div>
             <label class="block text-[10px] font-bold text-zinc-400 uppercase tracking-widest mb-1.5">Product Title</label>
-            <input type="text" id="drop-title-input" oninput="clearAICopywriter()"
-              placeholder="e.g., Rare Carhartt Vintage Jacket"
+            <input type="text" id="drop-title-input" oninput="clearAICopywriter()" placeholder="e.g., Rare Carhartt Vintage Jacket"
               class="w-full bg-bg-base border border-border-subtle text-zinc-100 rounded-xl px-4 py-3 text-xs font-medium focus:outline-none focus:border-brand-violet transition-all" />
           </div>
           <div>
@@ -210,35 +188,27 @@
         </div>
       </div>
 
-      <div id="ai-copywriter-box"
-        class="hidden bg-gradient-to-b from-zinc-900 to-bg-base p-4 md:p-5 rounded-2xl border border-border-subtle shadow-xl space-y-3">
+      <div id="ai-copywriter-box" class="hidden bg-gradient-to-b from-zinc-900 to-bg-base p-4 md:p-5 rounded-2xl border border-border-subtle shadow-xl space-y-3">
         <div class="flex items-center justify-between">
-          <span
-            class="text-[9px] bg-brand-violet/20 text-brand-violet font-bold tracking-widest uppercase px-2 py-0.5 rounded-md border border-brand-violet/30">AI-Generated Marketing Caption</span>
-          <button onclick="copyToClipboard('ai-copywriter-text', 'Marketing caption copied!')"
-            class="text-brand-violet hover:text-white text-xs font-semibold underline transition-all">Copy 📋</button>
+          <span class="text-[9px] bg-brand-violet/20 text-brand-violet font-bold tracking-widest uppercase px-2 py-0.5 rounded-md border border-brand-violet/30">Marketing Caption</span>
+          <button onclick="copyToClipboard('ai-copywriter-text', 'Marketing caption copied!')" class="text-brand-violet hover:text-white text-xs font-semibold underline transition-all">Copy 📋</button>
         </div>
-        <p id="ai-copywriter-text"
-          class="text-xs font-mono leading-relaxed bg-bg-base/60 p-4 rounded-xl border border-border-subtle whitespace-pre-line text-zinc-300">
-        </p>
+        <p id="ai-copywriter-text" class="text-xs font-mono leading-relaxed bg-bg-base/60 p-4 rounded-xl border border-border-subtle whitespace-pre-line text-zinc-300"></p>
       </div>
     </section>
 
-    <!-- TAB 3: STOCKROOM LEDGER (Adaptive Table-to-Card Grid) -->
+    <!-- TAB 3: STOCKROOM LEDGER -->
     <section id="tab-content-inventory" class="tab-content hidden">
       <div class="bg-bg-card rounded-2xl border border-border-subtle shadow-xl overflow-hidden">
         <div class="px-5 py-4 border-b border-border-subtle bg-zinc-900/40 flex justify-between items-center">
           <h3 class="font-bold text-xs md:text-sm text-zinc-200">Product Inventory</h3>
-          <span id="inventory-count-tag"
-            class="bg-bg-base border border-border-subtle text-zinc-400 px-2.5 py-1 rounded-md font-mono text-[10px]">0 Products</span>
+          <span id="inventory-count-tag" class="bg-bg-base border border-border-subtle text-zinc-400 px-2.5 py-1 rounded-md font-mono text-[10px]">0 Products</span>
         </div>
 
-        <!-- Desktop Spreadsheet Layout: Hidden completely on Mobile Viewports -->
         <div class="hidden md:block overflow-x-auto">
           <table class="w-full text-left text-xs border-collapse">
             <thead>
-              <tr
-                class="bg-zinc-900/20 text-zinc-500 font-bold uppercase tracking-wider border-b border-border-subtle text-[10px]">
+              <tr class="bg-zinc-900/20 text-zinc-500 font-bold uppercase tracking-wider border-b border-border-subtle text-[10px]">
                 <th class="p-4">Product Details</th>
                 <th class="p-4">Price</th>
                 <th class="p-4">Status</th>
@@ -247,131 +217,133 @@
             </thead>
             <tbody id="inventory-table-body" class="divide-y divide-border-subtle font-medium text-zinc-300">
               <tr>
-                <td colspan="4" class="p-8 text-zinc-500 text-center font-medium">Loading inventory catalog...</td>
+                <td colspan="4" class="p-8 text-zinc-500 text-center font-medium">Loading inventory...</td>
               </tr>
             </tbody>
           </table>
         </div>
 
-        <!-- Mobile Touch List Layout: Renders cards dynamically on smaller screen nodes -->
-        <div id="inventory-mobile-cards-container" class="block md:hidden divide-y divide-border-subtle text-xs">
-          <!-- Populated dynamically via JS -->
-        </div>
-
+        <div id="inventory-mobile-cards-container" class="block md:hidden divide-y divide-border-subtle text-xs"></div>
       </div>
     </section>
 
-    <!-- TAB 4: SETTLED PAYOUT CACHE COORDS -->
+    <!-- TAB 4: SETTINGS PANEL -->
     <section id="tab-content-settings" class="tab-content hidden max-w-md mx-auto space-y-4">
       <div class="bg-bg-card p-5 md:p-6 rounded-2xl border border-border-subtle shadow-2xl space-y-5">
         <div>
           <h3 class="font-bold text-zinc-100 text-sm md:text-base flex items-center gap-2">
             <span>🏦</span> Payout Settings
           </h3>
-          <p class="text-[11px] text-zinc-500 mt-0.5">Enter your banking details. This will be displayed on the checkout modal for customer manual transfers.</p>
+          <p class="text-[11px] text-zinc-500 mt-0.5">Enter your banking details. This updates your live customer storefront details instantly.</p>
         </div>
         <div class="space-y-4">
           <div>
+            <label class="block text-[10px] font-bold text-zinc-400 uppercase tracking-widest mb-1.5">Store Identifier</label>
+            <input type="text" id="store-name-field" placeholder="e.g., Retrovibe Vintage"
+              class="w-full bg-bg-base border border-border-subtle text-zinc-100 rounded-xl px-4 py-3 text-xs font-medium focus:outline-none focus:border-brand-violet transition-all" />
+          </div>
+          <div>
+            <label class="block text-[10px] font-bold text-zinc-400 uppercase tracking-widest mb-1.5">Instagram Handle</label>
+            <input type="text" id="instagram-handle-field" placeholder="e.g., retrovibe.ng"
+              class="w-full bg-bg-base border border-border-subtle text-zinc-100 rounded-xl px-4 py-3 text-xs font-medium focus:outline-none focus:border-brand-violet transition-all" />
+          </div>
+          <div>
             <label class="block text-[10px] font-bold text-zinc-400 uppercase tracking-widest mb-1.5">Bank Name</label>
-            <input type="text" id="bank-name-field" value="Access Bank"
+            <input type="text" id="bank-name-field" placeholder="e.g., Access Bank"
               class="w-full bg-bg-base border border-border-subtle text-zinc-100 rounded-xl px-4 py-3 text-xs font-medium focus:outline-none focus:border-brand-violet transition-all" />
           </div>
           <div>
             <label class="block text-[10px] font-bold text-zinc-400 uppercase tracking-widest mb-1.5">Account Number</label>
-            <input type="text" id="bank-account-field" value="0012345678"
+            <input type="text" id="bank-account-field" placeholder="e.g., 0012345678"
               class="w-full bg-bg-base border border-border-subtle text-zinc-100 rounded-xl px-4 py-3 text-xs font-mono tracking-widest focus:outline-none focus:border-brand-violet transition-all" />
           </div>
           <div>
             <label class="block text-[10px] font-bold text-zinc-400 uppercase tracking-widest mb-1.5">Account Holder Name</label>
-            <input type="text" id="bank-holder-field" value="Thrift Vault Hub"
+            <input type="text" id="bank-holder-field" placeholder="e.g., Thrift Vault Hub"
               class="w-full bg-bg-base border border-border-subtle text-zinc-100 rounded-xl px-4 py-3 text-xs font-medium focus:outline-none focus:border-brand-violet transition-all" />
           </div>
         </div>
-        <button onclick="savePayoutCoordinates()"
+        <button onclick="savePayoutCoordinatesCloud()"
           class="w-full bg-zinc-800 hover:bg-zinc-700 border border-border-subtle text-zinc-200 font-bold text-xs py-3.5 rounded-xl transition-all cursor-pointer">
-          Save Payout Details
+          Save Settings
         </button>
       </div>
     </section>
 
   </div>
 
-  <!-- Confirmation Drawer Flyout Overlay: Full Width Mobile Friendly Panel -->
-  <div id="slide-over-backdrop"
-    class="fixed inset-0 bg-black/60 backdrop-blur-xs transition-opacity duration-300 opacity-0 pointer-events-none z-50 flex justify-end">
-    <div id="slide-over-tray"
-      class="w-full sm:max-w-md bg-bg-card border-l border-border-subtle h-full p-5 md:p-6 shadow-2xl transform translate-x-full transition-transform duration-300 ease-out flex flex-col justify-between overflow-y-auto">
-
+  <!-- Confirmation Drawer Flyout Overlay -->
+  <div id="slide-over-backdrop" class="fixed inset-0 bg-black/60 backdrop-blur-xs transition-opacity duration-300 opacity-0 pointer-events-none z-50 flex justify-end">
+    <div id="slide-over-tray" class="w-full sm:max-w-md bg-bg-card border-l border-border-subtle h-full p-5 md:p-6 shadow-2xl transform translate-x-full transition-transform duration-300 ease-out flex flex-col justify-between overflow-y-auto">
       <div class="space-y-6">
         <div class="flex items-center justify-between border-b border-border-subtle pb-4">
           <div class="flex items-center gap-2">
             <span class="text-xl">✨</span>
             <div>
-              <h4 class="font-bold text-xs md:text-sm text-zinc-100">AI Analysis</h4>
-              <p class="text-[9px] text-zinc-500 uppercase font-mono">Order Parsed Successfully</p>
+              <h4 class="font-bold text-xs md:text-sm text-zinc-100">Order Details</h4>
+              <p class="text-[9px] text-zinc-500 uppercase font-mono">Parsed Successfully</p>
             </div>
           </div>
-          <button onclick="closeConfirmationTray()"
-            class="text-zinc-500 hover:text-zinc-300 text-xs font-bold bg-bg-base h-7 w-7 rounded-lg border border-border-subtle flex items-center justify-center cursor-pointer">✕</button>
+          <button onclick="closeConfirmationTray()" class="text-zinc-500 hover:text-zinc-300 text-xs font-bold bg-bg-base h-7 w-7 rounded-lg border border-border-subtle flex items-center justify-center cursor-pointer">✕</button>
         </div>
 
         <div class="bg-bg-base/60 border border-border-subtle p-4 rounded-xl space-y-3 text-xs">
-          <div class="flex justify-between"><span class="text-zinc-500">Product Match:</span><span id="tray-item-name"
-              class="font-bold text-zinc-200">-</span></div>
-          <div class="flex justify-between"><span class="text-zinc-500">Price:</span><span
-              id="tray-item-price" class="font-mono font-bold text-brand-neon">-</span></div>
-          <div class="flex justify-between"><span class="text-zinc-500">Customer Handle:</span><span
-              id="tray-customer-handle" class="font-bold text-brand-violet">-</span></div>
-          <div class="flex justify-between"><span class="text-zinc-500">Order Source:</span><span
-              id="tray-routing-channel"
-              class="uppercase font-mono text-[9px] px-2 py-0.5 bg-zinc-800 rounded border border-border-subtle text-zinc-300">-</span>
-          </div>
+          <div class="flex justify-between"><span class="text-zinc-500">Product Match:</span><span id="tray-item-name" class="font-bold text-zinc-200">-</span></div>
+          <div class="flex justify-between"><span class="text-zinc-500">Price:</span><span id="tray-item-price" class="font-mono font-bold text-brand-neon">-</span></div>
+          <div class="flex justify-between"><span class="text-zinc-500">Customer Handle:</span><span id="tray-customer-handle" class="font-bold text-brand-violet">-</span></div>
+          <div class="flex justify-between"><span class="text-zinc-500">Order Source:</span><span id="tray-routing-channel" class="uppercase font-mono text-[9px] px-2 py-0.5 bg-zinc-800 rounded border border-border-subtle text-zinc-300">-</span></div>
         </div>
 
         <div class="space-y-2">
-          <label class="block text-[10px] font-bold text-zinc-400 uppercase tracking-widest">Generated Customer Message</label>
-          <div id="tray-dispatch-text"
-            class="bg-bg-base border border-border-subtle p-3 md:p-4 rounded-xl text-xs font-mono leading-relaxed text-zinc-300 whitespace-pre-wrap select-all max-h-[180px] overflow-y-auto">
-            Drafting customer response...
-          </div>
+          <label class="block text-[10px] font-bold text-zinc-400 uppercase tracking-widest">Customer Message</label>
+          <div id="tray-dispatch-text" class="bg-bg-base border border-border-subtle p-3 md:p-4 rounded-xl text-xs font-mono elegance leading-relaxed text-zinc-300 whitespace-pre-wrap select-all max-h-[180px] overflow-y-auto"></div>
         </div>
       </div>
 
-      <button onclick="copyTrayTextToClipboard()"
-        class="w-full bg-brand-violet hover:bg-brand-violet/90 text-white font-bold text-xs uppercase tracking-widest py-3.5 md:py-4 rounded-xl shadow-lg transition-all flex items-center justify-center gap-2 cursor-pointer mt-6">
+      <button onclick="copyTrayTextToClipboard()" class="w-full bg-brand-violet hover:bg-brand-violet/90 text-white font-bold text-xs uppercase tracking-widest py-3.5 md:py-4 rounded-xl shadow-lg transition-all flex items-center justify-center gap-2 cursor-pointer mt-6">
         <span>Copy Message & Close</span> 📋
       </button>
-
     </div>
   </div>
 
   <textarea id="clipboard-fallback" class="absolute left-[-9999px] top-0" readonly></textarea>
 
   <script>
-    const SUPABASE_TARGET_URL = window.ENV_SUPABASE_URL || '';
-    const SUPABASE_TARGET_KEY = window.ENV_SUPABASE_ANON_KEY || '';
+   const SUPABASE_TARGET_URL = window.ENV_SUPABASE_URL || '';
+const SUPABASE_TARGET_KEY = window.ENV_SUPABASE_ANON_KEY || '';
 
-    // Initialize Supabase Client immediately so it is globally available
-    const adminSupabase = window.supabase ? window.supabase.createClient(SUPABASE_TARGET_URL, SUPABASE_TARGET_KEY, {
-      db: { schema: 'thrifttrack' }
-    }) : null;
+// Ensure the third argument specifying the 'thrifttrack' schema is present:
+const adminSupabase = window.supabase 
+  ? window.supabase.createClient(SUPABASE_TARGET_URL, SUPABASE_TARGET_KEY, { 
+      db: { schema: 'thrifttrack' } 
+    }) 
+  : null;
 
     let editingItemId = null;
+    let cachedAuthenticatedUserId = null;
 
-    // Gatekeeper: Check for active session safely
     async function checkAuth() {
       if (!adminSupabase) return;
       const { data: { session } } = await adminSupabase.auth.getSession();
       if (!session) {
-        // If not logged in, redirect to login gateway
         window.location.href = 'login.html';
+      } else {
+        cachedAuthenticatedUserId = session.user.id;
+        loadPayoutCoordinatesCloud();
+        loadWorkspacePipeline();
       }
     }
 
-    // Run this immediately on script execution evaluation
     checkAuth();
 
-    // Logout Function
+    function launchStorefrontPreview() {
+      if (cachedAuthenticatedUserId) {
+        window.open(`storefront.html?vendor=${cachedAuthenticatedUserId}`, '_blank');
+      } else {
+        alert("Authentication context parsing. Please reload the suite window.");
+      }
+    }
+
     async function logout() {
       if (adminSupabase) {
         await adminSupabase.auth.signOut();
@@ -380,22 +352,18 @@
     }
 
     document.addEventListener('DOMContentLoaded', () => {
-      loadWorkspacePipeline();
-      loadPayoutCoordinates();
       initializeRealtimeChannel();
-
-      // Auto-refresh calculation rules every 60 seconds to update warning timers
       setInterval(loadWorkspacePipeline, 60000);
     });
 
     function initializeRealtimeChannel() {
       if (!adminSupabase) return;
       adminSupabase
-        .channel('schema-db-changes')
-        .on('postgres_changes', { event: '*', schema: 'thrifttrack', table: 'items' }, () => {
-          loadWorkspacePipeline();
-        })
-        .subscribe();
+      .channel('schema-db-changes')
+      .on('postgres_changes', { event: '*', schema: 'thrifttrack', table: 'items' }, () => { 
+      loadWorkspacePipeline(); 
+      })
+      .subscribe();
     }
 
     function switchTab(targetTabId) {
@@ -422,44 +390,6 @@
       document.getElementById('ai-command-input').value = dynamicScenarios[randomIndex];
     }
 
-    async function simulateStorefrontPurchase() {
-      if (!adminSupabase) {
-        alert("Connection offline. Please check your configuration.");
-        return;
-      }
-      try {
-        const { data: records, error: fetchError } = await adminSupabase.from('items').select('*');
-        if (fetchError) throw fetchError;
-
-        const floorAssets = records ? records.filter(i => i.status === 'available' || !i.status) : [];
-        if (floorAssets.length === 0) {
-          alert("Simulation Cancelled: No products available. Please list a product under 'New Drop' first.");
-          return;
-        }
-
-        const targetAsset = floorAssets[Math.floor(Math.random() * floorAssets.length)];
-        const mockBuyers = ['@hypebeast_lagos', '@thrift_queen.ng', '@abuja_vintage_vibe', '@retro_wearz'];
-        const randomBuyer = mockBuyers[Math.floor(Math.random() * mockBuyers.length)];
-
-        // Simulate a checkout - adding current timestamp for the lock tracking layer
-        const { error: checkoutError } = await adminSupabase
-          .from('items')
-          .update({
-            status: 'sold',
-            instagram_handle: randomBuyer,
-            ingestion_channel: 'storefront',
-            locked_at: new Date().toISOString()
-          })
-          .eq('id', targetAsset.id);
-
-        if (checkoutError) throw checkoutError;
-        alert(`Success! Simulated order for: "${targetAsset.item_name}"`);
-        loadWorkspacePipeline();
-      } catch (err) {
-        alert(`Simulation error: ${err.message}`);
-      }
-    }
-
     async function executeAIIngestion() {
       const inputField = document.getElementById('ai-command-input');
       const streamText = inputField.value.trim();
@@ -472,13 +402,13 @@
       const pingNode = document.getElementById('pulse-ping');
       const dotNode = document.getElementById('pulse-dot');
 
-      statusLabel.innerText = "Analyzing message details...";
+      statusLabel.innerText = "Reading order details...";
       statusLabel.className = "text-brand-violet font-black animate-pulse text-xs";
       pingNode.className = "animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-violet opacity-75";
       dotNode.className = "relative inline-flex rounded-full h-2 w-2 bg-brand-violet";
 
       try {
-        if (!adminSupabase) throw new Error("Supabase connection unresolved.");
+        if (!adminSupabase) throw new Error("Connection error.");
 
         const matchHandle = streamText.match(/@\w+/);
         const customerHandle = matchHandle ? matchHandle[0] : "@unknown_buyer";
@@ -487,7 +417,12 @@
         if (streamText.toLowerCase().includes("whatsapp")) channelRoute = "whatsapp";
         else if (streamText.toLowerCase().includes("ig") || streamText.toLowerCase().includes("instagram") || streamText.toLowerCase().includes("dm")) channelRoute = "instagram";
 
-        const { data: availableAssets, error: fetchError } = await adminSupabase.from('items').select('*').eq('status', 'available');
+        const { data: availableAssets, error: fetchError } = await adminSupabase
+          .from('items')
+          .select('*')
+          .eq('status', 'available')
+          .eq('user_id', cachedAuthenticatedUserId);
+          
         if (fetchError) throw fetchError;
 
         let resolvedAsset = null;
@@ -499,11 +434,10 @@
         }
 
         if (!resolvedAsset) {
-          alert("Analysis Complete: Could not find a matching product title in your active inventory.");
+          alert("Could not find a matching product title in your active inventory.");
           return;
         }
 
-        // UPGRADE: Injection now locks down data row with high accuracy ISO string timestamp
         const { error: patchError } = await adminSupabase
           .from('items')
           .update({
@@ -518,10 +452,25 @@
 
         inputField.value = '';
         loadWorkspacePipeline();
-        openConfirmationTray(resolvedAsset.item_name, resolvedAsset.price, customerHandle, channelRoute);
+        
+        const { data: profile } = await adminSupabase.from('profiles').select('*').eq('id', cachedAuthenticatedUserId).maybeSingle();
+        
+        const msgTemplate = `Order secured for ${customerHandle} ✨\n\nWe've held the "${resolvedAsset.item_name}" for you.\n\nTotal: ₦${Number(resolvedAsset.price).toLocaleString()}\nBank: ${profile?.bank_name || 'Not configured'}\nAccount: ${profile?.account_number || '-'}\nName: ${profile?.account_name || '-'}\n\nPlease drop your transfer receipt here to finalize your delivery. 📦`;
+        
+        document.getElementById('tray-item-name').innerText = resolvedAsset.item_name;
+        document.getElementById('tray-item-price').innerText = `₦${Number(resolvedAsset.price).toLocaleString()}`;
+        document.getElementById('tray-customer-handle').innerText = customerHandle;
+        document.getElementById('tray-routing-channel').innerText = channelRoute;
+        document.getElementById('tray-dispatch-text').innerText = msgTemplate;
+
+        const backdrop = document.getElementById('slide-over-backdrop');
+        const drawer = document.getElementById('slide-over-tray');
+        backdrop.classList.remove('pointer-events-none', 'opacity-0');
+        backdrop.classList.add('opacity-100');
+        drawer.classList.remove('translate-x-full');
 
       } catch (err) {
-        alert(`Error processing order: ${err.message}`);
+        alert(`Could not process order: ${err.message}`);
       } finally {
         statusLabel.innerText = "Ready";
         statusLabel.className = "text-zinc-200 font-bold text-xs";
@@ -530,64 +479,25 @@
       }
     }
 
-    // Dynamic Context Nudge Message Builder
-    function nudgeBuyerTemplate(handle, itemName) {
-      const cachedParams = localStorage.getItem('thrifttrack_payout_coords');
-      let bankStr = "Access Bank", accStr = "0012345678";
-      if (cachedParams) {
-        const parsed = JSON.parse(cachedParams);
-        bankStr = parsed.bank || bankStr;
-        accStr = parsed.acc || accStr;
-      }
-
-      const copyStr = `Hey ${handle}! Just following up on your order for "${itemName}" ✨.\n\nOur 24-hour hold window is expiring soon, and we have other shoppers waiting. If you've already transferred the funds to ${bankStr} (${accStr}), please reply with a screenshot of your receipt so we can get your package ready! 📦`;
+    async function nudgeBuyerTemplate(handle, itemName) {
+      const { data: profile } = await adminSupabase.from('profiles').select('*').eq('id', cachedAuthenticatedUserId).maybeSingle();
+      const copyStr = `Hey ${handle}, just following up on your order for the "${itemName}" ✨.\n\nOur holding window is closing soon. If you've transferred the funds to ${profile?.bank_name || 'Bank'} (${profile?.account_number || 'Account'}), please reply with a screenshot of your receipt so we can ship your package. 📦`;
 
       navigator.clipboard.writeText(copyStr).then(() => {
-        alert(`Follow-up message copied for ${handle}!`);
+        alert(`Follow-up message copied for ${handle}.`);
       });
     }
 
     async function releaseHoldToFloor(itemId, itemName) {
-      if (!confirm(`Are you sure you want to release "${itemName}" back to your active storefront?`)) return;
+      if (!confirm(`Release "${itemName}" back to your active storefront?`)) return;
       if (adminSupabase) {
         const { error } = await adminSupabase
           .from('items')
-          .update({
-            status: 'available',
-            instagram_handle: null,
-            ingestion_channel: null,
-            locked_at: null
-          })
+          .update({ status: 'available', instagram_handle: null, ingestion_channel: null, locked_at: null })
           .eq('id', itemId);
 
         if (!error) loadWorkspacePipeline();
       }
-    }
-
-    function openConfirmationTray(itemName, price, handle, channel) {
-      document.getElementById('tray-item-name').innerText = itemName;
-      document.getElementById('tray-item-price').innerText = `₦${Number(price).toLocaleString()}`;
-      document.getElementById('tray-customer-handle').innerText = handle;
-      document.getElementById('tray-routing-channel').innerText = channel;
-
-      const cachedParams = localStorage.getItem('thrifttrack_payout_coords');
-      let bankStr = "Access Bank", accStr = "0012345678", holderStr = "Thrift Vault Hub";
-      if (cachedParams) {
-        const parsed = JSON.parse(cachedParams);
-        bankStr = parsed.bank || bankStr;
-        accStr = parsed.acc || accStr;
-        holderStr = parsed.holder || holderStr;
-      }
-
-      const messageTemplate = `Hey ${handle}! Thanks for shopping with us ✨.\n\nWe've reserved the "${itemName}" for you via ${channel}.\n\n💵 Total: ₦${Number(price).toLocaleString()}\n🏦 Bank: ${bankStr}\n🔢 Account: ${accStr}\n👤 Name: ${holderStr}\n\nPlease reply with a screenshot of your payment receipt once completed so we can secure your order! 📦`;
-
-      document.getElementById('tray-dispatch-text').innerText = messageTemplate;
-
-      const backdrop = document.getElementById('slide-over-backdrop');
-      const drawer = document.getElementById('slide-over-tray');
-      backdrop.classList.remove('pointer-events-none', 'opacity-0');
-      backdrop.classList.add('opacity-100');
-      drawer.classList.remove('translate-x-full');
     }
 
     function closeConfirmationTray() {
@@ -598,10 +508,12 @@
       drawer.classList.add('translate-x-full');
     }
 
+    document.getElementsById = function(id) { return document.getElementById(id); };
+
     function copyTrayTextToClipboard() {
       const payloadText = document.getElementById('tray-dispatch-text').innerText;
       navigator.clipboard.writeText(payloadText).then(() => {
-        alert("Customer message copied to clipboard!");
+        alert("Message copied.");
         closeConfirmationTray();
       });
     }
@@ -614,10 +526,10 @@
         return;
       }
 
-      const vectors = ["Vintage relics only ✨", "Steal of the rotation season 🔥", "Thick weight weave, pristine condition profile 💎"];
+      const vectors = ["Vintage piece ✨", "Now available 🔥", "Pristine condition 💎"];
       const selectedVector = vectors[Math.floor(Math.random() * vectors.length)];
 
-      const copyStr = `⚡️ NEW ARRIVAL LIVE ⚡️\n\n📌 Product: ${title}\n💰 Price: ₦${Number(price).toLocaleString()}\n\n${selectedVector} Pristine condition.\n\n📦 HOW TO BUY:\nSend us a DM immediately or click the link in our bio to checkout before it's gone!`;
+      const copyStr = `⚡️ NOW LIVE ⚡️\n\nProduct: ${title}\nPrice: ₦${Number(price).toLocaleString()}\n\n${selectedVector}\n\n📦 TO BUY:\nSend us a DM or click the link in our bio to checkout before it's gone!`;
 
       document.getElementById('ai-copywriter-text').innerText = copyStr;
       document.getElementById('ai-copywriter-box').classList.remove('hidden');
@@ -643,13 +555,13 @@
         return;
       }
 
-      if (adminSupabase) {
+      if (adminSupabase && cachedAuthenticatedUserId) {
         const { error } = await adminSupabase
           .from('items')
-          .insert([{ item_name: name, price: value, status: 'available', is_paid: false, ingestion_channel: 'storefront' }]);
+          .insert([{ user_id: cachedAuthenticatedUserId, item_name: name, price: value, status: 'available', is_paid: false, ingestion_channel: 'storefront' }]);
 
         if (error) {
-          alert(`Error listing product: ${error.message}`);
+          alert(`Could not list product: ${error.message}`);
         } else {
           tInput.value = '';
           pInput.value = '';
@@ -661,9 +573,14 @@
     }
 
     async function loadWorkspacePipeline() {
-      if (!adminSupabase) return;
+      if (!adminSupabase || !cachedAuthenticatedUserId) return;
       try {
-        const { data: records, error } = await adminSupabase.from('items').select('*').order('created_at', { ascending: false });
+        const { data: records, error } = await adminSupabase
+          .from('items')
+          .select('*')
+          .eq('user_id', cachedAuthenticatedUserId)
+          .order('created_at', { ascending: false });
+          
         if (error) throw error;
 
         const floorItems = records.filter(i => i.status === 'available' || !i.status);
@@ -676,10 +593,9 @@
         document.getElementById('metric-sales').innerText = `₦${accruedVolume.toLocaleString()}`;
         document.getElementById('inventory-count-tag').innerText = `${records.length} Products`;
 
-        // Render Registry Cards with Time-Sensitive Soft Lock Color Modifiers
         const feedFeed = document.getElementById('ledger-feed-container');
         if (records.length === 0) {
-          feedFeed.innerHTML = `<p class="p-8 text-zinc-600 text-center font-medium">No recent activity found.</p>`;
+          feedFeed.innerHTML = `<p class="p-8 text-zinc-600 text-center font-medium">No recent activity.</p>`;
         } else {
           feedFeed.innerHTML = '';
           records.forEach(item => {
@@ -692,14 +608,12 @@
               indicatorClass = "bg-amber-500/10 border-amber-500/20 text-amber-400";
               progressText = "Awaiting Payment";
 
-              // UPGRADE: Calculate age of transaction lock
               if (item.locked_at) {
                 const hoursPassed = (new Date() - new Date(item.locked_at)) / (1000 * 60 * 60);
 
                 if (hoursPassed >= 24) {
-                  // Crimson Expired State
                   timelineAlertStyles = "border-l-4 border-rose-600 bg-rose-950/20 animate-danger-pulse";
-                  progressText = "EXPIRED HOLD (24h+)";
+                  progressText = "Expired Hold (24h+)";
                   indicatorClass = "bg-rose-500/20 border-rose-500/40 text-rose-400";
                   actionButtonsHTML = `
                     <div class="grid grid-cols-2 gap-2 mt-2">
@@ -708,25 +622,23 @@
                     </div>
                   `;
                 } else if (hoursPassed >= 18) {
-                  // Amber Nudge State
                   timelineAlertStyles = "border-l-4 border-amber-500 bg-amber-950/10";
-                  progressText = "HOLDING OVER 18h";
+                  progressText = "Holding Over 18h";
                   actionButtonsHTML = `
                     <div class="grid grid-cols-2 gap-2 mt-2">
                       <button onclick="approveLedgerPayout('${item.id}')" class="bg-brand-neon hover:bg-brand-neon/90 text-zinc-950 text-[10px] font-black uppercase tracking-wider py-1.5 rounded-md cursor-pointer">Confirm Payment</button>
-                      <button onclick="nudgeBuyerTemplate('${item.instagram_handle}', '${item.item_name.replace(/'/g, "\\'")}')" class="bg-amber-500 hover:bg-amber-600 text-zinc-950 text-[10px] font-bold uppercase tracking-wider py-1.5 rounded-md cursor-pointer">Nudge Shopper ⏳</button>
+                      <button onclick="nudgeBuyerTemplate('${item.instagram_handle}', '${item.item_name.replace(/'/g, "\\'")}')" class="bg-amber-500 hover:bg-amber-600 text-zinc-950 text-[10px] font-bold uppercase tracking-wider py-1.5 rounded-md cursor-pointer">Follow Up ⏳</button>
                     </div>
                   `;
                 } else {
-                  // Standard Pending State
-                  actionButtonsHTML = `<button onclick="approveLedgerPayout('${item.id}')" class="w-full mt-2 bg-brand-neon hover:bg-brand-neon/90 text-zinc-950 text-[10px] font-black uppercase tracking-wider py-1.5 rounded-lg transition-all cursor-pointer">Confirm Payment Receipt</button>`;
+                  actionButtonsHTML = `<button onclick="approveLedgerPayout('${item.id}')" class="w-full mt-2 bg-brand-neon hover:bg-brand-neon/90 text-zinc-950 text-[10px] font-black uppercase tracking-wider py-1.5 rounded-lg transition-all cursor-pointer">Confirm Payment</button>`;
                 }
               } else {
-                actionButtonsHTML = `<button onclick="approveLedgerPayout('${item.id}')" class="w-full mt-2 bg-brand-neon hover:bg-brand-neon/90 text-zinc-950 text-[10px] font-black uppercase tracking-wider py-1.5 rounded-lg transition-all cursor-pointer">Confirm Payment Receipt</button>`;
+                actionButtonsHTML = `<button onclick="approveLedgerPayout('${item.id}')" class="w-full mt-2 bg-brand-neon hover:bg-brand-neon/90 text-zinc-950 text-[10px] font-black uppercase tracking-wider py-1.5 rounded-lg transition-all cursor-pointer">Confirm Payment</button>`;
               }
             } else if (item.is_paid) {
               indicatorClass = "bg-brand-neon/10 border-brand-neon/20 text-brand-neon";
-              progressText = "Paid & Completed";
+              progressText = "Completed";
             }
 
             feedFeed.innerHTML += `
@@ -736,7 +648,7 @@
                   <span class="font-mono text-zinc-300 font-bold">₦${Number(item.price).toLocaleString()}</span>
                 </div>
                 <div class="flex items-center justify-between text-[11px] text-zinc-500">
-                  <span>${item.instagram_handle ? `${item.instagram_handle}` : 'Public Retail'} • ${item.ingestion_channel || 'storefront'}</span>
+                  <span>${item.instagram_handle ? `${item.instagram_handle}` : 'Storefront'}</span>
                   <span class="px-2 py-0.5 border text-[9px] font-bold rounded-md uppercase tracking-wider ${indicatorClass}">${progressText}</span>
                 </div>
                 ${actionButtonsHTML}
@@ -745,13 +657,11 @@
           });
         }
 
-        // Render Master Stockroom Spreadsheets & Cards Dual-Engine Layout
         const tableBody = document.getElementById('inventory-table-body');
         const mobileCardsContainer = document.getElementById('inventory-mobile-cards-container');
 
         if (records.length === 0) {
-          const fallbackHTML = `<tr><td class="p-8 text-zinc-600 text-center font-medium">No matching products found in your catalog.</td></tr>`;
-          tableBody.innerHTML = fallbackHTML;
+          tableBody.innerHTML = `<tr><td class="p-8 text-zinc-600 text-center font-medium">No products found.</td></tr>`;
           mobileCardsContainer.innerHTML = `<p class="p-8 text-zinc-600 text-center font-medium">No products found.</p>`;
         } else {
           tableBody.innerHTML = '';
@@ -765,7 +675,6 @@
               }">${item.is_paid ? 'Paid' : item.status === 'sold' ? 'Pending' : 'Active'}</span>
             `;
 
-            // Render Desktop Spreadsheet Array
             if (isEditing) {
               tableBody.innerHTML += `
                 <tr class="bg-zinc-900/40 border-y border-border-subtle">
@@ -790,14 +699,13 @@
                 </tr>`;
             }
 
-            // Render Mobile Touch Friendly Listing View Matrix Cards
             if (isEditing) {
               mobileCardsContainer.innerHTML += `
                 <div class="p-4 bg-zinc-900/40 space-y-3">
                   <input type="text" id="inline-mobile-title-${item.id}" value="${item.item_name}" class="text-xs font-bold text-zinc-100 bg-bg-base border border-border-subtle rounded-lg px-3 py-2 w-full focus:outline-none" />
                   <input type="number" id="inline-mobile-price-${item.id}" value="${item.price}" class="text-xs font-mono font-bold text-zinc-100 bg-bg-base border border-border-subtle rounded-lg px-3 py-2 w-full focus:outline-none" />
                   <div class="flex gap-2">
-                    <button onclick="executeSaveInlineEdit('${item.id}', true)" class="w-1/2 bg-brand-neon text-zinc-950 font-black text-center py-2 rounded-lg cursor-pointer">Save Changes</button>
+                    <button onclick="executeSaveInlineEdit('${item.id}', true)" class="w-1/2 bg-brand-neon text-zinc-950 font-black text-center py-2 rounded-lg cursor-pointer">Save</button>
                     <button onclick="toggleInlineEdit(null)" class="w-1/2 bg-zinc-800 text-zinc-300 font-semibold text-center py-2 rounded-lg border border-border-subtle cursor-pointer">Cancel</button>
                   </div>
                 </div>`;
@@ -812,8 +720,8 @@
                     ${statusBadgeHTML}
                   </div>
                   <div class="flex justify-end gap-4 text-xs font-bold pt-1">
-                    <button onclick="toggleInlineEdit('${item.id}')" class="text-brand-violet cursor-pointer">Edit Product</button>
-                    <button onclick="deleteInventoryItem('${item.id}')" class="text-rose-500 cursor-pointer">Delete Product</button>
+                    <button onclick="toggleInlineEdit('${item.id}')" class="text-brand-violet cursor-pointer">Edit</button>
+                    <button onclick="deleteInventoryItem('${item.id}')" class="text-rose-500 cursor-pointer">Delete</button>
                   </div>
                 </div>`;
             }
@@ -831,23 +739,18 @@
 
     async function executeSaveInlineEdit(itemId, isMobile = false) {
       if (!adminSupabase) return;
-
       const suffix = isMobile ? 'mobile-' : '';
       const updatedTitle = document.getElementById(`inline-${suffix}title-${itemId}`).value.trim();
       const updatedPrice = Number(document.getElementById(`inline-${suffix}price-${itemId}`).value.trim());
 
       if (!updatedTitle || !updatedPrice) {
-        alert("Product name and price cannot be blank.");
+        alert("Product title and price cannot be blank.");
         return;
       }
 
-      const { error } = await adminSupabase
-        .from('items')
-        .update({ item_name: updatedTitle, price: updatedPrice })
-        .eq('id', itemId);
-
+      const { error } = await adminSupabase.from('items').update({ item_name: updatedTitle, price: updatedPrice }).eq('id', itemId);
       if (error) {
-        alert(`Error updating product: ${error.message}`);
+        alert(`Could not save changes: ${error.message}`);
       } else {
         editingItemId = null;
         loadWorkspacePipeline();
@@ -862,32 +765,43 @@
     }
 
     async function deleteInventoryItem(itemId) {
-      if (!confirm("Are you sure you want to delete this item? This action cannot be undone.")) return;
+      if (!confirm("Are you sure you want to delete this item?")) return;
       if (adminSupabase) {
         const { error } = await adminSupabase.from('items').delete().eq('id', itemId);
         if (!error) loadWorkspacePipeline();
       }
     }
 
-    function savePayoutCoordinates() {
+    async function savePayoutCoordinatesCloud() {
+      if (!adminSupabase || !cachedAuthenticatedUserId) return;
+      const name = document.getElementById('store-name-field').value.trim();
+      const ig = document.getElementById('instagram-handle-field').value.trim();
       const bank = document.getElementById('bank-name-field').value.trim();
       const acc = document.getElementById('bank-account-field').value.trim();
       const holder = document.getElementById('bank-holder-field').value.trim();
 
-      localStorage.setItem('thrifttrack_payout_coords', JSON.stringify({ bank, acc, holder }));
-      alert("Payout details updated successfully.");
+      const { error } = await adminSupabase
+        .from('profiles')
+        .upsert({ id: cachedAuthenticatedUserId, store_name: name, instagram_handle: ig, bank_name: bank, account_number: acc, account_name: holder });
+
+      if (error) {
+        alert(`Could not save your changes: ${error.message}`);
+      } else {
+        alert("Payout details updated successfully.");
+      }
     }
 
-    function loadPayoutCoordinates() {
-      const cached = localStorage.getItem('thrifttrack_payout_coords');
-      if (cached) {
-        const data = JSON.parse(cached);
-        document.getElementById('bank-name-field').value = data.bank || '';
-        document.getElementById('bank-account-field').value = data.acc || '';
-        document.getElementById('bank-holder-field').value = data.holder || '';
+    async function loadPayoutCoordinatesCloud() {
+      if (!adminSupabase || !cachedAuthenticatedUserId) return;
+      const { data, error } = await adminSupabase.from('profiles').select('*').eq('id', cachedAuthenticatedUserId).maybeSingle();
+      if (data && !error) {
+        document.getElementById('store-name-field').value = data.store_name || '';
+        document.getElementById('instagram-handle-field').value = data.instagram_handle || '';
+        document.getElementById('bank-name-field').value = data.bank_name || '';
+        document.getElementById('bank-account-field').value = data.account_number || '';
+        document.getElementById('bank-holder-field').value = data.account_name || '';
       }
     }
   </script>
 </body>
-
 </html>
