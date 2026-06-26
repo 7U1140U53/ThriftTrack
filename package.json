@@ -1,5 +1,6 @@
 {
   "scripts": {
+    "build": "echo \"window.ENV_SUPABASE_URL = '$SUPABASE_URL'; window.ENV_SUPABASE_ANON_KEY = '$SUPABASE_ANON_KEY';\" > config.js",
     "start": "servor --reload"
   },
   "dependencies": {
