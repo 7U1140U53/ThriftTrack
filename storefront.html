@@ -5,87 +5,113 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Storefront</title>
-  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="config.js"></script>
+
+  <style type="text/tailwindcss">
+    @theme {
+      --color-bg-base: #09090b;       
+      --color-bg-card: #141417;       
+      --color-border-subtle: #27272a; 
+      --color-brand-violet: #7c3aed;  
+      --color-brand-neon: #10b981;    
+    }
+  </style>
 </head>
 
-<body class="bg-slate-50 text-slate-800 font-sans min-h-screen py-8">
-  <div class="max-w-md mx-auto px-4">
-    <div class="text-center bg-white border border-slate-100 py-6 px-4 rounded-2xl shadow-sm mb-6">
-      <h1 id="shop-title-text" class="font-black text-xl tracking-tight text-slate-900 uppercase">
+<body class="bg-bg-base text-zinc-100 font-sans min-h-screen antialiased pb-12">
+
+  <!-- Background Gradients -->
+  <div class="fixed inset-0 -z-10 overflow-hidden pointer-events-none bg-bg-base select-none">
+    <div class="absolute inset-0 opacity-[0.05]"
+      style="background-image: linear-gradient(to right, #52525b 1px, transparent 1px), linear-gradient(to bottom, #52525b 1px, transparent 1px); background-size: 40px 40px;">
+    </div>
+    <div class="absolute -top-[20%] -left-[10%] w-[70vw] h-[70vw] rounded-full bg-[#7c3aed]/5 blur-[130px]"></div>
+  </div>
+
+  <div class="max-w-md mx-auto px-4 pt-8">
+    <!-- Store Header Card -->
+    <div class="text-center bg-bg-card border border-border-subtle py-6 px-4 rounded-2xl shadow-xl mb-6">
+      <h1 id="shop-title-text" class="font-black text-lg tracking-tight text-zinc-100 uppercase">
         Opening Store...
       </h1>
-      <p id="shop-subtitle-text" class="text-xs text-slate-400 mt-1 font-medium">
+      <p id="shop-subtitle-text" class="text-[11px] text-zinc-400 mt-1 font-medium">
         Curated Vintage Drop • Shipping Nationwide NG
       </p>
     </div>
 
-    <div id="catalog-showroom-container" class="space-y-6">
-      <div class="bg-white p-8 rounded-2xl border border-slate-100 text-center shadow-sm">
-        <p class="text-sm text-slate-400">Opening the lookbook...</p>
+    <!-- Live Showroom Container -->
+    <div id="catalog-showroom-container" class="space-y-5">
+      <div class="bg-bg-card p-8 rounded-2xl border border-border-subtle text-center shadow-lg">
+        <p class="text-xs text-zinc-500 font-medium animate-pulse">Syncing catalog vault...</p>
       </div>
     </div>
   </div>
 
   <!-- Interactive Checkout & Reservation Modal -->
   <div id="checkout-modal"
-    class="hidden fixed inset-0 bg-slate-950/60 backdrop-blur-sm flex items-center justify-center p-4 z-50">
+    class="hidden fixed inset-0 bg-zinc-950/80 backdrop-blur-sm flex items-center justify-center p-4 z-50">
     <div
-      class="bg-white w-full max-w-md rounded-2xl p-6 shadow-2xl border border-slate-100 space-y-5 relative overflow-hidden">
-      <div class="bg-amber-50 border border-amber-200 rounded-xl p-3 flex items-center justify-between">
-        <div class="flex items-center gap-2">
-          <span class="text-lg">⏱️</span>
+      class="bg-bg-card w-full max-w-sm rounded-2xl p-5 shadow-2xl border border-border-subtle space-y-5 relative overflow-hidden">
+      
+      <!-- Hold Urgency Counter -->
+      <div class="bg-amber-500/5 border border-amber-500/20 rounded-xl p-3 flex items-center justify-between">
+        <div class="flex items-center gap-2.5">
+          <span class="text-base">⏱️</span>
           <div>
-            <p class="text-xs font-bold text-amber-900 uppercase tracking-wide">Holding Item For You</p>
-            <p class="text-[11px] text-amber-700">This item is hidden from the shop floor for now.</p>
+            <p class="text-[10px] font-bold text-amber-400 uppercase tracking-wider">Holding Item For You</p>
+            <p class="text-[11px] text-zinc-400">Secured on your checkout line.</p>
           </div>
         </div>
         <div id="checkout-timer"
-          class="text-xl font-mono font-bold text-amber-600 bg-white px-2.5 py-1 rounded-lg border border-amber-200">
+          class="text-base font-mono font-black text-amber-400 bg-bg-base px-2.5 py-1 rounded-lg border border-border-subtle">
           15:00
         </div>
       </div>
 
-      <div class="border-b border-slate-100 pb-3">
-        <h3 id="checkout-item-title" class="font-bold text-slate-900 text-lg">-</h3>
-        <p id="checkout-item-price" class="text-indigo-600 font-bold text-base mt-0.5">₦0</p>
+      <!-- Item Meta Block -->
+      <div class="border-b border-border-subtle pb-3.5">
+        <h3 id="checkout-item-title" class="font-bold text-zinc-100 text-sm md:text-base leading-snug">-</h3>
+        <p id="checkout-item-price" class="text-brand-neon font-black text-base mt-1 font-mono">₦0</p>
       </div>
 
-      <div class="space-y-2.5">
-        <p class="text-xs font-bold text-slate-400 uppercase tracking-wider">Payment Details</p>
-        <div class="bg-slate-50 rounded-xl p-4 border border-slate-100 space-y-2">
-          <div class="flex justify-between items-center text-sm">
-            <span class="text-slate-500">Bank Name</span>
-            <span id="modal-bank-name" class="font-semibold text-slate-800">-</span>
+      <!-- Banking Details Layout -->
+      <div class="space-y-2">
+        <p class="text-[10px] font-bold text-zinc-500 uppercase tracking-widest">Payment Settlement Coordinates</p>
+        <div class="bg-bg-base rounded-xl p-3.5 border border-border-subtle space-y-2.5 text-xs font-medium">
+          <div class="flex justify-between items-center">
+            <span class="text-zinc-500">Bank Name</span>
+            <span id="modal-bank-name" class="text-zinc-200 font-bold">-</span>
           </div>
-          <div class="flex justify-between items-center text-sm">
-            <span class="text-slate-500">Account Number</span>
-            <span id="modal-account-num" class="font-mono font-bold text-slate-900 tracking-wider">-</span>
+          <div class="flex justify-between items-center">
+            <span class="text-zinc-500">Account Number</span>
+            <span id="modal-account-num" class="font-mono font-black text-zinc-100 tracking-wider bg-zinc-900 px-1.5 py-0.5 rounded border border-border-subtle">-</span>
           </div>
-          <div class="flex justify-between items-center text-sm">
-            <span class="text-slate-500">Account Name</span>
-            <span id="modal-account-name" class="font-semibold text-slate-800">-</span>
+          <div class="flex justify-between items-center">
+            <span class="text-zinc-500">Account Name</span>
+            <span id="modal-account-name" class="text-zinc-200 font-bold">-</span>
           </div>
         </div>
-        <p class="text-[11px] text-slate-400 italic text-center">Please make the transfer before the timer runs out to
-          secure your order.</p>
+        <p class="text-[10px] text-zinc-500 italic text-center pt-1">Execute the transfer before your timer expires to guarantee the purchase.</p>
       </div>
 
-      <div>
-        <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Your Instagram / WhatsApp
-          Handle</label>
-        <input type="text" id="buyer-verification-handle" placeholder="@your_handle"
-          class="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-indigo-500" />
+      <!-- Buyer Identity Input -->
+      <div class="space-y-1.5">
+        <label class="block text-[10px] font-bold text-zinc-400 uppercase tracking-widest">Instagram / WhatsApp Handle</label>
+        <input type="text" id="buyer-verification-handle" placeholder="e.g., @yourname"
+          class="w-full bg-bg-base border border-border-subtle rounded-xl px-3 py-3 text-xs font-medium text-zinc-100 focus:outline-none focus:border-brand-violet transition-all" />
       </div>
 
-      <div class="space-y-2 pt-2">
+      <!-- Action Stack -->
+      <div class="space-y-2 pt-1">
         <button onclick="confirmPaymentSent()"
-          class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-sm py-3 rounded-xl transition shadow-md shadow-indigo-600/10">
+          class="w-full bg-brand-violet hover:bg-brand-violet/90 text-white font-bold text-xs uppercase tracking-wider py-3.5 rounded-xl transition shadow-lg shadow-brand-violet/20 cursor-pointer">
           I Have Transferred the Funds ✅
         </button>
         <button onclick="cancelReservation()"
-          class="w-full bg-slate-50 hover:bg-slate-100 text-slate-500 font-medium text-xs py-2 rounded-lg transition">
+          class="w-full bg-bg-base hover:bg-zinc-900 border border-border-subtle text-zinc-400 font-bold text-[11px] py-2.5 rounded-xl transition cursor-pointer">
           Cancel & Release Item
         </button>
       </div>
@@ -116,10 +142,37 @@
 
       const urlParams = new URLSearchParams(window.location.search);
       vendorId = urlParams.get('vendor');
+      const targetDeepLinkId = urlParams.get('item');
 
       await resolveStorefrontProfile();
-      renderBuyerCatalog();
+      await renderBuyerCatalog();
+      initializeRealtimeSync();
+
+      // If buyer arrives via deep link, pull open the item modal instantly
+      if (targetDeepLinkId) {
+        evaluateDeepLinkEntry(targetDeepLinkId);
+      }
     });
+
+    function initializeRealtimeSync() {
+      if (!thriftTrackSupabase) return;
+      thriftTrackSupabase
+        .channel('storefront-floor-sync')
+        .on('postgres_changes', { event: '*', schema: 'thrifttrack', table: 'items' }, (payload) => {
+          renderBuyerCatalog();
+          
+          // Close checkout interface instantly if the merchant clears the hold or accepts it from the dashboard
+          if (activeCheckoutItemId && payload.new && payload.new.id === activeCheckoutItemId) {
+            if (payload.new.status === 'sold' || (payload.new.status === 'active' && payload.new.locked_at === null)) {
+              if (countdownInterval) clearInterval(countdownInterval);
+              activeCheckoutItemId = null;
+              document.getElementById('checkout-modal').classList.add('hidden');
+              alert('The item hold configuration has been updated or approved.');
+            }
+          }
+        })
+        .subscribe();
+    }
 
     async function resolveStorefrontProfile() {
       if (!thriftTrackSupabase || !vendorId) {
@@ -134,7 +187,7 @@
           document.getElementById('shop-subtitle-text').innerText = `${data.store_name || 'Premium Curated Vintage'} • Shipping Nationwide NG`;
         }
       } catch (err) {
-        console.error("Profile resolution pass bypassed.");
+        console.error("Profile cache resolution pass bypassed.");
       }
     }
 
@@ -142,13 +195,16 @@
       if (!thriftTrackSupabase) return;
       try {
         const fifteenMinutesAgo = new Date(Date.now() - 15 * 60 * 1000).toISOString();
+        // Only wipe reservations that were generated from checkout but NEVER filled out a payment handle
         await thriftTrackSupabase
           .from('items')
-          .update({ status: 'available', locked_at: null, ingestion_channel: null })
+          .update({ status: 'active', locked_at: null, ingestion_channel: null })
           .eq('status', 'pending')
+          .is('instagram_handle', null)
+          .eq('ingestion_channel', 'storefront')
           .lt('locked_at', fifteenMinutesAgo);
       } catch (err) {
-        console.warn('Stale reservation cleanup pass deferred.');
+        console.warn('Stale checkout pass deferred.');
       }
     }
 
@@ -158,7 +214,8 @@
         try {
           await cleanExpiredStaleReservations();
 
-          let query = thriftTrackSupabase.from('items').select('*').eq('status', 'available');
+          // Corrected status parameter lookup mapping to dashboard rules
+          let query = thriftTrackSupabase.from('items').select('*').eq('status', 'active');
           if (vendorId) {
             query = query.eq('user_id', vendorId);
           }
@@ -166,17 +223,17 @@
           const { data, error } = await query.order('created_at', { ascending: false });
           if (!error && data) items = data;
         } catch (e) {
-          console.warn('Fallback layout rendered.');
+          console.warn('Catalog array update cycle interrupted.');
         }
       }
 
       const container = document.getElementById('catalog-showroom-container');
       if (items.length === 0) {
         container.innerHTML = `
-          <div class="bg-white p-12 rounded-2xl border border-slate-100 text-center shadow-sm space-y-2">
-            <span class="text-3xl">✨</span>
-            <p class="font-bold text-slate-900 text-sm">Next Drop Loading Soon</p>
-            <p class="text-xs text-slate-400 max-w-xs mx-auto">Turn on post notifications so you don't miss out on the next cycle drop.</p>
+          <div class="bg-bg-card p-10 rounded-2xl border border-border-subtle text-center shadow-lg space-y-2">
+            <span class="text-2xl">✨</span>
+            <p class="font-bold text-zinc-200 text-xs uppercase tracking-wide">Next Drop Loading Soon</p>
+            <p class="text-[11px] text-zinc-500 max-w-xs mx-auto">Turn on notification settings on social channels to secure upcoming drops.</p>
           </div>
         `;
         return;
@@ -185,20 +242,21 @@
       container.innerHTML = '';
       items.forEach((item) => {
         container.innerHTML += `
-          <div class="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden group">
-            <div class="aspect-square bg-indigo-50/50 flex flex-col items-center justify-center p-6 border-b border-slate-100/60 relative">
-              <span class="text-xs font-bold uppercase tracking-widest text-indigo-400 bg-white shadow-sm border border-slate-100 px-3 py-1 rounded-full absolute top-4 left-4">Selection</span>
-              <span class="text-4xl text-indigo-400">👕</span>
+          <div class="bg-bg-card rounded-2xl border border-border-subtle shadow-lg overflow-hidden group">
+            <div class="aspect-square bg-zinc-900/50 flex flex-col items-center justify-center p-6 border-b border-border-subtle/40 relative">
+              <span class="text-[9px] font-bold uppercase tracking-widest text-brand-violet bg-bg-card shadow-md border border-border-subtle px-2.5 py-1 rounded-md absolute top-4 left-4">Selection</span>
+              <span class="text-4xl text-zinc-700 group-hover:scale-105 transition-transform duration-200">👕</span>
             </div>
-            <div class="p-5 space-y-4">
+            <div class="p-4 space-y-3.5">
               <div class="flex items-start justify-between gap-4">
                 <div>
-                  <h3 class="font-bold text-slate-900 text-base leading-tight">${item.item_name}</h3>
-                  <p class="text-xs text-slate-400 mt-1">10/10 Pristine vintage condition.</p>
+                  <h3 class="font-bold text-zinc-200 text-sm leading-tight">${item.item_name}</h3>
+                  <p class="text-[11px] text-zinc-500 mt-0.5">10/10 Pristine vintage condition.</p>
                 </div>
-                <p class="text-base font-black text-indigo-600 whitespace-nowrap">₦${Number(item.price).toLocaleString()}</p>
+                <p class="text-sm font-black text-brand-neon font-mono whitespace-nowrap">₦${Number(item.price).toLocaleString()}</p>
               </div>
-              <button onclick="handleClaimItem('${item.id}', '${item.item_name.replace(/'/g, "\\'")}', ${item.price})" class="w-full bg-slate-900 hover:bg-indigo-600 text-white text-xs font-bold tracking-wide uppercase py-3.5 rounded-xl transition-all duration-200 shadow-sm">
+              <button onclick="handleClaimItem('${item.id}', '${item.item_name.replace(/'/g, "\\'")}', ${item.price})" 
+                class="w-full bg-zinc-800 hover:bg-brand-violet text-white text-xs font-bold tracking-wide uppercase py-3 rounded-xl transition-all duration-200 cursor-pointer">
                 Claim Item
               </button>
             </div>
@@ -207,17 +265,25 @@
       });
     }
 
+    async function evaluateDeepLinkEntry(itemId) {
+      if (!thriftTrackSupabase) return;
+      const { data, error } = await thriftTrackSupabase.from('items').select('*').eq('id', itemId).maybeSingle();
+      if (!error && data && data.status === 'active') {
+        handleClaimItem(data.id, data.item_name, data.price);
+      }
+    }
+
     async function handleClaimItem(itemId, itemTitle, itemPrice) {
       if (!thriftTrackSupabase) return;
 
-      const { data: currentRecord, error: checkError } = await thriftTrackSupabase
+      const { data: currentRecord, checkError } = await thriftTrackSupabase
         .from('items')
         .select('status')
         .eq('id', itemId)
         .single();
 
-      if (checkError || (currentRecord && currentRecord.status !== 'available' && currentRecord.status !== null)) {
-        alert('Item claimed by another buyer.');
+      if (checkError || (currentRecord && currentRecord.status !== 'active')) {
+        alert('Item has been locked down by another checkout runner.');
         renderBuyerCatalog();
         return;
       }
@@ -229,7 +295,7 @@
         .eq('id', itemId);
 
       if (lockError) {
-        alert('Could not start checkout.');
+        alert('Could not open active connection.');
         return;
       }
 
@@ -270,7 +336,7 @@
     }
 
     async function cancelReservation() {
-      if (confirm('Release item back to the store?')) {
+      if (confirm('Release item reservation back to the lookbook?')) {
         await releaseActiveItem();
       }
     }
@@ -278,7 +344,7 @@
     async function releaseActiveItem() {
       if (countdownInterval) clearInterval(countdownInterval);
       if (activeCheckoutItemId && thriftTrackSupabase) {
-        await thriftTrackSupabase.from('items').update({ status: 'available', locked_at: null, ingestion_channel: null }).eq('id', activeCheckoutItemId);
+        await thriftTrackSupabase.from('items').update({ status: 'active', locked_at: null, ingestion_channel: null }).eq('id', activeCheckoutItemId);
       }
       activeCheckoutItemId = null;
       document.getElementById('checkout-modal').classList.add('hidden');
@@ -288,19 +354,20 @@
     async function confirmPaymentSent() {
       const structuralHandle = document.getElementById('buyer-verification-handle').value.trim();
       if (!structuralHandle) {
-        alert('Please enter your handle to continue.');
+        alert('Please output your social channel handle to lock in verification details.');
         return;
       }
 
       if (countdownInterval) clearInterval(countdownInterval);
       if (activeCheckoutItemId && thriftTrackSupabase) {
+        // Keeps state pending for merchant dashboard pipeline review instead of forcefully jumping to sold
         await thriftTrackSupabase
           .from('items')
-          .update({ status: 'sold', instagram_handle: structuralHandle, is_paid: false })
+          .update({ status: 'pending', instagram_handle: structuralHandle, is_paid: false })
           .eq('id', activeCheckoutItemId);
       }
 
-      alert('Order submitted successfully.');
+      alert('Payment submission recorded. Your verification is now pending merchant ledger approval.');
       activeCheckoutItemId = null;
       document.getElementById('checkout-modal').classList.add('hidden');
       renderBuyerCatalog();

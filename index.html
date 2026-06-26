@@ -33,6 +33,7 @@
 
 <body class="bg-bg-base text-zinc-100 min-h-screen antialiased font-sans pb-12">
 
+  <!-- Background Gradients -->
   <div class="fixed inset-0 -z-10 overflow-hidden pointer-events-none bg-bg-base select-none">
     <div class="absolute inset-0 opacity-[0.07]"
       style="background-image: linear-gradient(to right, #52525b 1px, transparent 1px), linear-gradient(to bottom, #52525b 1px, transparent 1px); background-size: 40px 40px;">
@@ -43,6 +44,7 @@
 
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 md:py-8">
 
+    <!-- App Header -->
     <header class="flex flex-col lg:flex-row lg:items-center justify-between border-b border-border-subtle pb-6 mb-6 md:mb-10 gap-4">
       <div class="flex items-center gap-3">
         <div class="h-9 w-9 bg-brand-violet rounded-lg flex items-center justify-center font-black text-xl tracking-tighter text-white shadow-lg shadow-brand-violet/20 shrink-0">
@@ -77,26 +79,24 @@
         </button>
       </nav>
 
-      <div class="flex items-center gap-2.5 bg-bg-card border border-border-subtle px-4 py-2 rounded-full shadow-inner self-start lg:self-auto">
-        <span class="relative flex h-2 w-2">
-          <span id="pulse-ping" class="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-neon opacity-75"></span>
-          <span id="pulse-dot" class="relative inline-flex rounded-full h-2 w-2 bg-brand-neon"></span>
-        </span>
-        <span class="text-[11px] md:text-xs font-medium tracking-wide text-zinc-400">
-          Assistant: <span id="copilot-status-text" class="text-zinc-200 transition-all font-bold">Ready</span>
-        </span>
+      <div class="flex items-center gap-2">
+        <button onclick="launchStorefrontPreview()"
+          class="bg-zinc-800 hover:bg-zinc-700 border border-border-subtle text-zinc-200 text-xs font-bold px-4 py-2 rounded-xl transition-all cursor-pointer">
+          🛒 Open Storefront
+        </button>
       </div>
     </header>
 
-    <!-- TAB 1: DASHBOARD MAIN CORE -->
+    <!-- Overview Tab -->
     <section id="tab-content-dashboard" class="tab-content space-y-6 md:space-y-8">
+      <!-- High Level Metrics Grid -->
       <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
         <div class="bg-bg-card border border-border-subtle p-4 md:p-5 rounded-2xl shadow-xl">
           <p class="text-[10px] uppercase tracking-widest font-bold text-zinc-500">Active Listings</p>
           <p id="metric-active" class="text-2xl md:text-3xl font-black text-zinc-100 mt-1 tracking-tight">0</p>
         </div>
         <div class="bg-bg-card border border-border-subtle p-4 md:p-5 rounded-2xl shadow-xl">
-          <p class="text-[10px] uppercase tracking-widest font-bold text-zinc-500">Pending Verification</p>
+          <p class="text-[10px] uppercase tracking-widest font-bold text-zinc-500">Pending Orders</p>
           <p id="metric-pending" class="text-2xl md:text-3xl font-black text-amber-500 mt-1 tracking-tight">0</p>
         </div>
         <div class="bg-bg-card border border-border-subtle p-4 md:p-5 rounded-2xl shadow-xl">
@@ -105,58 +105,22 @@
         </div>
       </div>
 
-      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 md:grid-cols-1 lg:gap-8">
-        <div class="lg:col-span-2 space-y-6">
-          <div class="bg-bg-card border border-border-subtle rounded-2xl p-4 md:p-6 shadow-2xl relative overflow-hidden">
-            <div class="absolute top-0 left-0 w-1.5 h-full bg-brand-violet"></div>
-
-            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
-              <div>
-                <h3 class="font-bold text-sm md:text-base text-zinc-100 flex items-center gap-2">
-                  <span>✨</span> Order Assistant
-                </h3>
-                <p class="text-[11px] md:text-xs text-zinc-400 mt-0.5">Paste raw chat messages or DM threads here to instantly update your inventory and prepare customer details.</p>
-              </div>
-              <div class="flex flex-wrap gap-2">
-                <button onclick="simulateInboundStream()"
-                  class="bg-brand-violet/10 hover:bg-brand-violet/20 border border-brand-violet/30 text-brand-violet text-[11px] font-bold px-2.5 py-1.5 rounded-xl transition-all cursor-pointer">
-                  ⚡ Load Sample
-                </button>
-                <button onclick="launchStorefrontPreview()"
-                  class="bg-brand-neon/10 hover:bg-brand-neon/20 border border-brand-neon/30 text-brand-neon text-[11px] font-bold px-2.5 py-1.5 rounded-xl transition-all cursor-pointer">
-                  🛒 Open Storefront Preview
-                </button>
-              </div>
-            </div>
-
-            <div class="space-y-4">
-              <textarea id="ai-command-input" rows="4"
-                placeholder="Example: &quot;Hey, I want to lock the vintage leather jacket. My handle is @bayo_sales, delivering to Abuja right now...&quot;"
-                class="w-full bg-bg-base border border-border-subtle rounded-xl p-3 md:p-4 text-xs font-medium text-zinc-200 placeholder-zinc-600 focus:outline-none focus:border-brand-violet transition-all resize-none shadow-inner leading-relaxed"></textarea>
-
-              <button onclick="executeAIIngestion()"
-                class="w-full bg-brand-violet hover:bg-brand-violet/90 text-white text-xs font-bold uppercase tracking-wider py-3.5 md:py-4 rounded-xl transition-all shadow-md flex items-center justify-center gap-2 tracking-widest cursor-pointer">
-                <span>Process Message</span>
-              </button>
-            </div>
+      <!-- Real-time Live Pipeline Feed -->
+      <div class="bg-bg-card border border-border-subtle rounded-2xl shadow-xl overflow-hidden flex flex-col">
+        <div class="px-5 py-4 border-b border-border-subtle bg-zinc-900/40 flex justify-between items-center shrink-0">
+          <div>
+            <h3 class="font-bold text-xs md:text-sm text-zinc-200">Live Order Pipeline</h3>
+            <p class="text-[10px] text-zinc-500 mt-0.5">Monitors real-time checkout sprints and active social holds.</p>
           </div>
+          <span class="text-[9px] bg-brand-neon/10 border border-brand-neon/20 text-brand-neon px-2 py-0.5 rounded-md font-mono animate-pulse">System Live</span>
         </div>
-
-        <div>
-          <div class="bg-bg-card border border-border-subtle rounded-2xl shadow-xl overflow-hidden flex flex-col max-h-[480px]">
-            <div class="px-5 py-4 border-b border-border-subtle bg-zinc-900/40 flex justify-between items-center shrink-0">
-              <h3 class="font-bold text-xs md:text-sm text-zinc-200">Recent Activity</h3>
-              <span class="text-[9px] bg-brand-neon/10 border border-brand-neon/20 text-brand-neon px-2 py-0.5 rounded-md font-mono animate-pulse">Live</span>
-            </div>
-            <div id="ledger-feed-container" class="divide-y divide-border-subtle text-xs overflow-y-auto grow">
-              <p class="p-8 text-zinc-500 text-center font-medium">Syncing updates...</p>
-            </div>
-          </div>
+        <div id="ledger-feed-container" class="divide-y divide-border-subtle text-xs grow min-h-[150px]">
+          <p class="p-8 text-zinc-500 text-center font-medium">Syncing order entries...</p>
         </div>
       </div>
     </section>
 
-    <!-- TAB 2: PUBLISH DROP -->
+    <!-- Add Product Tab -->
     <section id="tab-content-add-drop" class="tab-content hidden max-w-lg mx-auto space-y-6">
       <div class="bg-bg-card p-5 md:p-6 rounded-2xl border border-border-subtle shadow-2xl space-y-5">
         <div>
@@ -197,7 +161,7 @@
       </div>
     </section>
 
-    <!-- TAB 3: STOCKROOM LEDGER -->
+    <!-- Product Inventory Tab -->
     <section id="tab-content-inventory" class="tab-content hidden">
       <div class="bg-bg-card rounded-2xl border border-border-subtle shadow-xl overflow-hidden">
         <div class="px-5 py-4 border-b border-border-subtle bg-zinc-900/40 flex justify-between items-center">
@@ -205,6 +169,7 @@
           <span id="inventory-count-tag" class="bg-bg-base border border-border-subtle text-zinc-400 px-2.5 py-1 rounded-md font-mono text-[10px]">0 Products</span>
         </div>
 
+        <!-- Desktop Grid View -->
         <div class="hidden md:block overflow-x-auto">
           <table class="w-full text-left text-xs border-collapse">
             <thead>
@@ -217,17 +182,18 @@
             </thead>
             <tbody id="inventory-table-body" class="divide-y divide-border-subtle font-medium text-zinc-300">
               <tr>
-                <td colspan="4" class="p-8 text-zinc-500 text-center font-medium">Loading inventory...</td>
+                <td colspan="4" class="p-8 text-zinc-500 text-center font-medium">Loading inventory listings...</td>
               </tr>
             </tbody>
           </table>
         </div>
 
+        <!-- Mobile Card View -->
         <div id="inventory-mobile-cards-container" class="block md:hidden divide-y divide-border-subtle text-xs"></div>
       </div>
     </section>
 
-    <!-- TAB 4: SETTINGS PANEL -->
+    <!-- Payout Settings Tab -->
     <section id="tab-content-settings" class="tab-content hidden max-w-md mx-auto space-y-4">
       <div class="bg-bg-card p-5 md:p-6 rounded-2xl border border-border-subtle shadow-2xl space-y-5">
         <div>
@@ -245,6 +211,11 @@
           <div>
             <label class="block text-[10px] font-bold text-zinc-400 uppercase tracking-widest mb-1.5">Instagram Handle</label>
             <input type="text" id="instagram-handle-field" placeholder="e.g., retrovibe.ng"
+              class="w-full bg-bg-base border border-border-subtle text-zinc-100 rounded-xl px-4 py-3 text-xs font-medium focus:outline-none focus:border-brand-violet transition-all" />
+          </div>
+          <div>
+            <label class="block text-[10px] font-bold text-zinc-400 uppercase tracking-widest mb-1.5">WhatsApp Number</label>
+            <input type="text" id="whatsapp-number-field" placeholder="e.g., +2348012345678"
               class="w-full bg-bg-base border border-border-subtle text-zinc-100 rounded-xl px-4 py-3 text-xs font-medium focus:outline-none focus:border-brand-violet transition-all" />
           </div>
           <div>
@@ -272,52 +243,17 @@
 
   </div>
 
-  <!-- Confirmation Drawer Flyout Overlay -->
-  <div id="slide-over-backdrop" class="fixed inset-0 bg-black/60 backdrop-blur-xs transition-opacity duration-300 opacity-0 pointer-events-none z-50 flex justify-end">
-    <div id="slide-over-tray" class="w-full sm:max-w-md bg-bg-card border-l border-border-subtle h-full p-5 md:p-6 shadow-2xl transform translate-x-full transition-transform duration-300 ease-out flex flex-col justify-between overflow-y-auto">
-      <div class="space-y-6">
-        <div class="flex items-center justify-between border-b border-border-subtle pb-4">
-          <div class="flex items-center gap-2">
-            <span class="text-xl">✨</span>
-            <div>
-              <h4 class="font-bold text-xs md:text-sm text-zinc-100">Order Details</h4>
-              <p class="text-[9px] text-zinc-500 uppercase font-mono">Parsed Successfully</p>
-            </div>
-          </div>
-          <button onclick="closeConfirmationTray()" class="text-zinc-500 hover:text-zinc-300 text-xs font-bold bg-bg-base h-7 w-7 rounded-lg border border-border-subtle flex items-center justify-center cursor-pointer">✕</button>
-        </div>
-
-        <div class="bg-bg-base/60 border border-border-subtle p-4 rounded-xl space-y-3 text-xs">
-          <div class="flex justify-between"><span class="text-zinc-500">Product Match:</span><span id="tray-item-name" class="font-bold text-zinc-200">-</span></div>
-          <div class="flex justify-between"><span class="text-zinc-500">Price:</span><span id="tray-item-price" class="font-mono font-bold text-brand-neon">-</span></div>
-          <div class="flex justify-between"><span class="text-zinc-500">Customer Handle:</span><span id="tray-customer-handle" class="font-bold text-brand-violet">-</span></div>
-          <div class="flex justify-between"><span class="text-zinc-500">Order Source:</span><span id="tray-routing-channel" class="uppercase font-mono text-[9px] px-2 py-0.5 bg-zinc-800 rounded border border-border-subtle text-zinc-300">-</span></div>
-        </div>
-
-        <div class="space-y-2">
-          <label class="block text-[10px] font-bold text-zinc-400 uppercase tracking-widest">Customer Message</label>
-          <div id="tray-dispatch-text" class="bg-bg-base border border-border-subtle p-3 md:p-4 rounded-xl text-xs font-mono elegance leading-relaxed text-zinc-300 whitespace-pre-wrap select-all max-h-[180px] overflow-y-auto"></div>
-        </div>
-      </div>
-
-      <button onclick="copyTrayTextToClipboard()" class="w-full bg-brand-violet hover:bg-brand-violet/90 text-white font-bold text-xs uppercase tracking-widest py-3.5 md:py-4 rounded-xl shadow-lg transition-all flex items-center justify-center gap-2 cursor-pointer mt-6">
-        <span>Copy Message & Close</span> 📋
-      </button>
-    </div>
-  </div>
-
   <textarea id="clipboard-fallback" class="absolute left-[-9999px] top-0" readonly></textarea>
 
   <script>
-   const SUPABASE_TARGET_URL = window.ENV_SUPABASE_URL || '';
-const SUPABASE_TARGET_KEY = window.ENV_SUPABASE_ANON_KEY || '';
+    const SUPABASE_TARGET_URL = window.ENV_SUPABASE_URL || '';
+    const SUPABASE_TARGET_KEY = window.ENV_SUPABASE_ANON_KEY || '';
 
-// Ensure the third argument specifying the 'thrifttrack' schema is present:
-const adminSupabase = window.supabase 
-  ? window.supabase.createClient(SUPABASE_TARGET_URL, SUPABASE_TARGET_KEY, { 
-      db: { schema: 'thrifttrack' } 
-    }) 
-  : null;
+    const adminSupabase = window.supabase 
+      ? window.supabase.createClient(SUPABASE_TARGET_URL, SUPABASE_TARGET_KEY, { 
+          db: { schema: 'thrifttrack' } 
+        }) 
+      : null;
 
     let editingItemId = null;
     let cachedAuthenticatedUserId = null;
@@ -340,8 +276,24 @@ const adminSupabase = window.supabase
       if (cachedAuthenticatedUserId) {
         window.open(`storefront.html?vendor=${cachedAuthenticatedUserId}`, '_blank');
       } else {
-        alert("Authentication context parsing. Please reload the suite window.");
+        alert("Authentication mapping lost. Please reload the app window.");
       }
+    }
+
+    function copyCheckoutLink(itemId) {
+      if (!cachedAuthenticatedUserId) return;
+      const baseLoc = window.location.origin + window.location.pathname.replace('index.html', '');
+      const compiledUrl = `${baseLoc}storefront.html?vendor=${cachedAuthenticatedUserId}&item=${itemId}`;
+      
+      navigator.clipboard.writeText(compiledUrl).then(() => {
+        alert("Direct storefront checkout link copied to clipboard!");
+      }).catch(() => {
+        const fallbackBox = document.getElementById('clipboard-fallback');
+        fallbackBox.value = compiledUrl;
+        fallbackBox.select();
+        document.execCommand('copy');
+        alert("Direct storefront checkout link copied!");
+      });
     }
 
     async function logout() {
@@ -353,7 +305,8 @@ const adminSupabase = window.supabase
 
     document.addEventListener('DOMContentLoaded', () => {
       initializeRealtimeChannel();
-      setInterval(loadWorkspacePipeline, 60000);
+      // Live system ticker to refresh dynamic expiration states every 30 seconds
+      setInterval(loadWorkspacePipeline, 30000);
     });
 
     function initializeRealtimeChannel() {
@@ -361,7 +314,7 @@ const adminSupabase = window.supabase
       adminSupabase
       .channel('schema-db-changes')
       .on('postgres_changes', { event: '*', schema: 'thrifttrack', table: 'items' }, () => { 
-      loadWorkspacePipeline(); 
+        loadWorkspacePipeline(); 
       })
       .subscribe();
     }
@@ -380,156 +333,63 @@ const adminSupabase = window.supabase
       }
     }
 
-    function simulateInboundStream() {
-      const dynamicScenarios = [
-        "Yo boss check DM, need that Rare Carhartt Vintage Jacket dropped to Abuja ASAP. My IG handle is @bayo_sales. WhatsApp path locked.",
-        "Is the vintage denim piece available still? Lock it down for me under handle @tunde_style. I'll make payment directly to your bank account structure",
-        "Heard the drop is live! Can you hold the Rare Carhartt Vintage Jacket for @amina_lux via instagram message line?"
-      ];
-      const randomIndex = Math.floor(Math.random() * dynamicScenarios.length);
-      document.getElementById('ai-command-input').value = dynamicScenarios[randomIndex];
-    }
-
-    async function executeAIIngestion() {
-      const inputField = document.getElementById('ai-command-input');
-      const streamText = inputField.value.trim();
-      if (!streamText) {
-        alert("Please enter or generate a message first.");
+    async function manuallyTriggerPending(itemId) {
+      const handle = prompt("Enter customer social handle or reference identifier:");
+      if (!handle) return;
+      
+      const sourceChannel = prompt("Enter ingestion channel source ('instagram' or 'whatsapp'):", "instagram");
+      if (!sourceChannel || (sourceChannel !== 'instagram' && sourceChannel !== 'whatsapp')) {
+        alert("Invalid source channel choice. Please enter either 'instagram' or 'whatsapp'.");
         return;
       }
 
-      const statusLabel = document.getElementById('copilot-status-text');
-      const pingNode = document.getElementById('pulse-ping');
-      const dotNode = document.getElementById('pulse-dot');
-
-      statusLabel.innerText = "Reading order details...";
-      statusLabel.className = "text-brand-violet font-black animate-pulse text-xs";
-      pingNode.className = "animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-violet opacity-75";
-      dotNode.className = "relative inline-flex rounded-full h-2 w-2 bg-brand-violet";
-
-      try {
-        if (!adminSupabase) throw new Error("Connection error.");
-
-        const matchHandle = streamText.match(/@\w+/);
-        const customerHandle = matchHandle ? matchHandle[0] : "@unknown_buyer";
-
-        let channelRoute = "storefront";
-        if (streamText.toLowerCase().includes("whatsapp")) channelRoute = "whatsapp";
-        else if (streamText.toLowerCase().includes("ig") || streamText.toLowerCase().includes("instagram") || streamText.toLowerCase().includes("dm")) channelRoute = "instagram";
-
-        const { data: availableAssets, error: fetchError } = await adminSupabase
-          .from('items')
-          .select('*')
-          .eq('status', 'available')
-          .eq('user_id', cachedAuthenticatedUserId);
-          
-        if (fetchError) throw fetchError;
-
-        let resolvedAsset = null;
-        if (availableAssets && availableAssets.length > 0) {
-          resolvedAsset = availableAssets.find(asset =>
-            streamText.toLowerCase().includes(asset.item_name.toLowerCase()) ||
-            asset.item_name.toLowerCase().split(' ').some(token => token.length > 3 && streamText.toLowerCase().includes(token))
-          );
-        }
-
-        if (!resolvedAsset) {
-          alert("Could not find a matching product title in your active inventory.");
-          return;
-        }
-
-        const { error: patchError } = await adminSupabase
-          .from('items')
-          .update({
-            status: 'sold',
-            instagram_handle: customerHandle,
-            ingestion_channel: channelRoute,
-            locked_at: new Date().toISOString()
-          })
-          .eq('id', resolvedAsset.id);
-
-        if (patchError) throw patchError;
-
-        inputField.value = '';
-        loadWorkspacePipeline();
-        
-        const { data: profile } = await adminSupabase.from('profiles').select('*').eq('id', cachedAuthenticatedUserId).maybeSingle();
-        
-        const msgTemplate = `Order secured for ${customerHandle} ✨\n\nWe've held the "${resolvedAsset.item_name}" for you.\n\nTotal: ₦${Number(resolvedAsset.price).toLocaleString()}\nBank: ${profile?.bank_name || 'Not configured'}\nAccount: ${profile?.account_number || '-'}\nName: ${profile?.account_name || '-'}\n\nPlease drop your transfer receipt here to finalize your delivery. 📦`;
-        
-        document.getElementById('tray-item-name').innerText = resolvedAsset.item_name;
-        document.getElementById('tray-item-price').innerText = `₦${Number(resolvedAsset.price).toLocaleString()}`;
-        document.getElementById('tray-customer-handle').innerText = customerHandle;
-        document.getElementById('tray-routing-channel').innerText = channelRoute;
-        document.getElementById('tray-dispatch-text').innerText = msgTemplate;
-
-        const backdrop = document.getElementById('slide-over-backdrop');
-        const drawer = document.getElementById('slide-over-tray');
-        backdrop.classList.remove('pointer-events-none', 'opacity-0');
-        backdrop.classList.add('opacity-100');
-        drawer.classList.remove('translate-x-full');
-
-      } catch (err) {
-        alert(`Could not process order: ${err.message}`);
-      } finally {
-        statusLabel.innerText = "Ready";
-        statusLabel.className = "text-zinc-200 font-bold text-xs";
-        pingNode.className = "animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-neon opacity-75";
-        dotNode.className = "relative inline-flex rounded-full h-2 w-2 bg-brand-neon";
-      }
-    }
-
-    async function nudgeBuyerTemplate(handle, itemName) {
-      const { data: profile } = await adminSupabase.from('profiles').select('*').eq('id', cachedAuthenticatedUserId).maybeSingle();
-      const copyStr = `Hey ${handle}, just following up on your order for the "${itemName}" ✨.\n\nOur holding window is closing soon. If you've transferred the funds to ${profile?.bank_name || 'Bank'} (${profile?.account_number || 'Account'}), please reply with a screenshot of your receipt so we can ship your package. 📦`;
-
-      navigator.clipboard.writeText(copyStr).then(() => {
-        alert(`Follow-up message copied for ${handle}.`);
-      });
-    }
-
-    async function releaseHoldToFloor(itemId, itemName) {
-      if (!confirm(`Release "${itemName}" back to your active storefront?`)) return;
       if (adminSupabase) {
         const { error } = await adminSupabase
           .from('items')
-          .update({ status: 'available', instagram_handle: null, ingestion_channel: null, locked_at: null })
+          .update({
+            status: 'pending',
+            is_paid: false,
+            instagram_handle: handle,
+            ingestion_channel: sourceChannel,
+            locked_at: new Date().toISOString()
+          })
           .eq('id', itemId);
 
-        if (!error) loadWorkspacePipeline();
+        if (error) alert(error.message);
+        else loadWorkspacePipeline();
       }
     }
 
-    function closeConfirmationTray() {
-      const backdrop = document.getElementById('slide-over-backdrop');
-      const drawer = document.getElementById('slide-over-tray');
-      backdrop.classList.add('pointer-events-none', 'opacity-0');
-      backdrop.classList.remove('opacity-100');
-      drawer.classList.add('translate-x-full');
-    }
+    async function releaseHoldToFloor(itemId) {
+      if (!confirm("Release item back to your live active storefront catalog?")) return;
+      if (adminSupabase) {
+        const { error } = await adminSupabase
+          .from('items')
+          .update({ 
+            status: 'active', 
+            instagram_handle: null, 
+            ingestion_channel: null, 
+            locked_at: null,
+            is_paid: false 
+          })
+          .eq('id', itemId);
 
-    document.getElementsById = function(id) { return document.getElementById(id); };
-
-    function copyTrayTextToClipboard() {
-      const payloadText = document.getElementById('tray-dispatch-text').innerText;
-      navigator.clipboard.writeText(payloadText).then(() => {
-        alert("Message copied.");
-        closeConfirmationTray();
-      });
+        if (error) alert(error.message);
+        else loadWorkspacePipeline();
+      }
     }
 
     function generateAICopywriterCaption() {
       const title = document.getElementById('drop-title-input').value.trim();
       const price = document.getElementById('drop-price-input').value.trim();
       if (!title || !price) {
-        alert("Please fill in both the product title and price first.");
+        alert("Please fill in both the product title and price fields first.");
         return;
       }
 
-      const vectors = ["Vintage piece ✨", "Now available 🔥", "Pristine condition 💎"];
+      const vectors = ["Premium selection ✨", "Now live on the floor 🔥", "Pristine vintage condition 💎"];
       const selectedVector = vectors[Math.floor(Math.random() * vectors.length)];
-
-      const copyStr = `⚡️ NOW LIVE ⚡️\n\nProduct: ${title}\nPrice: ₦${Number(price).toLocaleString()}\n\n${selectedVector}\n\n📦 TO BUY:\nSend us a DM or click the link in our bio to checkout before it's gone!`;
+      const copyStr = `⚡️ NOW LIVE ⚡️\n\nProduct: ${title}\nPrice: ₦${Number(price).toLocaleString()}\n\n${selectedVector}\n\n📦 HOW TO PURCHASE:\nClick the link in our bio to checkout instantly before it's gone!`;
 
       document.getElementById('ai-copywriter-text').innerText = copyStr;
       document.getElementById('ai-copywriter-box').classList.remove('hidden');
@@ -551,17 +411,24 @@ const adminSupabase = window.supabase
       const value = Number(pInput.value.trim());
 
       if (!name || !value) {
-        alert("Please fill out all required fields.");
+        alert("Please specify a valid product title and pricing.");
         return;
       }
 
       if (adminSupabase && cachedAuthenticatedUserId) {
         const { error } = await adminSupabase
           .from('items')
-          .insert([{ user_id: cachedAuthenticatedUserId, item_name: name, price: value, status: 'available', is_paid: false, ingestion_channel: 'storefront' }]);
+          .insert([{ 
+            user_id: cachedAuthenticatedUserId, 
+            item_name: name, 
+            price: value, 
+            status: 'active', 
+            is_paid: false, 
+            ingestion_channel: 'storefront' 
+          }]);
 
         if (error) {
-          alert(`Could not list product: ${error.message}`);
+          alert(`Could not save asset: ${error.message}`);
         } else {
           tInput.value = '';
           pInput.value = '';
@@ -583,77 +450,83 @@ const adminSupabase = window.supabase
           
         if (error) throw error;
 
-        const floorItems = records.filter(i => i.status === 'available' || !i.status);
-        const pendingItems = records.filter(i => i.status === 'sold' && !i.is_paid);
-        const finalizedItems = records.filter(i => i.is_paid === true);
+        // Clean Architecture Normalized Segment Filtering
+        const activeItems = records.filter(i => i.status === 'active' || i.status === 'available' || !i.status);
+        const pendingItems = records.filter(i => i.status === 'pending');
+        const finalizedItems = records.filter(i => i.status === 'sold' || i.is_paid === true);
         const accruedVolume = finalizedItems.reduce((sum, item) => sum + Number(item.price || 0), 0);
 
-        document.getElementById('metric-active').innerText = floorItems.length;
+        document.getElementById('metric-active').innerText = activeItems.length;
         document.getElementById('metric-pending').innerText = pendingItems.length;
         document.getElementById('metric-sales').innerText = `₦${accruedVolume.toLocaleString()}`;
         document.getElementById('inventory-count-tag').innerText = `${records.length} Products`;
 
         const feedFeed = document.getElementById('ledger-feed-container');
         if (records.length === 0) {
-          feedFeed.innerHTML = `<p class="p-8 text-zinc-600 text-center font-medium">No recent activity.</p>`;
+          feedFeed.innerHTML = `<p class="p-8 text-zinc-600 text-center font-medium">No system metrics recorded yet.</p>`;
         } else {
           feedFeed.innerHTML = '';
           records.forEach(item => {
-            let indicatorClass = "bg-zinc-900 border-zinc-800 text-zinc-500";
-            let progressText = "Active Listing";
-            let timelineAlertStyles = "";
-            let actionButtonsHTML = "";
+            let badgeClass = "bg-zinc-900 border-zinc-800 text-zinc-500";
+            let stateLabel = "Active Listing";
+            let containerModifiers = "";
+            let utilityActionsHTML = "";
 
-            if (item.status === 'sold' && !item.is_paid) {
-              indicatorClass = "bg-amber-500/10 border-amber-500/20 text-amber-400";
-              progressText = "Awaiting Payment";
+            const isItemPending = item.status === 'pending';
+            const isItemPaid = item.status === 'sold' || item.is_paid === true;
 
+            if (isItemPending) {
+              badgeClass = "bg-amber-500/10 border-amber-500/20 text-amber-400";
+              
               if (item.locked_at) {
-                const hoursPassed = (new Date() - new Date(item.locked_at)) / (1000 * 60 * 60);
+                const now = new Date();
+                const lockTime = new Date(item.locked_at);
+                const minutesDiff = (now - lockTime) / (1000 * 60);
 
-                if (hoursPassed >= 24) {
-                  timelineAlertStyles = "border-l-4 border-rose-600 bg-rose-950/20 animate-danger-pulse";
-                  progressText = "Expired Hold (24h+)";
-                  indicatorClass = "bg-rose-500/20 border-rose-500/40 text-rose-400";
-                  actionButtonsHTML = `
+                // Enforce Dynamic Dual-Urgency Time Rule Checks
+                let limitMinutes = item.ingestion_channel === 'storefront' ? 15 : 1440; // 15 mins vs 24 hours
+                let minutesRemaining = limitMinutes - minutesDiff;
+
+                if (minutesRemaining <= 0) {
+                  containerModifiers = "border-l-4 border-rose-600 bg-rose-950/10 animate-danger-pulse";
+                  stateLabel = "Expired Hold";
+                  badgeClass = "bg-rose-500/20 border-rose-500/40 text-rose-400";
+                  utilityActionsHTML = `
                     <div class="grid grid-cols-2 gap-2 mt-2">
                       <button onclick="approveLedgerPayout('${item.id}')" class="bg-brand-neon hover:bg-brand-neon/90 text-zinc-950 text-[10px] font-black uppercase tracking-wider py-1.5 rounded-md cursor-pointer">Confirm Payment</button>
-                      <button onclick="releaseHoldToFloor('${item.id}', '${item.item_name.replace(/'/g, "\\'")}')" class="bg-rose-600 hover:bg-rose-700 text-white text-[10px] font-bold uppercase tracking-wider py-1.5 rounded-md cursor-pointer">Release to Store</button>
-                    </div>
-                  `;
-                } else if (hoursPassed >= 18) {
-                  timelineAlertStyles = "border-l-4 border-amber-500 bg-amber-950/10";
-                  progressText = "Holding Over 18h";
-                  actionButtonsHTML = `
-                    <div class="grid grid-cols-2 gap-2 mt-2">
-                      <button onclick="approveLedgerPayout('${item.id}')" class="bg-brand-neon hover:bg-brand-neon/90 text-zinc-950 text-[10px] font-black uppercase tracking-wider py-1.5 rounded-md cursor-pointer">Confirm Payment</button>
-                      <button onclick="nudgeBuyerTemplate('${item.instagram_handle}', '${item.item_name.replace(/'/g, "\\'")}')" class="bg-amber-500 hover:bg-amber-600 text-zinc-950 text-[10px] font-bold uppercase tracking-wider py-1.5 rounded-md cursor-pointer">Follow Up ⏳</button>
-                    </div>
-                  `;
+                      <button onclick="releaseHoldToFloor('${item.id}')" class="bg-rose-600 hover:bg-rose-700 text-white text-[10px] font-bold uppercase tracking-wider py-1.5 rounded-md cursor-pointer">Release to Floor</button>
+                    </div>`;
                 } else {
-                  actionButtonsHTML = `<button onclick="approveLedgerPayout('${item.id}')" class="w-full mt-2 bg-brand-neon hover:bg-brand-neon/90 text-zinc-950 text-[10px] font-black uppercase tracking-wider py-1.5 rounded-lg transition-all cursor-pointer">Confirm Payment</button>`;
+                  let timeStr = "";
+                  if (minutesRemaining > 60) {
+                    timeStr = `${Math.floor(minutesRemaining / 60)}h ${Math.round(minutesRemaining % 60)}m`;
+                  } else {
+                    timeStr = `${Math.ceil(minutesRemaining)}m`;
+                  }
+                  stateLabel = `Pending (${timeStr} left)`;
+                  utilityActionsHTML = `<button onclick="approveLedgerPayout('${item.id}')" class="w-full mt-2 bg-brand-neon hover:bg-brand-neon/90 text-zinc-950 text-[10px] font-black uppercase tracking-wider py-1.5 rounded-lg transition-all cursor-pointer">Confirm Payment</button>`;
                 }
               } else {
-                actionButtonsHTML = `<button onclick="approveLedgerPayout('${item.id}')" class="w-full mt-2 bg-brand-neon hover:bg-brand-neon/90 text-zinc-950 text-[10px] font-black uppercase tracking-wider py-1.5 rounded-lg transition-all cursor-pointer">Confirm Payment</button>`;
+                stateLabel = "Awaiting Verification";
+                utilityActionsHTML = `<button onclick="approveLedgerPayout('${item.id}')" class="w-full mt-2 bg-brand-neon hover:bg-brand-neon/90 text-zinc-950 text-[10px] font-black uppercase tracking-wider py-1.5 rounded-lg transition-all cursor-pointer">Confirm Payment</button>`;
               }
-            } else if (item.is_paid) {
-              indicatorClass = "bg-brand-neon/10 border-brand-neon/20 text-brand-neon";
-              progressText = "Completed";
+            } else if (isItemPaid) {
+              badgeClass = "bg-brand-neon/10 border-brand-neon/20 text-brand-neon";
+              stateLabel = "Completed";
             }
 
             feedFeed.innerHTML += `
-              <div class="p-4 space-y-1 hover:bg-zinc-900/20 transition-all ${timelineAlertStyles}">
+              <div class="p-4 space-y-1 hover:bg-zinc-900/20 transition-all ${containerModifiers}">
                 <div class="flex items-center justify-between gap-2">
                   <span class="font-bold text-zinc-200 text-xs">${item.item_name}</span>
                   <span class="font-mono text-zinc-300 font-bold">₦${Number(item.price).toLocaleString()}</span>
                 </div>
                 <div class="flex items-center justify-between text-[11px] text-zinc-500">
-                  <span>${item.instagram_handle ? `${item.instagram_handle}` : 'Storefront'}</span>
-                  <span class="px-2 py-0.5 border text-[9px] font-bold rounded-md uppercase tracking-wider ${indicatorClass}">${progressText}</span>
+                  <span>Channel: <span class="text-zinc-300 uppercase font-mono text-[10px]">${item.ingestion_channel || 'Storefront'}</span> ${item.instagram_handle ? `(${item.instagram_handle})` : ''}</span>
+                  <span class="px-2 py-0.5 border text-[9px] font-bold rounded-md uppercase tracking-wider ${badgeClass}">${stateLabel}</span>
                 </div>
-                ${actionButtonsHTML}
-              </div>
-            `;
+                ${utilityActionsHTML}
+              </div>`;
           });
         }
 
@@ -661,26 +534,37 @@ const adminSupabase = window.supabase
         const mobileCardsContainer = document.getElementById('inventory-mobile-cards-container');
 
         if (records.length === 0) {
-          tableBody.innerHTML = `<tr><td class="p-8 text-zinc-600 text-center font-medium">No products found.</td></tr>`;
-          mobileCardsContainer.innerHTML = `<p class="p-8 text-zinc-600 text-center font-medium">No products found.</p>`;
+          tableBody.innerHTML = `<tr><td class="p-8 text-zinc-600 text-center font-medium">No ledger records located.</td></tr>`;
+          mobileCardsContainer.innerHTML = `<p class="p-8 text-zinc-600 text-center font-medium">No products configured.</p>`;
         } else {
           tableBody.innerHTML = '';
           mobileCardsContainer.innerHTML = '';
 
           records.forEach(item => {
             const isEditing = item.id === editingItemId;
+            const itemIsActive = item.status === 'active' || item.status === 'available' || !item.status;
+            const itemIsPending = item.status === 'pending';
+            const itemIsPaid = item.status === 'sold' || item.is_paid === true;
+
             const statusBadgeHTML = `
-              <span class="px-2 py-0.5 text-[9px] font-bold border rounded-md uppercase tracking-wider ${item.is_paid ? 'bg-brand-neon/10 border-brand-neon/20 text-brand-neon' :
-                item.status === 'sold' ? 'bg-amber-500/10 border-amber-500/20 text-amber-400' : 'bg-zinc-800 border-zinc-700 text-zinc-500'
-              }">${item.is_paid ? 'Paid' : item.status === 'sold' ? 'Pending' : 'Active'}</span>
-            `;
+              <span class="px-2 py-0.5 text-[9px] font-bold border rounded-md uppercase tracking-wider ${itemIsPaid ? 'bg-brand-neon/10 border-brand-neon/20 text-brand-neon' :
+                itemIsPending ? 'bg-amber-500/10 border-amber-500/20 text-amber-400' : 'bg-zinc-800 border-zinc-700 text-zinc-500'
+              }">${itemIsPaid ? 'Paid' : itemIsPending ? 'Pending' : 'Active'}</span>`;
+
+            // Action Routing Logic Buttons
+            let contextActionButtons = "";
+            if (itemIsActive) {
+              contextActionButtons = `<button onclick="manuallyTriggerPending('${item.id}')" class="text-amber-500 hover:text-amber-400 font-bold cursor-pointer">Hold Asset</button>`;
+            } else if (itemIsPending) {
+              contextActionButtons = `<button onclick="releaseHoldToFloor('${item.id}')" class="text-rose-500 hover:text-rose-400 font-bold cursor-pointer">Release Hold</button>`;
+            }
 
             if (isEditing) {
               tableBody.innerHTML += `
                 <tr class="bg-zinc-900/40 border-y border-border-subtle">
                   <td class="p-3"><input type="text" id="inline-title-${item.id}" value="${item.item_name}" class="text-xs font-bold text-zinc-100 bg-bg-base border border-border-subtle rounded-lg px-2 py-1.5 focus:outline-none w-full" /></td>
                   <td class="p-3"><input type="number" id="inline-price-${item.id}" value="${item.price}" class="text-xs font-mono font-bold text-zinc-100 bg-bg-base border border-border-subtle rounded-lg px-2 py-1.5 focus:outline-none w-28" /></td>
-                  <td class="p-3 text-zinc-500 text-[10px] uppercase font-mono tracking-wider">Saving...</td>
+                  <td class="p-3 text-zinc-500 text-[10px] uppercase font-mono tracking-wider">Modifying...</td>
                   <td class="p-3 text-right space-x-2 whitespace-nowrap">
                     <button onclick="executeSaveInlineEdit('${item.id}')" class="bg-brand-neon text-zinc-950 font-black text-[11px] px-3 py-1.5 rounded-md cursor-pointer">Save</button>
                     <button onclick="toggleInlineEdit(null)" class="bg-zinc-800 text-zinc-300 font-semibold text-[11px] px-3 py-1.5 rounded-md border border-border-subtle cursor-pointer">Cancel</button>
@@ -689,10 +573,15 @@ const adminSupabase = window.supabase
             } else {
               tableBody.innerHTML += `
                 <tr class="hover:bg-zinc-900/10 transition-all border-b border-border-subtle">
-                  <td class="p-4 font-bold text-zinc-200">${item.item_name}</td>
+                  <td class="p-4">
+                    <div class="font-bold text-zinc-200">${item.item_name}</div>
+                    <div class="text-[10px] text-zinc-500 mt-0.5 font-mono">ID: ${item.id}</div>
+                  </td>
                   <td class="p-4 font-mono text-zinc-400">₦${Number(item.price).toLocaleString()}</td>
                   <td class="p-4">${statusBadgeHTML}</td>
-                  <td class="p-4 text-right space-x-3 whitespace-nowrap">
+                  <td class="p-4 text-right space-x-4 whitespace-nowrap">
+                    <button onclick="copyCheckoutLink('${item.id}')" class="text-brand-neon hover:text-white font-bold cursor-pointer">🔗 Copy Link</button>
+                    ${contextActionButtons}
                     <button onclick="toggleInlineEdit('${item.id}')" class="text-brand-violet hover:text-white font-bold cursor-pointer">Edit</button>
                     <button onclick="deleteInventoryItem('${item.id}')" class="text-rose-500 hover:text-rose-400 font-bold cursor-pointer">Delete</button>
                   </td>
@@ -719,9 +608,13 @@ const adminSupabase = window.supabase
                     </div>
                     ${statusBadgeHTML}
                   </div>
-                  <div class="flex justify-end gap-4 text-xs font-bold pt-1">
-                    <button onclick="toggleInlineEdit('${item.id}')" class="text-brand-violet cursor-pointer">Edit</button>
-                    <button onclick="deleteInventoryItem('${item.id}')" class="text-rose-500 cursor-pointer">Delete</button>
+                  <div class="flex justify-between items-center gap-2 text-xs font-bold pt-1 border-t border-zinc-900/60">
+                    <button onclick="copyCheckoutLink('${item.id}')" class="text-brand-neon cursor-pointer">🔗 Copy Link</button>
+                    <div class="flex gap-3">
+                      ${contextActionButtons}
+                      <button onclick="toggleInlineEdit('${item.id}')" class="text-brand-violet cursor-pointer">Edit</button>
+                      <button onclick="deleteInventoryItem('${item.id}')" class="text-rose-500 cursor-pointer">Delete</button>
+                    </div>
                   </div>
                 </div>`;
             }
@@ -744,13 +637,13 @@ const adminSupabase = window.supabase
       const updatedPrice = Number(document.getElementById(`inline-${suffix}price-${itemId}`).value.trim());
 
       if (!updatedTitle || !updatedPrice) {
-        alert("Product title and price cannot be blank.");
+        alert("Fields cannot be left empty.");
         return;
       }
 
       const { error } = await adminSupabase.from('items').update({ item_name: updatedTitle, price: updatedPrice }).eq('id', itemId);
       if (error) {
-        alert(`Could not save changes: ${error.message}`);
+        alert(`Could not save records: ${error.message}`);
       } else {
         editingItemId = null;
         loadWorkspacePipeline();
@@ -759,16 +652,18 @@ const adminSupabase = window.supabase
 
     async function approveLedgerPayout(itemId) {
       if (adminSupabase) {
-        const { error } = await adminSupabase.from('items').update({ is_paid: true }).eq('id', itemId);
-        if (!error) loadWorkspacePipeline();
+        const { error } = await adminSupabase.from('items').update({ status: 'sold', is_paid: true }).eq('id', itemId);
+        if (error) alert(error.message);
+        else loadWorkspacePipeline();
       }
     }
 
     async function deleteInventoryItem(itemId) {
-      if (!confirm("Are you sure you want to delete this item?")) return;
+      if (!confirm("Are you sure you want to permanently remove this product asset?")) return;
       if (adminSupabase) {
         const { error } = await adminSupabase.from('items').delete().eq('id', itemId);
-        if (!error) loadWorkspacePipeline();
+        if (error) alert(error.message);
+        else loadWorkspacePipeline();
       }
     }
 
@@ -776,18 +671,27 @@ const adminSupabase = window.supabase
       if (!adminSupabase || !cachedAuthenticatedUserId) return;
       const name = document.getElementById('store-name-field').value.trim();
       const ig = document.getElementById('instagram-handle-field').value.trim();
+      const whatsapp = document.getElementById('whatsapp-number-field').value.trim();
       const bank = document.getElementById('bank-name-field').value.trim();
       const acc = document.getElementById('bank-account-field').value.trim();
       const holder = document.getElementById('bank-holder-field').value.trim();
 
       const { error } = await adminSupabase
         .from('profiles')
-        .upsert({ id: cachedAuthenticatedUserId, store_name: name, instagram_handle: ig, bank_name: bank, account_number: acc, account_name: holder });
+        .upsert({ 
+          id: cachedAuthenticatedUserId, 
+          store_name: name, 
+          instagram_handle: ig, 
+          whatsapp_number: whatsapp, 
+          bank_name: bank, 
+          account_number: acc, 
+          account_name: holder 
+        });
 
       if (error) {
-        alert(`Could not save your changes: ${error.message}`);
+        alert(`Cloud pipeline failure: ${error.message}`);
       } else {
-        alert("Payout details updated successfully.");
+        alert("Payout specifications updated successfully.");
       }
     }
 
@@ -797,6 +701,7 @@ const adminSupabase = window.supabase
       if (data && !error) {
         document.getElementById('store-name-field').value = data.store_name || '';
         document.getElementById('instagram-handle-field').value = data.instagram_handle || '';
+        document.getElementById('whatsapp-number-field').value = data.whatsapp_number || '';
         document.getElementById('bank-name-field').value = data.bank_name || '';
         document.getElementById('bank-account-field').value = data.account_number || '';
         document.getElementById('bank-holder-field').value = data.account_name || '';
